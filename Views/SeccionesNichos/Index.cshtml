@@ -1,1 +1,84 @@
-﻿<h1>Secciones Nichos</h1>
+﻿@using CemSys.Models.ViewModel
+@model VMSeccionesNichos
+@{
+    string action = (Model.ABMRepositoryVM.EsModificacion == true) ? "Modificar" : "Registrar";
+    string actionTexto = (Model.ABMRepositoryVM.EsModificacion == true) ? "Modificar" : "Registrar";
+
+}
+<h1>Secciones Nichos</h1>
+
+<form asp-action="@action" method="post">
+    <div>
+        <label class="form-label" for="nombre">Nombre</label>
+        <input type="hidden" name="id" value="@Model.ABMRepositoryVM.Modelo?.IdSeccionNicho" />
+        <input class="form-control-sm" type="text" name="nombre" required maxlength="50" id="nombre" />
+    </div>
+    <div>
+        <label class="form-label" for="nronichos">Cantidad de nichos</label>
+        <input class="form-control-sm" type="number" name="nroNichos" required id="nronichos" />
+    </div>
+    <div>
+        <label class="form-label" for="nrofilas">Cantidad de filas</label>
+        <input class="form-control-sm" type="number" name="nrofilas" required id="nrofilas" />
+    </div>
+    <div>
+        <label class="form-label" for="nrofilas">Tipo de numeración</label>
+        <select required class="form-select" name="idTipoNumeracionParela">
+            <option value="">--Elija una opción--</option>
+            @if(Model.ListaNumeracionParcelas.Count == 0){
+                <option value="">No hay valores</option>
+            }else{
+                @foreach (var opc in Model.ListaNumeracionParcelas)
+                {
+                    <option value="@opc.IdTipoNumeracionParcela">@opc.TipoNumeracion</option>
+                }          
+            }
+        </select>
+    </div>
+    <div>
+        <input class="btn btn-primary" type="submit" name="name" value="@actionTexto" />
+    </div>
+    
+</form>
+
+@if (Model.ABMRepositoryVM.Lista.Count == 0)
+{
+    <p>No hay datos para mostrar</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Nro de nichos</th>
+                <th>Nro de filas</th>
+                <th>Tipo de numeración</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var opc in Model.ABMRepositoryVM.Lista)
+            {
+                <tr>
+                    <td>@opc.Nombre</td>
+                    <td>@opc.Nichos</td>
+                    <td>@opc.Filas</td>
+                    <td>@opc.TipoNumeracionNavigation.TipoNumeracion</td>
+                    <td>
+                        <form asp-action="Modificar" method="get" style="display: inline-block;">
+                            <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
+                            <input type="submit" name="name" class="btn btn-dark" value="Modificar" />
+                        </form>
+                        <form asp-action="Eliminar" method="post" style="display: inline-block;">
+                            <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
+                            <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
+                        </form>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>@ViewData["MensajeEmitir"]</p>
+}
