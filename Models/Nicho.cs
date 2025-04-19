@@ -17,6 +17,10 @@ public partial class Nicho
 
     public int TipoNicho { get; set; }
 
+    public int NroNicho { get; set; }
+
+    public int NroFila { get; set; }
+
     public virtual ICollection<NichosDifunto> NichosDifuntos { get; set; } = new List<NichosDifunto>();
 
     public virtual NumeroCuentum? NroCuentaNavigation { get; set; }

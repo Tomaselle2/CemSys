@@ -60,6 +60,8 @@ CREATE TABLE Nicho (
     seccion INT NOT NULL,
     nroCuenta INT,
     tipoNicho INT NOT NULL,
+	nroNicho INT NOT NULL,
+	nroFila INT NOT NULL,
     FOREIGN KEY (seccion) REFERENCES SeccionesNichos(idSeccionNicho),
     FOREIGN KEY (nroCuenta) REFERENCES NumeroCuenta(idNumeroCuenta),
     FOREIGN KEY (tipoNicho) REFERENCES TipoNicho(idTipoNicho)
@@ -174,3 +176,4 @@ CREATE TABLE Usuarios (
     FOREIGN KEY (tipoUsuario) REFERENCES TipoUsuario(idTipoUsuario)
 );
 
+select * from Nicho

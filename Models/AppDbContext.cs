@@ -57,12 +57,10 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-
-    }
-       
-
+    /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-Q0G6LQK; Initial Catalog= CemSys; Integrated Security= True; TrustServerCertificate=True;");
+    */
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ActaDefuncion>(entity =>
@@ -179,6 +177,8 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.IdNicho).HasColumnName("idNicho");
             entity.Property(e => e.Difuntos).HasColumnName("difuntos");
             entity.Property(e => e.NroCuenta).HasColumnName("nroCuenta");
+            entity.Property(e => e.NroFila).HasColumnName("nroFila");
+            entity.Property(e => e.NroNicho).HasColumnName("nroNicho");
             entity.Property(e => e.Seccion).HasColumnName("seccion");
             entity.Property(e => e.TipoNicho).HasColumnName("tipoNicho");
             entity.Property(e => e.Visibilidad).HasColumnName("visibilidad");
@@ -362,6 +362,8 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.IdSeccionFosa).HasName("PK__Seccione__DD2A3E3CE2BD29CD");
 
+            entity.HasIndex(e => e.Nombre, "UQ_SeccionesFosas_Nombre").IsUnique();
+
             entity.Property(e => e.IdSeccionFosa).HasColumnName("idSeccionFosa");
             entity.Property(e => e.Fosas).HasColumnName("fosas");
             entity.Property(e => e.Nombre)
@@ -374,6 +376,8 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<SeccionesNicho>(entity =>
         {
             entity.HasKey(e => e.IdSeccionNicho).HasName("PK__Seccione__CC35CD47CC6804EE");
+
+            entity.HasIndex(e => e.Nombre, "UQ_SeccionesNichos_Nombre").IsUnique();
 
             entity.Property(e => e.IdSeccionNicho).HasColumnName("idSeccionNicho");
             entity.Property(e => e.Filas).HasColumnName("filas");
@@ -411,7 +415,7 @@ public partial class AppDbContext : DbContext
             entity.ToTable("TipoNicho");
 
             entity.Property(e => e.IdTipoNicho).HasColumnName("idTipoNicho");
-            entity.Property(e => e.TipoNichoDescripcion)
+            entity.Property(e => e.TipoNicho1)
                 .HasMaxLength(15)
                 .IsUnicode(false)
                 .HasColumnName("tipoNicho");

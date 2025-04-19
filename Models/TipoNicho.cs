@@ -7,7 +7,7 @@ public partial class TipoNicho
 {
     public int IdTipoNicho { get; set; }
 
-    public string TipoNichoDescripcion { get; set; } = null!;
+    public string TipoNicho1 { get; set; } = null!;
 
     public virtual ICollection<Nicho> Nichos { get; set; } = new List<Nicho>();
 }

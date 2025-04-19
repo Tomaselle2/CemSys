@@ -11,7 +11,7 @@
 <form asp-action="@action" method="post">
     <label class="form-label" for="tipo">Tipo nicho</label>
     <input type="hidden" name="id" value="@Model.Modelo?.IdTipoNicho" />
-    <input class="form-control-sm" type="text" name="tipo" value="@Model.Modelo?.TipoNichoDescripcion"
+    <input class="form-control-sm" type="text" name="tipo" value="@Model.Modelo?.TipoNicho1"
 required maxlength="15"  id="tipo"/>
     <input class="btn btn-primary" type="submit" name="name" value="@actionTexto" />
 </form>
@@ -33,7 +33,7 @@ else
             @foreach (var tipo in Model.Lista)
             {
                 <tr>
-                    <td>@tipo.TipoNichoDescripcion</td>
+                    <td>@tipo.TipoNicho1</td>
                     <td>
                         <form asp-action="Modificar" method="get" style="display: inline-block;">
                             <input type="hidden" name="id" value="@tipo.IdTipoNicho"/>

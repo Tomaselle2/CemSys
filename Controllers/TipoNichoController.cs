@@ -47,7 +47,7 @@ namespace CemSys.Controllers
             int resultado = 0;
 
             TipoNicho modelo = new TipoNicho();
-            modelo.TipoNichoDescripcion = tipo;
+            modelo.TipoNicho1 = tipo;
 
             try
             {
@@ -84,7 +84,7 @@ namespace CemSys.Controllers
         {
             int resultado = 0;
             TipoNicho modelo = await _serviceBusiness.Consultar(id);
-            modelo.TipoNichoDescripcion = tipo;
+            modelo.TipoNicho1 = tipo;
             
 
             try
