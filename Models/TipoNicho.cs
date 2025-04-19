@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace CemSys.Models;
+
+public partial class TipoNicho
+{
+    public int IdTipoNicho { get; set; }
+
+    public string TipoNichoDescripcion { get; set; } = null!;
+
+    public virtual ICollection<Nicho> Nichos { get; set; } = new List<Nicho>();
+}
