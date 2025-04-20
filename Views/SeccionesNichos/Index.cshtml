@@ -60,23 +60,27 @@ else
         <tbody>
             @foreach (var opc in Model.ABMRepositoryVM.Lista)
             {
-                <tr>
-                    <td>@opc.Nombre</td>
-                    <td>@opc.Nichos</td>
-                    <td>@opc.Filas</td>
-                    <td>@opc.TipoNumeracionNavigation.TipoNumeracion</td>
-                    <td>
-                        <form asp-action="Modificar" method="get" style="display: inline-block;">
-                            <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
-                            <input type="submit" name="name" class="btn btn-dark" value="Modificar" />
-                        </form>
-                        <form asp-action="Eliminar" method="post" style="display: inline-block;">
-                            <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
-                            <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
-                        </form>
-                    </td>
+                if(opc.Visibilidad != false)
+                {
+                    <tr>
+                        <td>@opc.Nombre</td>
+                        <td>@opc.Nichos</td>
+                        <td>@opc.Filas</td>
+                        <td>@opc.TipoNumeracionNavigation.TipoNumeracion</td>
+                        <td>
+                            <form asp-action="Administrar" method="get" style="display: inline-block;">
+                                <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
+                                <input type="submit" class="btn btn-dark" value="Administrar" />
+                            </form>
+                            <form asp-action="Eliminar" method="post" style="display: inline-block;">
+                                <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
+                                <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
+                            </form>
+                        </td>
 
-                </tr>
+                    </tr>
+                }
+               
             }
         </tbody>
     </table>

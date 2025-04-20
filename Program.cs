@@ -1,6 +1,8 @@
 using CemSys.Business;
 using CemSys.Data;
+using CemSys.Data.NichosDB;
 using CemSys.Interface;
+using CemSys.Interface.Nichos;
 using CemSys.Interface.SeccionesNichos;
 using CemSys.Models;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +18,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //contenedor de capa de datos
 builder.Services.AddScoped(typeof(IRepositoryDB<>), typeof(ServiceGenericDB<>));
+builder.Services.AddScoped<INichosDB, NichosDB>();
 
 //contenedor de capa de negocio
 builder.Services.AddScoped(typeof(IRepositoryBusiness<>), typeof(ServiceGenericBusiness<>));
 builder.Services.AddScoped<ISeccionesNichosBusiness, SeccionesNichosBusiness>();
+builder.Services.AddScoped<INichosBusiness, NichosBusiness>();
 
 var app = builder.Build();
 

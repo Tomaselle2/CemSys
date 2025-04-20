@@ -16,7 +16,6 @@ namespace CemSys.Controllers
             _seccionesNichosBusiness = seccinesNichosBusiness;
         }
 
-        //ABMRepositoryVM<SeccionesNicho> viewModel = new ABMRepositoryVM<SeccionesNicho>();
         VMSeccionesNichos viewModel = new VMSeccionesNichos();
 
         public async Task<IActionResult> Index(VMSeccionesNichos viewModel)
@@ -62,13 +61,18 @@ namespace CemSys.Controllers
             try
             {
                 resultado = await _serviceBusiness.Registrar(modelo);
+             
                 ViewData["MensajeRegistrar"] = "Exito al registrar";
+                   //pasa el nombre de la seccion generada
+                return PasarDatosCrearNichos(nombre);
+             
             }
             catch (Exception ex)
             {
                 ViewData["MensajeRegistrar"] = ex.Message;
+                return RedirectToAction("Index");
+
             }
-            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -76,7 +80,10 @@ namespace CemSys.Controllers
         {
             try
             {
-                await _serviceBusiness.Eliminar(id);
+                SeccionesNicho secc = await _serviceBusiness.Consultar(id);
+                secc.Visibilidad = false;
+
+                await _serviceBusiness.Modificar(secc);
                 ViewData["MensajeEliminar"] = "Exito al eliminar";
 
             }
@@ -89,43 +96,21 @@ namespace CemSys.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> Modificar(string tipo, int id)
-        {
-            int resultado = 0;
-            SeccionesNicho modelo = await _serviceBusiness.Consultar(id);
-            modelo.Nombre = tipo;
-
-
-            try
-            {
-                resultado = await _serviceBusiness.Modificar(modelo);
-                ViewData["MensajeModificar"] = "Modificado con éxito";
-
-            }
-            catch (Exception ex)
-            {
-                ViewData["MensajeModificar"] = ex.Message;
-            }
-
-            return RedirectToAction("Index");
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> Modificar(int id)
-        {
-            SeccionesNicho modelo = await _serviceBusiness.Consultar(id);
-            viewModel.ABMRepositoryVM.Modelo = modelo;
-            viewModel.ABMRepositoryVM.EsModificacion = true;
-            viewModel.ABMRepositoryVM.Lista = await EmitirListado();
-
-            return View("Index", viewModel);
-        }
 
         private async Task<List<TipoNumeracionParcela>> ListaTipoNumeracionParcela()
         {
             return await _seccionesNichosBusiness.ListaTipoNumeracionParcela();
+        }
+
+        private IActionResult PasarDatosCrearNichos(string nombre)
+        {
+            return RedirectToAction("Registrar", "Nichos", new {nombre = nombre});
+        }
+
+        [HttpGet]
+        public IActionResult Administrar(int id)
+        {
+            return RedirectToAction("Index", "Nichos", new {id = id});
         }
     }
 }

@@ -12,19 +12,11 @@ namespace CemSys.Business
         {
             _tipoNumeracionParcela = tipoNumeracionParcela;
         }
-        public Task CrearNichosNumeracionAntigua()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CrearNichosNumeracionNueva()
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<List<TipoNumeracionParcela>> ListaTipoNumeracionParcela()
         {
             return await _tipoNumeracionParcela.EmitirListado();
         }
+
     }
 }

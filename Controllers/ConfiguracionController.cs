@@ -40,14 +40,6 @@ namespace CemSys.Controllers
         {
             return RedirectToAction("Index", "TipoUsuario");
         }
-        public IActionResult Nichos()
-        {
-            return RedirectToAction("Index", "Nichos");
-        }
-        public IActionResult Fosas()
-        {
-            return RedirectToAction("Index", "Fosas");
-        }
 
         public IActionResult Panteones()
         {
