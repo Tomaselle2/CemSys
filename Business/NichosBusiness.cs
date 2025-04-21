@@ -45,6 +45,12 @@ namespace CemSys.Business
 
             //    }
             //}
+
+            // Agustina
+
+            // nichos
+
+
             throw new NotImplementedException();
         }
 
@@ -60,7 +66,7 @@ namespace CemSys.Business
                     nicho.NroNicho = j;
                     nicho.Visibilidad = true;
                     nicho.Difuntos = 0;
-                    nicho.TipoNicho = 1;
+                    nicho.TipoNicho = 2;
                     nicho.Seccion = modelo.IdSeccionNicho;
 
                     try
