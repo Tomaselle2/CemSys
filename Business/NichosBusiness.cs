@@ -77,7 +77,7 @@ namespace CemSys.Business
 
             // nichos
             // secciones
-
+            // cambio de color
 
             throw new NotImplementedException();
         }
