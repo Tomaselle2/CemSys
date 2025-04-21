@@ -20,6 +20,33 @@ namespace CemSys.Business
         }
         public Task<SeccionesNicho> CrearNichosNumeracionAntigua(SeccionesNicho modelo)
         {
+
+            int filas = modelo.Filas;
+            int columnas = modelo.Nichos / modelo.Filas;
+
+            for (int i = 1; i <= filas; i++)
+            {
+                for (int j = 1; j <= columnas; j++)
+                {
+                    Nicho nicho = new Nicho();
+                    nicho.NroFila = i;
+                    nicho.NroNicho = j;
+                    nicho.Visibilidad = true;
+                    nicho.Difuntos = 0;
+                    nicho.TipoNicho = 1;
+                    nicho.Seccion = modelo.IdSeccionNicho;
+
+                    try
+                    {
+                        await _nichoRepository.Registrar(nicho);
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+
+                }
+            }
             //int columnas = modelo.Nichos / modelo.Filas;
             //for(int i=1; i<= modelo.Filas; i++)
             //{
