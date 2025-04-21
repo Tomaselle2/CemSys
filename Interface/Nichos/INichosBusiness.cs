@@ -9,5 +9,6 @@ namespace CemSys.Interface.Nichos
 
         Task<SeccionesNicho> ObtenerSeccionNicho(int id);
         Task<SeccionesNicho> ObtenerSeccionNichoPorNombre(string nombre);
+        Task<List<TipoNicho>> ListaTipoNicho();
     }
 }
