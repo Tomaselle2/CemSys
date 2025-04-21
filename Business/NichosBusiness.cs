@@ -38,7 +38,7 @@ namespace CemSys.Business
 
                     try
                     {
-                       // await _nichoRepository.Registrar(nicho);
+                        //await _nichoRepository.Registrar(nicho);
                     }
                     catch (Exception)
                     {
@@ -106,7 +106,7 @@ namespace CemSys.Business
                         throw;
                     }
 
-                    
+                    //eliminar
                 }
             }
             
