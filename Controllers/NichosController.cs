@@ -15,6 +15,7 @@ namespace CemSys.Controllers
             _serviceBusiness = serviceBusiness;
             _nichosBusiness = nichosBusiness; 
         }
+
         VMNichos viewModel = new VMNichos();
 
         public async Task<IActionResult> Index(int id)

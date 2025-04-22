@@ -15,6 +15,8 @@ public partial class Fosa
 
     public int? NroCuenta { get; set; }
 
+    public int NroFosa { get; set; }
+
     public virtual ICollection<FosasDifunto> FosasDifuntos { get; set; } = new List<FosasDifunto>();
 
     public virtual NumeroCuentum? NroCuentaNavigation { get; set; }

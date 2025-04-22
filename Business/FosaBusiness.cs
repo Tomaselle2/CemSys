@@ -9,12 +9,13 @@ namespace CemSys.Business
     {
         private readonly IRepositoryDB<Fosa> _repositoryDB;
         private readonly IRepositoryDB<SeccionesFosa> _repositorySeccionFosaDB;
-        private readonly FosaBD _fosaBD;
+        private readonly IFosaDB _fosaBD;
 
-        public FosaBusiness(IRepositoryDB<Fosa> repositoryDB, IRepositoryDB<SeccionesFosa> repositorySeccionFosaDB)
+        public FosaBusiness(IRepositoryDB<Fosa> repositoryDB, IRepositoryDB<SeccionesFosa> repositorySeccionFosaDB, IFosaDB fosaBD)
         {
             _repositoryDB = repositoryDB;
             _repositorySeccionFosaDB = repositorySeccionFosaDB;
+            _fosaBD = fosaBD;
         }
 
         public async Task<SeccionesFosa> ConsultarSeccionFosa(int id)

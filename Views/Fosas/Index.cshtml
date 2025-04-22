@@ -1,1 +1,54 @@
-﻿<h1>Crear fosas</h1>
+﻿@using CemSys.Models.ViewModel;
+@model VMFosas
+<h1>Administrar fosas de la sección @Model.seccion.Nombre</h1>
+
+
+@if (Model.ABMRepositoryVM?.Lista.Count == 0)
+{
+    <p>No hay datos para mostrar</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cuenta</th>
+                <th>fosa</th>
+                <th>Estado</th>
+         </tr>
+        </thead>
+        <tbody>
+            @if (Model.ABMRepositoryVM != null)
+            {
+                @foreach (var opc in Model.ABMRepositoryVM.Lista)
+                {
+                    <tr>
+                        @if (opc.NroCuenta == null)
+                        {
+                            <td>sin asignar</td>
+                        }
+                        else
+                        {
+                            <td>@opc.NroCuenta</td>
+                        }
+
+                        <td>@opc.NroFosa</td>
+                        @if (opc.Difuntos == 0)
+                        {
+                            <td>Desocupado</td>
+                        }
+                        else
+                        {
+                            <td>Ocupado</td>
+                        }
+
+                    </tr>
+
+
+                }
+            }
+
+        </tbody>
+    </table>
+    <p>@ViewData["MensajeEmitir"]</p>
+}

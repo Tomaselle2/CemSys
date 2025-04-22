@@ -57,15 +57,17 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public virtual DbSet<ValoresPorDefecto> ValoresPorDefectos { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-Q0G6LQK; Initial Catalog= CemSys; Integrated Security= True; TrustServerCertificate=True;");
-    */
+        => optionsBuilder.UseSqlServer("Server=MSITUF; Initial Catalog= CemSys; Integrated Security= True; TrustServerCertificate=True;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ActaDefuncion>(entity =>
         {
-            entity.HasKey(e => e.IdActaDefuncion).HasName("PK__ActaDefu__4D9F36E21EA9A2A8");
+            entity.HasKey(e => e.IdActaDefuncion).HasName("PK__ActaDefu__4D9F36E28ED5D257");
 
             entity.ToTable("ActaDefuncion");
 
@@ -82,7 +84,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Difunto>(entity =>
         {
-            entity.HasKey(e => e.IdDifunto).HasName("PK__Difunto__7B797DB2481A3939");
+            entity.HasKey(e => e.IdDifunto).HasName("PK__Difunto__7B797DB28E3B9F9E");
 
             entity.ToTable("Difunto");
 
@@ -108,17 +110,17 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.ActaDefuncionNavigation).WithMany(p => p.Difuntos)
                 .HasForeignKey(d => d.ActaDefuncion)
-                .HasConstraintName("FK__Difunto__actaDef__628FA481");
+                .HasConstraintName("FK__Difunto__actaDef__6477ECF3");
 
             entity.HasOne(d => d.EstadoNavigation).WithMany(p => p.Difuntos)
                 .HasForeignKey(d => d.Estado)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Difunto__estado__6383C8BA");
+                .HasConstraintName("FK__Difunto__estado__656C112C");
         });
 
         modelBuilder.Entity<EstadoDifunto>(entity =>
         {
-            entity.HasKey(e => e.IdEstadoDifunto).HasName("PK__EstadoDi__21F9C2A87A938CA0");
+            entity.HasKey(e => e.IdEstadoDifunto).HasName("PK__EstadoDi__21F9C2A8B6F611CD");
 
             entity.ToTable("EstadoDifunto");
 
@@ -131,27 +133,28 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Fosa>(entity =>
         {
-            entity.HasKey(e => e.IdFosa).HasName("PK__Fosas__69D90C2CAFB56D55");
+            entity.HasKey(e => e.IdFosa).HasName("PK__Fosas__69D90C2CC95A2879");
 
             entity.Property(e => e.IdFosa).HasColumnName("idFosa");
             entity.Property(e => e.Difuntos).HasColumnName("difuntos");
             entity.Property(e => e.NroCuenta).HasColumnName("nroCuenta");
+            entity.Property(e => e.NroFosa).HasColumnName("nroFosa");
             entity.Property(e => e.Seccion).HasColumnName("seccion");
             entity.Property(e => e.Visibilidad).HasColumnName("visibilidad");
 
             entity.HasOne(d => d.NroCuentaNavigation).WithMany(p => p.Fosas)
                 .HasForeignKey(d => d.NroCuenta)
-                .HasConstraintName("FK__Fosas__nroCuenta__4D94879B");
+                .HasConstraintName("FK__Fosas__nroCuenta__4F7CD00D");
 
             entity.HasOne(d => d.SeccionNavigation).WithMany(p => p.FosasNavigation)
                 .HasForeignKey(d => d.Seccion)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Fosas__seccion__4CA06362");
+                .HasConstraintName("FK__Fosas__seccion__4E88ABD4");
         });
 
         modelBuilder.Entity<FosasDifunto>(entity =>
         {
-            entity.HasKey(e => e.IdFosasDifuntos).HasName("PK__FosasDif__30C74E8FCDBBE23A");
+            entity.HasKey(e => e.IdFosasDifuntos).HasName("PK__FosasDif__30C74E8F682AF9DF");
 
             entity.Property(e => e.IdFosasDifuntos).HasColumnName("idFosasDifuntos");
             entity.Property(e => e.DifuntoId).HasColumnName("difuntoId");
@@ -160,17 +163,17 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Difunto).WithMany(p => p.FosasDifuntos)
                 .HasForeignKey(d => d.DifuntoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__FosasDifu__difun__6A30C649");
+                .HasConstraintName("FK__FosasDifu__difun__6C190EBB");
 
             entity.HasOne(d => d.Fosa).WithMany(p => p.FosasDifuntos)
                 .HasForeignKey(d => d.FosaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__FosasDifu__fosaI__6B24EA82");
+                .HasConstraintName("FK__FosasDifu__fosaI__6D0D32F4");
         });
 
         modelBuilder.Entity<Nicho>(entity =>
         {
-            entity.HasKey(e => e.IdNicho).HasName("PK__Nicho__98EA600F7BE93121");
+            entity.HasKey(e => e.IdNicho).HasName("PK__Nicho__98EA600F7AB9DDA7");
 
             entity.ToTable("Nicho");
 
@@ -185,22 +188,22 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.NroCuentaNavigation).WithMany(p => p.Nichos)
                 .HasForeignKey(d => d.NroCuenta)
-                .HasConstraintName("FK__Nicho__nroCuenta__48CFD27E");
+                .HasConstraintName("FK__Nicho__nroCuenta__4AB81AF0");
 
             entity.HasOne(d => d.SeccionNavigation).WithMany(p => p.NichosNavigation)
                 .HasForeignKey(d => d.Seccion)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Nicho__seccion__47DBAE45");
+                .HasConstraintName("FK__Nicho__seccion__49C3F6B7");
 
             entity.HasOne(d => d.TipoNichoNavigation).WithMany(p => p.Nichos)
                 .HasForeignKey(d => d.TipoNicho)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Nicho__tipoNicho__49C3F6B7");
+                .HasConstraintName("FK__Nicho__tipoNicho__4BAC3F29");
         });
 
         modelBuilder.Entity<NichosDifunto>(entity =>
         {
-            entity.HasKey(e => e.IdNichosDifuntos).HasName("PK__NichosDi__BF8852B52DB54324");
+            entity.HasKey(e => e.IdNichosDifuntos).HasName("PK__NichosDi__BF8852B5B8B833F2");
 
             entity.Property(e => e.IdNichosDifuntos).HasColumnName("idNichosDifuntos");
             entity.Property(e => e.DifuntoId).HasColumnName("difuntoId");
@@ -209,19 +212,19 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Difunto).WithMany(p => p.NichosDifuntos)
                 .HasForeignKey(d => d.DifuntoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__NichosDif__difun__66603565");
+                .HasConstraintName("FK__NichosDif__difun__68487DD7");
 
             entity.HasOne(d => d.Nicho).WithMany(p => p.NichosDifuntos)
                 .HasForeignKey(d => d.NichoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__NichosDif__nicho__6754599E");
+                .HasConstraintName("FK__NichosDif__nicho__693CA210");
         });
 
         modelBuilder.Entity<NumeroCuentum>(entity =>
         {
-            entity.HasKey(e => e.IdNumeroCuenta).HasName("PK__NumeroCu__821E373FFA0FDB1D");
+            entity.HasKey(e => e.IdNumeroCuenta).HasName("PK__NumeroCu__821E373F7B2EF64D");
 
-            entity.HasIndex(e => e.Numero, "UQ__NumeroCu__FC77F211EB87E158").IsUnique();
+            entity.HasIndex(e => e.Numero, "UQ__NumeroCu__FC77F211B5204781").IsUnique();
 
             entity.Property(e => e.IdNumeroCuenta)
                 .ValueGeneratedNever()
@@ -231,7 +234,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<PanteonDifunto>(entity =>
         {
-            entity.HasKey(e => e.IdPanteonDifuntos).HasName("PK__PanteonD__CC11F36CF2887D65");
+            entity.HasKey(e => e.IdPanteonDifuntos).HasName("PK__PanteonD__CC11F36C7CF707DD");
 
             entity.Property(e => e.IdPanteonDifuntos).HasColumnName("idPanteonDifuntos");
             entity.Property(e => e.DifuntoId).HasColumnName("difuntoId");
@@ -240,17 +243,17 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Difunto).WithMany(p => p.PanteonDifuntos)
                 .HasForeignKey(d => d.DifuntoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PanteonDi__difun__6E01572D");
+                .HasConstraintName("FK__PanteonDi__difun__6FE99F9F");
 
             entity.HasOne(d => d.Panteon).WithMany(p => p.PanteonDifuntos)
                 .HasForeignKey(d => d.PanteonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PanteonDi__pante__6EF57B66");
+                .HasConstraintName("FK__PanteonDi__pante__70DDC3D8");
         });
 
         modelBuilder.Entity<Panteone>(entity =>
         {
-            entity.HasKey(e => e.IdPanteon).HasName("PK__Panteone__542CF3B96959852A");
+            entity.HasKey(e => e.IdPanteon).HasName("PK__Panteone__542CF3B95F9AFC7D");
 
             entity.Property(e => e.IdPanteon).HasColumnName("idPanteon");
             entity.Property(e => e.Difuntos).HasColumnName("difuntos");
@@ -259,12 +262,12 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.NroCuentaNavigation).WithMany(p => p.Panteones)
                 .HasForeignKey(d => d.NroCuenta)
-                .HasConstraintName("FK__Panteones__nroCu__5070F446");
+                .HasConstraintName("FK__Panteones__nroCu__52593CB8");
         });
 
         modelBuilder.Entity<Persona>(entity =>
         {
-            entity.HasKey(e => e.IdPersona).HasName("PK__Personas__A47881410D4EEFE9");
+            entity.HasKey(e => e.IdPersona).HasName("PK__Personas__A478814105CB3312");
 
             entity.Property(e => e.IdPersona).HasColumnName("idPersona");
             entity.Property(e => e.Apellido)
@@ -303,7 +306,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<PersonasFosa>(entity =>
         {
-            entity.HasKey(e => e.IdPersonaFosas).HasName("PK__Personas__9D39D5EA161AF7A0");
+            entity.HasKey(e => e.IdPersonaFosas).HasName("PK__Personas__9D39D5EAC554F2E1");
 
             entity.Property(e => e.IdPersonaFosas).HasColumnName("idPersonaFosas");
             entity.Property(e => e.FosaId).HasColumnName("fosaId");
@@ -312,17 +315,17 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Fosa).WithMany(p => p.PersonasFosas)
                 .HasForeignKey(d => d.FosaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasF__fosaI__5812160E");
+                .HasConstraintName("FK__PersonasF__fosaI__59FA5E80");
 
             entity.HasOne(d => d.Personal).WithMany(p => p.PersonasFosas)
                 .HasForeignKey(d => d.PersonalId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasF__perso__571DF1D5");
+                .HasConstraintName("FK__PersonasF__perso__59063A47");
         });
 
         modelBuilder.Entity<PersonasNicho>(entity =>
         {
-            entity.HasKey(e => e.IdPersonaNicho).HasName("PK__Personas__AE19DC27D902C915");
+            entity.HasKey(e => e.IdPersonaNicho).HasName("PK__Personas__AE19DC2768729F99");
 
             entity.Property(e => e.IdPersonaNicho).HasColumnName("idPersonaNicho");
             entity.Property(e => e.NichoId).HasColumnName("nichoId");
@@ -331,17 +334,17 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Nicho).WithMany(p => p.PersonasNichos)
                 .HasForeignKey(d => d.NichoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasN__nicho__5441852A");
+                .HasConstraintName("FK__PersonasN__nicho__5629CD9C");
 
             entity.HasOne(d => d.Personal).WithMany(p => p.PersonasNichos)
                 .HasForeignKey(d => d.PersonalId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasN__perso__534D60F1");
+                .HasConstraintName("FK__PersonasN__perso__5535A963");
         });
 
         modelBuilder.Entity<PersonasPanteone>(entity =>
         {
-            entity.HasKey(e => e.IdPersonaFosas).HasName("PK__Personas__9D39D5EAB943EEBD");
+            entity.HasKey(e => e.IdPersonaFosas).HasName("PK__Personas__9D39D5EA36A5D619");
 
             entity.Property(e => e.IdPersonaFosas).HasColumnName("idPersonaFosas");
             entity.Property(e => e.PanteonSeId).HasColumnName("panteonSeId");
@@ -350,19 +353,19 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.PanteonSe).WithMany(p => p.PersonasPanteones)
                 .HasForeignKey(d => d.PanteonSeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasP__pante__5BE2A6F2");
+                .HasConstraintName("FK__PersonasP__pante__5DCAEF64");
 
             entity.HasOne(d => d.Personal).WithMany(p => p.PersonasPanteones)
                 .HasForeignKey(d => d.PersonalId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasP__perso__5AEE82B9");
+                .HasConstraintName("FK__PersonasP__perso__5CD6CB2B");
         });
 
         modelBuilder.Entity<SeccionesFosa>(entity =>
         {
-            entity.HasKey(e => e.IdSeccionFosa).HasName("PK__Seccione__DD2A3E3CE2BD29CD");
+            entity.HasKey(e => e.IdSeccionFosa).HasName("PK__Seccione__DD2A3E3C067DBED0");
 
-            entity.HasIndex(e => e.Nombre, "UQ_SeccionesFosas_Nombre").IsUnique();
+            entity.HasIndex(e => e.Nombre, "UQ__Seccione__72AFBCC6F00336E8").IsUnique();
 
             entity.Property(e => e.IdSeccionFosa).HasColumnName("idSeccionFosa");
             entity.Property(e => e.Fosas).HasColumnName("fosas");
@@ -375,9 +378,9 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<SeccionesNicho>(entity =>
         {
-            entity.HasKey(e => e.IdSeccionNicho).HasName("PK__Seccione__CC35CD47CC6804EE");
+            entity.HasKey(e => e.IdSeccionNicho).HasName("PK__Seccione__CC35CD47D0DC4DC0");
 
-            entity.HasIndex(e => e.Nombre, "UQ_SeccionesNichos_Nombre").IsUnique();
+            entity.HasIndex(e => e.Nombre, "UQ__Seccione__72AFBCC62BC4AEA3").IsUnique();
 
             entity.Property(e => e.IdSeccionNicho).HasColumnName("idSeccionNicho");
             entity.Property(e => e.Filas).HasColumnName("filas");
@@ -392,12 +395,12 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.TipoNumeracionNavigation).WithMany(p => p.SeccionesNichos)
                 .HasForeignKey(d => d.TipoNumeracion)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Secciones__tipoN__403A8C7D");
+                .HasConstraintName("FK__Secciones__tipoN__4222D4EF");
         });
 
         modelBuilder.Entity<TipoCategoriaPersona>(entity =>
         {
-            entity.HasKey(e => e.IdCategoriaPersona).HasName("PK__TipoCate__4D5A2EF5740F9DAB");
+            entity.HasKey(e => e.IdCategoriaPersona).HasName("PK__TipoCate__4D5A2EF5C21F8A83");
 
             entity.ToTable("TipoCategoriaPersona");
 
@@ -410,7 +413,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<TipoNicho>(entity =>
         {
-            entity.HasKey(e => e.IdTipoNicho).HasName("PK__TipoNich__6E053CEC5D7DFE8D");
+            entity.HasKey(e => e.IdTipoNicho).HasName("PK__TipoNich__6E053CEC581B126F");
 
             entity.ToTable("TipoNicho");
 
@@ -423,7 +426,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<TipoNumeracionParcela>(entity =>
         {
-            entity.HasKey(e => e.IdTipoNumeracionParcela).HasName("PK__TipoNume__195C1E017EF0B656");
+            entity.HasKey(e => e.IdTipoNumeracionParcela).HasName("PK__TipoNume__195C1E01C2CE9DDF");
 
             entity.ToTable("TipoNumeracionParcela");
 
@@ -436,7 +439,7 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<TipoUsuario>(entity =>
         {
-            entity.HasKey(e => e.IdTipoUsuario).HasName("PK__TipoUsua__03006BFF8B24A027");
+            entity.HasKey(e => e.IdTipoUsuario).HasName("PK__TipoUsua__03006BFF8C5C4033");
 
             entity.ToTable("TipoUsuario");
 
@@ -449,9 +452,9 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.IdUsuario).HasName("PK__Usuarios__645723A68D097DE8");
+            entity.HasKey(e => e.IdUsuario).HasName("PK__Usuarios__645723A6B5B1A1A0");
 
-            entity.HasIndex(e => e.Correo, "UQ__Usuarios__2A586E0BB993F9E3").IsUnique();
+            entity.HasIndex(e => e.Correo, "UQ__Usuarios__2A586E0BCD547497").IsUnique();
 
             entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
             entity.Property(e => e.Clave)
@@ -471,7 +474,22 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.TipoUsuarioNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.TipoUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Usuarios__tipoUs__74AE54BC");
+                .HasConstraintName("FK__Usuarios__tipoUs__76969D2E");
+        });
+
+        modelBuilder.Entity<ValoresPorDefecto>(entity =>
+        {
+            entity.HasKey(e => e.IdValorPorDefecto).HasName("PK__ValoresP__2808240E816B21E5");
+
+            entity.ToTable("ValoresPorDefecto");
+
+            entity.Property(e => e.IdValorPorDefecto).HasColumnName("idValorPorDefecto");
+            entity.Property(e => e.Tabla)
+                .HasMaxLength(50)
+                .HasColumnName("tabla");
+            entity.Property(e => e.ValorId)
+                .HasMaxLength(50)
+                .HasColumnName("valorID");
         });
 
         OnModelCreatingPartial(modelBuilder);

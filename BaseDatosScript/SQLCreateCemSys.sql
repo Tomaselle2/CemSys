@@ -72,6 +72,7 @@ CREATE TABLE Fosas (
     visibilidad BIT NOT NULL,
     difuntos INT NOT NULL,
     seccion INT NOT NULL,
+	nroFosa INT not null,
     nroCuenta INT,
     FOREIGN KEY (seccion) REFERENCES SeccionesFosas(idSeccionFosa),
     FOREIGN KEY (nroCuenta) REFERENCES NumeroCuenta(idNumeroCuenta)
@@ -175,5 +176,12 @@ CREATE TABLE Usuarios (
     tipoUsuario INT NOT NULL,
     FOREIGN KEY (tipoUsuario) REFERENCES TipoUsuario(idTipoUsuario)
 );
+CREATE TABLE ValoresPorDefecto(
+	idValorPorDefecto INT PRIMARY KEY IDENTITY(1,1),
+	tabla nvarchar(50) NOT NULL,
+	valorID nvarchar(50) NOT NULL
+);
 
-select * from Nicho
+select * from TipoNicho
+insert into ValoresPorDefecto(tabla, valorID) values ('Tipo nicho', '1');
+select * from ValoresPorDefecto

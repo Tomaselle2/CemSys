@@ -1,1 +1,83 @@
-﻿<h1>Secciones Fosas</h1>
+﻿@using CemSys.Models.ViewModel
+@model ABMRepositoryVM<SeccionesFosa>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Gestión de Secciones de fosas</h2>
+
+    <!-- Formulario -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            Nueva Sección
+        </div>
+        <div class="card-body">
+            <form asp-action="Registrar" method="post">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="hidden" name="id" value="@Model.Modelo?.IdSeccionFosa" />
+                        <input class="form-control" type="text" name="nombre" required maxlength="50" id="nombre" />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="nroFosas" class="form-label">Cantidad de fosas</label>
+                        <input class="form-control" type="number" name="nroFosas" required id="nroFosas" />
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <input class="btn btn-primary w-100" type="submit" value="Registrar" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla -->
+    @if (Model.Lista.Count == 0)
+    {
+        <p>No hay datos para mostrar</p>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                Secciones Registradas
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Nro de fosas</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var opc in Model.Lista)
+                        {
+                            if (opc.Visibilidad != false)
+                            {
+                                <tr>
+                                    <td>@opc.Nombre</td>
+                                    <td>@opc.Fosas</td>
+                                    <td>
+                                        <form asp-action="Administrar" method="get" style="display: inline-block;">
+                                            <input type="hidden" name="id" value="@opc.IdSeccionFosa" />
+                                            <input type="submit" class="btn btn-dark btn-sm" value="Administrar" />
+                                        </form>
+                                        <form asp-action="Eliminar" method="post" style="display: inline-block;">
+                                            <input type="hidden" name="id" value="@opc.IdSeccionFosa" />
+                                            <input type="submit" name="name" class="btn btn-danger btn-sm" value="Eliminar" />
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    <!-- Mensaje de éxito -->
+    <div class="alert alert-success mt-3" role="alert">
+        @ViewData["MensajeEmitir"]
+    </div>
+</div>
