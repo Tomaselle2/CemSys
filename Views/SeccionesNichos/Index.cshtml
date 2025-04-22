@@ -3,86 +3,107 @@
 @{
     string action = (Model.ABMRepositoryVM.EsModificacion == true) ? "Modificar" : "Registrar";
     string actionTexto = (Model.ABMRepositoryVM.EsModificacion == true) ? "Modificar" : "Registrar";
-
 }
-<h1>Secciones Nichos</h1>
 
-<form asp-action="@action" method="post">
-    <div>
-        <label class="form-label" for="nombre">Nombre</label>
-        <input type="hidden" name="id" value="@Model.ABMRepositoryVM.Modelo?.IdSeccionNicho" />
-        <input class="form-control-sm" type="text" name="nombre" required maxlength="50" id="nombre" />
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Gestión de Secciones de Nichos</h2>
+
+  <!-- Formulario -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+      Nueva Sección
     </div>
-    <div>
-        <label class="form-label" for="nronichos">Cantidad de nichos</label>
-        <input class="form-control-sm" type="number" name="nroNichos" required id="nronichos" />
-    </div>
-    <div>
-        <label class="form-label" for="nrofilas">Cantidad de filas</label>
-        <input class="form-control-sm" type="number" name="nrofilas" required id="nrofilas" />
-    </div>
-    <div>
-        <label class="form-label" for="nrofilas">Tipo de numeración</label>
-        <select required class="form-select" name="idTipoNumeracionParela">
-            <option value="">--Elija una opción--</option>
-            @if(Model.ListaNumeracionParcelas.Count == 0){
+    <div class="card-body">
+      <form asp-action="@action" method="post">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="hidden" name="id" value="@Model.ABMRepositoryVM.Modelo?.IdSeccionNicho" />
+            <input class="form-control" type="text" name="nombre" required maxlength="50" id="nombre" />
+          </div>
+          <div class="col-md-4">
+            <label for="nroNichos" class="form-label">Cantidad de nichos</label>
+            <input class="form-control" type="number" name="nroNichos" required id="nroNichos" />
+          </div>
+          <div class="col-md-4">
+            <label for="nroFilas" class="form-label">Cantidad de filas</label>
+            <input class="form-control" type="number" name="nrofilas" required id="nroFilas" />
+          </div>
+          <div class="col-md-6">
+            <label for="tipoNumeracion" class="form-label">Tipo de numeración</label>
+            <select class="form-select" name="idTipoNumeracionParela" required>
+              <option value="">--Elija una opción--</option>
+              @if(Model.ListaNumeracionParcelas.Count == 0){
                 <option value="">No hay valores</option>
-            }else{
+              } else {
                 @foreach (var opc in Model.ListaNumeracionParcelas)
                 {
-                    <option value="@opc.IdTipoNumeracionParcela">@opc.TipoNumeracion</option>
-                }          
-            }
-        </select>
+                  <option value="@opc.IdTipoNumeracionParcela">@opc.TipoNumeracion</option>
+                }
+              }
+            </select>
+          </div>
+          <div class="col-md-6 d-flex align-items-end">
+            <input class="btn btn-primary w-100" type="submit" value="@actionTexto" />
+          </div>
+        </div>
+      </form>
     </div>
-    <div>
-        <input class="btn btn-primary" type="submit" name="name" value="@actionTexto" />
-    </div>
-    
-</form>
+  </div>
 
-@if (Model.ABMRepositoryVM.Lista.Count == 0)
-{
+  <!-- Tabla -->
+  @if (Model.ABMRepositoryVM.Lista.Count == 0)
+  {
     <p>No hay datos para mostrar</p>
-}
-else
-{
-    <table class="table">
-        <thead>
+  }
+  else
+  {
+    <div class="card shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        Secciones Registradas
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+          <thead class="table-light">
             <tr>
-                <th>Nombre</th>
-                <th>Nro de nichos</th>
-                <th>Nro de filas</th>
-                <th>Tipo de numeración</th>
-                <th>Acciones</th>
+              <th>Nombre</th>
+              <th>Nro de nichos</th>
+              <th>Nro de filas</th>
+              <th>Tipo de numeración</th>
+              <th>Acciones</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             @foreach (var opc in Model.ABMRepositoryVM.Lista)
             {
-                if(opc.Visibilidad != false)
-                {
-                    <tr>
-                        <td>@opc.Nombre</td>
-                        <td>@opc.Nichos</td>
-                        <td>@opc.Filas</td>
-                        <td>@opc.TipoNumeracionNavigation.TipoNumeracion</td>
-                        <td>
-                            <form asp-action="Administrar" method="get" style="display: inline-block;">
-                                <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
-                                <input type="submit" class="btn btn-dark" value="Administrar" />
-                            </form>
-                            <form asp-action="Eliminar" method="post" style="display: inline-block;">
-                                <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
-                                <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
-                            </form>
-                        </td>
-
-                    </tr>
-                }
-               
+              if(opc.Visibilidad != false)
+              {
+                <tr>
+                  <td>@opc.Nombre</td>
+                  <td>@opc.Nichos</td>
+                  <td>@opc.Filas</td>
+                  <td>@opc.TipoNumeracionNavigation.TipoNumeracion</td>
+                  <td>
+                    <form asp-action="Administrar" method="get" style="display: inline-block;">
+                      <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
+                      <input type="submit" class="btn btn-dark btn-sm" value="Administrar" />
+                    </form>
+                    <form asp-action="Eliminar" method="post" style="display: inline-block;">
+                      <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
+                      <input type="submit" name="name" class="btn btn-danger btn-sm" value="Eliminar" />
+                    </form>
+                  </td>
+                </tr>
+              }
             }
-        </tbody>
-    </table>
-    <p>@ViewData["MensajeEmitir"]</p>
-}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  <!-- Mensaje de éxito -->
+  <div class="alert alert-success mt-3" role="alert">
+    @ViewData["MensajeEmitir"]
+  </div>
+</div>
