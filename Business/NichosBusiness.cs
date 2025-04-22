@@ -18,68 +18,38 @@ namespace CemSys.Business
             _nichoRepository = repositoryDB;
             _tipoNichoRepository = tipoNichoRepository;
         }
-        public Task<SeccionesNicho> CrearNichosNumeracionAntigua(SeccionesNicho modelo)
+        public async Task CrearNichosNumeracionAntigua(SeccionesNicho modelo)
         {
-
             int filas = modelo.Filas;
             int columnas = modelo.Nichos / modelo.Filas;
-
-            for (int i = 1; i <= filas; i++)
-            {
-                for (int j = 1; j <= columnas; j++)
+            int nroNichoContador = 1;
+ 
+                for (int i = 1; i <= filas; i++)
                 {
-                    Nicho nicho = new Nicho();
-                    nicho.NroFila = i;
-                    nicho.NroNicho = j;
-                    nicho.Visibilidad = true;
-                    nicho.Difuntos = 0;
-                    nicho.TipoNicho = 1;
-                    nicho.Seccion = modelo.IdSeccionNicho;
-
-                    try
+                    for (int j = 1; j <= columnas; j++)
                     {
-                        //await _nichoRepository.Registrar(nicho);
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
+                        Nicho nicho = new Nicho();
+                        nicho.NroFila = i;
+                        nicho.NroNicho = nroNichoContador;
+                        nicho.Visibilidad = true;
+                        nicho.Difuntos = 0;
+                        nicho.TipoNicho = 1;
+                        nicho.Seccion = modelo.IdSeccionNicho;
 
+                        try
+                        {
+                            await _nichoRepository.Registrar(nicho);
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
+
+                        nroNichoContador++; // Aumenta el contador después de cada nicho
+                    }
                 }
-            }
-            //int columnas = modelo.Nichos / modelo.Filas;
-            //for(int i=1; i<= modelo.Filas; i++)
-            //{
-            //    for (int j = 1; j <= columnas; j++)
-            //    {
-            //        Nicho nicho = new Nicho();
-            //        nicho.NroFila = i;
-            //        nicho.NroNicho = j;
-            //        nicho.Visibilidad = true;
-            //        nicho.Difuntos = 0;
-            //        nicho.TipoNicho = 1;
-            //        nicho.Seccion = modelo.IdSeccionNicho;
-
-            //        try
-            //        {
-            //            await _nichoRepository.Registrar(nicho);
-            //        }
-            //        catch (Exception)
-            //        {
-            //            throw;
-            //        }
-
-
-            //    }
-            //}
-
-            // Agustina
-
-            // nichos
-            // secciones
-            // cambio de color
-
-            throw new NotImplementedException();
+            
+            
         }
 
         public async Task CrearNichosNumeracionNueva(SeccionesNicho modelo)
@@ -105,11 +75,15 @@ namespace CemSys.Business
                     {
                         throw;
                     }
-
-                    //eliminar
                 }
             }
             
+        }
+
+        public async Task<List<Nicho>> ListaDeNichos(int id)
+        {
+            List<Nicho> listaCompleta = await _nichoRepository.EmitirListado();
+            return listaCompleta.Where(opc => opc.Seccion == id).ToList();
         }
 
         public async Task<List<TipoNicho>> ListaTipoNicho()

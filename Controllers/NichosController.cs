@@ -20,7 +20,7 @@ namespace CemSys.Controllers
         public async Task<IActionResult> Index(int id)
         {
             viewModel.seccion = await _nichosBusiness.ObtenerSeccionNicho(id);
-            viewModel.ABMRepositoryVM.Lista = await _serviceBusiness.EmitirListado();
+            viewModel.ABMRepositoryVM.Lista = await _nichosBusiness.ListaDeNichos(id);
             viewModel.ListaTipoNicho = await _nichosBusiness.ListaTipoNicho();
             return View(viewModel);
         }
