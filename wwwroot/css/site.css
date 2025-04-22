@@ -1,26 +1,75 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
-.ejemplo{
+.ejemplo {
     color: mediumvioletred;
 }
+
+.btn-cemsys {
+    background-color: #008592;
+    color: white;
+    border: none;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 20px;
+    position: relative;
+}
+
+    .btn-cemsys:hover {
+        background-color: #006f75;
+        color: white;
+    }
+
+.square-btn {
+    display: inline-block;
+    position: relative;
+    font-size: 14px;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+    .square-btn i {
+        font-size: 24px;
+        display: block;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .square-btn span {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        color: white;
+    }
+
+    .square-btn:hover i {
+        color: #fff;
+    }
+
+    .square-btn:hover span {
+        color: #fff;
+    }

@@ -1,35 +1,63 @@
 ﻿<div class="container mt-5">
-  <div class="card shadow-sm">
-    <div class="card-header bg-dark text-white">
-      <h4 class="mb-0">Configuración de CemSys</h4>
+    <div class="card shadow-sm">
+        <div class="card-header custom-bg">
+            <h4 class="mb-0">Configuración de CemSys</h4>
+        </div>
+        <div class="card-body">
+
+            <!-- Sección TIPOS -->
+            <h5 class="mb-4">TIPOS</h5>
+            <div class="row mb-3">
+                <div class="col">
+                    <a asp-action="TipoNicho" asp-controller="Configuracion" class="btn btn-cemsys square-btn">
+                        <i class="bi bi-bricks"></i>
+                        Nichos
+                    </a>
+                </div>
+                <div class="col">
+                    <a asp-action="TipoNumeracionParcela" asp-controller="Configuracion" class="btn btn-cemsys square-btn">
+                        <i class="bi bi-123"></i>
+                        Numeración de Parcelas
+                    </a>
+                </div>
+                <div class="col">
+                    <a asp-action="TipoCategoriaPersona" asp-controller="Configuracion" class="btn btn-cemsys square-btn">
+                        <i class="bi bi-person-standing-dress"></i>
+                        Categoría de Personas
+                    </a>
+                </div>
+                <div class="col">
+                    <a asp-action="TipoUsuario" asp-controller="Configuracion" class="btn btn-cemsys square-btn">
+                        <i class="bi bi-person-check"></i>
+                        Usuarios
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sección SECCIONES -->
+            <h5 class="mb-4">SECCIONES</h5>
+            <div class="row">
+                <div class="col">
+                    <a asp-action="SeccionesNichos" asp-controller="Configuracion" class="btn btn-cemsys square-btn">
+                        <i class="bi bi-bricks"></i>
+                        Nichos
+                    </a>
+                </div>
+                <div class="col">
+                    <a asp-action="SeccionesFosas" asp-controller="Configuracion" class="btn btn-cemsys square-btn">
+                        <i class="bi bi-water"></i> 
+                        Fosas
+                    </a>
+                </div>
+                <div class="col">
+                    <a asp-action="Panteones" asp-controller="Configuracion" class="btn btn-cemsys square-btn">
+                        <i class="bi bi-house-door"></i> 
+                        Panteones
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <div class="card-body">
-      <nav>
-        <ul class="list-group">
-          <li class="list-group-item">
-            <a asp-action="TipoNicho" asp-controller="Configuracion" class="list-group-item list-group-item-action">Tipos de nichos</a>
-          </li>
-          <li class="list-group-item">
-            <a asp-action="TipoNumeracionParcela" asp-controller="Configuracion" class="list-group-item list-group-item-action">Tipos de numeración de parcelas</a>
-          </li>
-          <li class="list-group-item">
-            <a asp-action="TipoCategoriaPersona" asp-controller="Configuracion" class="list-group-item list-group-item-action">Tipo categoría de personas</a>
-          </li>
-          <li class="list-group-item">
-            <a asp-action="TipoUsuario" asp-controller="Configuracion" class="list-group-item list-group-item-action">Tipos de usuarios</a>
-          </li>
-          <li class="list-group-item">
-            <a asp-action="SeccionesNichos" asp-controller="Configuracion" class="list-group-item list-group-item-action">Secciones nichos</a>
-          </li>
-          <li class="list-group-item">
-            <a asp-action="SeccionesFosas" asp-controller="Configuracion" class="list-group-item list-group-item-action">Secciones fosas</a>
-          </li>
-          <li class="list-group-item">
-            <a asp-action="Panteones" asp-controller="Configuracion" class="list-group-item list-group-item-action">Panteones</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
 </div>
 
