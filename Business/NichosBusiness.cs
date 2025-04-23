@@ -101,7 +101,5 @@ namespace CemSys.Business
         {
             return await _nichosDB.ObtenerSeccionNichoPorNombre(nombre);
         }
-
-        
     }
 }

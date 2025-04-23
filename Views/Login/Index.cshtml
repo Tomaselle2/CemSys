@@ -32,16 +32,35 @@
             position: relative;
             z-index: 1;
         }
+
+        .card-login {
+            width: 100%;
+            max-width: 340px;
+            padding: 2rem;
+            font-size: 1rem;
+        }
+
+            .card-login h3 {
+                font-size: 1.5rem;
+            }
+
+            .card-login p {
+                font-size: 0.95rem;
+            }
+
+            .card-login img {
+                max-height: 150px;
+            }
     </style>
 </head>
 <body>
-    <div class="overlay"></div> <!-- Fondo tipo marca de agua -->
+    <div class="overlay"></div>
 
     <div class="contenido">
         <div class="container d-flex align-items-center justify-content-center min-vh-100">
-            <div class="card shadow-lg p-5" style="width: 100%; max-width: 600px; font-size: 1.3rem;">
+            <div class="card shadow-lg card-login">
                 <div class="text-center mb-4">
-                    <img src="~/fotos/cemsysss.png" class="img-fluid mx-auto d-block" style="max-height: 250px;" alt="Logo" />
+                    <img src="~/fotos/cemsysss.png" class="img-fluid mx-auto d-block" alt="Logo" />
                     <h3 class="fw-bold">Iniciar Sesión</h3>
                     <p class="text-muted">Accedé a tu cuenta</p>
                 </div>
@@ -78,5 +97,3 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>
-
-

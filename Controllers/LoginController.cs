@@ -12,8 +12,8 @@ namespace CemSys.Controllers
         [HttpPost]
         public IActionResult IniciarSesion(string correo, string clave)
         {
-            string contra = "user";
-            string correoelectronico = "user@gmail.com";
+            string contra = "Encargado2025";
+            string correoelectronico = "encargado@cemsys.com";
 
             if(correo == correoelectronico && contra == clave)
             {
