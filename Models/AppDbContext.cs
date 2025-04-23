@@ -57,8 +57,6 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    public virtual DbSet<ValoresPorDefecto> ValoresPorDefectos { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=MSITUF; Initial Catalog= CemSys; Integrated Security= True; TrustServerCertificate=True;");
@@ -475,21 +473,6 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.TipoUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Usuarios__tipoUs__76969D2E");
-        });
-
-        modelBuilder.Entity<ValoresPorDefecto>(entity =>
-        {
-            entity.HasKey(e => e.IdValorPorDefecto).HasName("PK__ValoresP__2808240E816B21E5");
-
-            entity.ToTable("ValoresPorDefecto");
-
-            entity.Property(e => e.IdValorPorDefecto).HasColumnName("idValorPorDefecto");
-            entity.Property(e => e.Tabla)
-                .HasMaxLength(50)
-                .HasColumnName("tabla");
-            entity.Property(e => e.ValorId)
-                .HasMaxLength(50)
-                .HasColumnName("valorID");
         });
 
         OnModelCreatingPartial(modelBuilder);
