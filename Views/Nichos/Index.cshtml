@@ -1,76 +1,82 @@
 ﻿@using CemSys.Models.ViewModel;
 @model VMNichos
-<h1>Administrar nichos de la sección @Model.seccion?.Nombre</h1>
+<div class="main-content">
+    <h1>Administrar nichos de la sección @Model.seccion?.Nombre</h1>
 
 
-@if (Model.ABMRepositoryVM?.Lista.Count == 0)
-{
-    <p>No hay datos para mostrar</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Cuenta</th>
-                <th>Nicho</th>
-                <th>Fila</th>
-                <th>Tipo</th>
-                <th>Estado</th>
-@*                 <th>Acciones</th>
- *@            </tr>
-        </thead>
-        <tbody>
-            @if(Model.ABMRepositoryVM != null && Model.ListaTipoNicho != null)
-            {
-                @foreach (var opc in Model.ABMRepositoryVM.Lista)
+    @if (Model.ABMRepositoryVM?.Lista.Count == 0)
+    {
+        <p>No hay datos para mostrar</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Cuenta</th>
+                    <th>Nicho</th>
+                    <th>Fila</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    @*                 <th>Acciones</th>
+                *@
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ABMRepositoryVM != null && Model.ListaTipoNicho != null)
                 {
-                    <tr>
-                        @if(opc.NroCuenta == null){
-                            <td>sin asignar</td>
-                        }
-                        else
-                        {
-                            <td>@opc.NroCuenta</td>
-                        }
-                        
-                        <td>@opc.NroNicho</td>
-                        <td>@opc.NroFila</td>
-                        @foreach (var tipoN in Model.ListaTipoNicho)
-                        {
-                            if(opc.TipoNicho == tipoN.IdTipoNicho){
-                                opc.TipoNichoNavigation.TipoNicho1 = tipoN.TipoNicho1;
+                    @foreach (var opc in Model.ABMRepositoryVM.Lista)
+                    {
+                        <tr>
+                            @if (opc.NroCuenta == null)
+                            {
+                                <td>sin asignar</td>
                             }
-                        }
-                        <td>@opc.TipoNichoNavigation.TipoNicho1</td>
-                        @if (opc.Difuntos == 0)
-                        {
-                            <td>Desocupado</td>
-                        }
-                        else
-                        {
-                            <td>Ocupado</td>
-                        }
-                       
-                        <td>
-                            @*  <form asp-action="Administrar" method="get" style="display: inline-block;">
-                            <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
-                            <input type="submit" class="btn btn-dark" value="Administrar" />
-                        </form>
-                        <form asp-action="Eliminar" method="post" style="display: inline-block;">
-                            <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
-                            <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
-                        </form> *@
-                        </td>
+                            else
+                            {
+                                <td>@opc.NroCuenta</td>
+                            }
 
-                    </tr>
+                            <td>@opc.NroNicho</td>
+                            <td>@opc.NroFila</td>
+                            @foreach (var tipoN in Model.ListaTipoNicho)
+                            {
+                                if (opc.TipoNicho == tipoN.IdTipoNicho)
+                                {
+                                    opc.TipoNichoNavigation.TipoNicho1 = tipoN.TipoNicho1;
+                                }
+                            }
+                            <td>@opc.TipoNichoNavigation.TipoNicho1</td>
+                            @if (opc.Difuntos == 0)
+                            {
+                                <td>Desocupado</td>
+                            }
+                            else
+                            {
+                                <td>Ocupado</td>
+                            }
+
+                            <td>
+                                @*  <form asp-action="Administrar" method="get" style="display: inline-block;">
+                    <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
+                    <input type="submit" class="btn btn-dark" value="Administrar" />
+                    </form>
+                    <form asp-action="Eliminar" method="post" style="display: inline-block;">
+                    <input type="hidden" name="id" value="@opc.IdSeccionNicho" />
+                    <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
+                    </form> *@
+                            </td>
+
+                        </tr>
 
 
+                    }
                 }
-            }
-            
-        </tbody>
-    </table>
-    <p>@ViewData["MensajeEmitir"]</p>
-}
+
+            </tbody>
+        </table>
+        <p>@ViewData["MensajeEmitir"]</p>
+    }
+
+</div>
 
