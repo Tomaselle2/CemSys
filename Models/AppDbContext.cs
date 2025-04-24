@@ -57,7 +57,11 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+<<<<<<< HEAD
    
+=======
+  
+>>>>>>> eed940fd7fa5c7e3d3c29209e7fcf3e8b1ff5c71
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,53 +1,53 @@
-﻿
-@using CemSys.Models.ViewModel
+﻿@using CemSys.Models.ViewModel
 @model ABMRepositoryVM<TipoUsuario>
+
 @{
     string action = (Model.EsModificacion == true) ? "Modificar" : "Registrar";
     string actionTexto = (Model.EsModificacion == true) ? "Modificar" : "Registrar";
-
 }
-<h1>Tipos de usuario</h1>
 
-<form asp-action="@action" method="post">
-    <label class="form-label" for="tipo">Tipo de usuario</label>
-    <input type="hidden" name="id" value="@Model.Modelo?.IdTipoUsuario" />
-    <input class="form-control-sm" type="text" name="tipo" value="@Model.Modelo?.TipoUsuario1"
-           required maxlength="25" id="tipo" />
-    <input class="btn btn-primary" type="submit" name="name" value="@actionTexto" />
-</form>
+<div class="main-content">
+    <h1>Tipos de usuario</h1>
 
-@if (Model.Lista.Count == 0)
-{
-    <p>No hay datos para mostrar</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Tipo</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var tipo in Model.Lista)
-            {
+    <form asp-action="@action" method="post">
+        <label class="form-label" for="tipo">Tipo de usuario</label>
+        <input type="hidden" name="id" value="@Model.Modelo?.IdTipoUsuario" />
+        <input class="form-control-sm" type="text" name="tipo" value="@Model.Modelo?.TipoUsuario1" required maxlength="25" id="tipo" />
+        <input class="btn btn-primary" type="submit" name="name" value="@actionTexto" />
+    </form>
+
+    @if (Model.Lista.Count == 0)
+    {
+        <p>No hay datos para mostrar</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@tipo.TipoUsuario1</td>
-                    <td>
-                        <form asp-action="Modificar" method="get" style="display: inline-block;">
-                            <input type="hidden" name="id" value="@tipo.IdTipoUsuario" />
-                            <input type="submit" name="name" class="btn btn-dark" value="Modificar" />
-                        </form>
-                        <form asp-action="Eliminar" method="post" style="display: inline-block;">
-                            <input type="hidden" name="id" value="@tipo.IdTipoUsuario" />
-                            <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
-                        </form>
-                    </td>
-
+                    <th>Tipo</th>
+                    <th>Acción</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    <p>@ViewData["MensajeEmitir"]</p>
-}
+            </thead>
+            <tbody>
+                @foreach (var tipo in Model.Lista)
+                {
+                    <tr>
+                        <td>@tipo.TipoUsuario1</td>
+                        <td>
+                            <form asp-action="Modificar" method="get" style="display: inline-block;">
+                                <input type="hidden" name="id" value="@tipo.IdTipoUsuario" />
+                                <input type="submit" name="name" class="btn btn-dark" value="Modificar" />
+                            </form>
+                            <form asp-action="Eliminar" method="post" style="display: inline-block;">
+                                <input type="hidden" name="id" value="@tipo.IdTipoUsuario" />
+                                <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <p>@ViewData["MensajeEmitir"]</p>
+    }
+</div>
