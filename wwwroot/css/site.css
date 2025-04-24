@@ -8,7 +8,11 @@ html {
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
@@ -19,6 +23,8 @@ html {
 
 body {
     margin-bottom: 60px;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #FAF9F6;
 }
 
 .ejemplo {
@@ -66,10 +72,80 @@ body {
         color: white;
     }
 
-    .square-btn:hover i {
-        color: #fff;
-    }
-
+    .square-btn:hover i,
     .square-btn:hover span {
         color: #fff;
     }
+
+.nav-link:hover {
+    background-color: #9ce0db;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar {
+    width: 60px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #FAF9F6;
+    transition: width 0.3s ease;
+    overflow-x: hidden;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+
+    .sidebar:hover {
+        width: 250px;
+    }
+
+    .sidebar .nav-link {
+        padding: 10px 12px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .sidebar .nav-link .nav-text {
+            display: none; 
+        }
+
+    .sidebar:hover .nav-link .nav-text {
+        display: inline; 
+    }
+
+    .sidebar:hover .nav-link {
+        text-align: left;
+    }
+
+    .sidebar .navbar-brand,
+    .sidebar:hover .navbar-brand {
+        text-align: center;
+    }
+
+    .sidebar img {
+        width: 40px;
+        height: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar:hover img {
+        transform: scale(1.1);
+    }
+.main-content {
+    margin-left: 60px;
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar:hover ~ .main-content {
+    margin-left: 250px;
+}
+.main-content {
+    margin-left: 60px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar:hover ~ .main-content {
+    margin-left: 250px;
+}
