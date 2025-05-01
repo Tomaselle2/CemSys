@@ -178,4 +178,14 @@ CREATE TABLE Usuarios (
 );
 
 ALTER TABLE TipoNicho ADD porDefecto BIT NOT NULL DEFAULT 0;
-select * from TipoNicho
+select * from TipoNumeracionParcela
+select * from Usuarios
+
+select * from TipoUsuario;
+insert into Usuarios(correo, nombre, clave, tipoUsuario) values('tomaselle4@gmail.com', 'agustin', '12345', 1);
+insert into Usuarios(correo, nombre, clave, tipoUsuario) values('tomaselle@gmail.com', 'carlos', 'carlos', 2);
+insert into TipoUsuario(tipoUsuario) values ('Empleado'), ('Encargado');
+--a tener en cuenta, son los id hardcodeados, revisar en controllers Nicho, y en vista _layout 
+--select * from TipoNumeracionParcela
+--select * from TipoUsuario
+
