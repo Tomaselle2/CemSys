@@ -7,7 +7,7 @@ namespace CemSys.Interface.Fosas
         Task CrearFosas(SeccionesFosa modelo);
         Task<SeccionesFosa> ObtenerSeccionFosaPorNombre(string nombre);
         Task<SeccionesFosa> ConsultarSeccionFosa(int id);
-        Task<List<Fosa>> ListaFosas();
+        Task<List<Fosa>> ListaFosas(int id);
 
     }
 }

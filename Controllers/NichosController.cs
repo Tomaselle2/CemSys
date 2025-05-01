@@ -30,12 +30,12 @@ namespace CemSys.Controllers
             try
             {
                 SeccionesNicho modelo = await _nichosBusiness.ObtenerSeccionNichoPorNombre(nombre);
-                if(modelo.TipoNumeracion == 5)
+                if(modelo.TipoNumeracion == 1)
                 {
                     await _nichosBusiness.CrearNichosNumeracionNueva(modelo);
                 }
 
-                if (modelo.TipoNumeracion == 6)
+                if (modelo.TipoNumeracion == 2)
                 {
                     await _nichosBusiness.CrearNichosNumeracionAntigua(modelo);
                 }

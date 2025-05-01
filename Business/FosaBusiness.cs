@@ -44,9 +44,11 @@ namespace CemSys.Business
             }
         }
 
-        public async Task<List<Fosa>> ListaFosas()
+        public async Task<List<Fosa>> ListaFosas(int id)
         {
-            return await _repositoryDB.EmitirListado();
+            //return await _repositoryDB.EmitirListado();
+            List<Fosa> listaCompleta = await _repositoryDB.EmitirListado();
+            return listaCompleta.Where(opc => opc.Seccion == id).ToList();
         }
 
         public async Task<SeccionesFosa> ObtenerSeccionFosaPorNombre(string nombre)

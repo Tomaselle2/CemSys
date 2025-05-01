@@ -18,7 +18,7 @@ namespace CemSys.Controllers
         {
 
             viewModel.seccion = await _fosasBusiness.ConsultarSeccionFosa(id);
-            viewModel.ABMRepositoryVM.Lista = await _fosasBusiness.ListaFosas();
+            viewModel.ABMRepositoryVM.Lista = await _fosasBusiness.ListaFosas(id);
             return View(viewModel);
         }
 

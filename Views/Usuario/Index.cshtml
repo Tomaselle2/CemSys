@@ -1,18 +1,27 @@
-﻿<div class="main-content">
+﻿@using CemSys.Models.ViewModel
+@model VMUsuarios
+
+@{
+    string action = (Model.ABMRepositoryVM.EsModificacion == true) ? "Modificar" : "Registrar";
+    string actionTexto = (Model.ABMRepositoryVM.EsModificacion == true) ? "Modificar" : "Registrar";
+}
+
+<div class="main-content">
     <h1>Usuarios</h1>
-    <form asp-action="" method="post">
+    <form asp-action="@action" method="post">
+        <input type="hidden" name="id" value="@Model.ABMRepositoryVM.Modelo?.IdUsuario" />
         <div>
             <label class="form-label" for="nombre">Nombre</label>
-            <input class="form-control-sm" type="text" name="nombre" value="" required maxlength="50" id="nombre"/>
+            <input class="form-control-sm" type="text" name="nombre" value="@Model.ABMRepositoryVM.Modelo?.Nombre" required maxlength="50" id="nombre"/>
         </div>
         <div>
             <label class="form-label" for="correo">Correo</label>
-            <input class="form-control-sm" type="email" name="correo" value="" required maxlength="50" id="correo" />
+            <input class="form-control-sm" type="email" name="correo" value="@Model.ABMRepositoryVM.Modelo?.Correo" required maxlength="50" id="correo" />
         </div>
         <div class="password-container">
             <label class="form-label" for="clave">Contraseña</label>
             <div class="input-group">
-                <input class="form-control-sm" type="password" name="clave" value="" required maxlength="50" id="clave" />
+                <input class="form-control-sm" type="password" name="clave" value="@Model.ABMRepositoryVM.Modelo?.Clave" required maxlength="50" id="clave" />
                 <button type="button" class="btn btn-sm btn-outline-secondary" id="togglePassword">
                     <i class="bi bi-eye"></i> <!-- Ícono de Bootstrap Icons -->
                 </button>
@@ -20,13 +29,76 @@
         </div>
         <div>
             <label class="form-label" for="tipo">Tipo</label>
-            <select id="tipo" required>
-              <option value="">--Elije una opción</option>
+            <select id="tipo" required class="form-select-sm" name="idTipoUsuario">
+                <option value="">--Elija una opción--</option>
+                @if (Model.ListaTipoUsuario.Count == 0)
+                {
+                    <option value="">No hay valores</option>
+                }
+                else
+                {
+                    @foreach (var opc in Model.ListaTipoUsuario)
+                    {
+                        <option value="@opc.IdTipoUsuario" selected="@(opc.IdTipoUsuario == Model.ABMRepositoryVM.Modelo?.TipoUsuario ? "selected" : null)">@opc.TipoUsuario1</option>
+                    }
+                }
+                   
+                
+
+                
+
+                
             </select>
         </div>
         
-        <input class="btn btn-primary" type="submit" name="name" value="Registrar" />
+        <input class="btn btn-primary" type="submit" value="@actionTexto" />
     </form>
+
+    <!-- Tabla -->
+    @if (Model.ABMRepositoryVM.Lista.Count == 0)
+    {
+        <p>No hay datos para mostrar</p>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Tipo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var opc in Model.ABMRepositoryVM.Lista)
+                        {
+                            
+                            <tr>
+                                <td>@opc.Nombre</td>
+                                <td>@opc.Correo</td>
+                                <td>@opc.TipoUsuarioNavigation.TipoUsuario1</td>
+                                <td>
+                                    <form asp-action="Modificar" method="get" style="display: inline-block;">
+                                        <input type="hidden" name="id" value="@opc.IdUsuario" />
+                                        <input type="submit" class="btn btn-dark btn-sm" value="Modificar" />
+                                    </form>
+                                    <form asp-action="Eliminar" method="post" style="display: inline-block;">
+                                        <input type="hidden" name="id" value="@opc.IdUsuario" />
+                                        <input type="submit" name="name" class="btn btn-danger btn-sm" value="Eliminar" />
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
 </div>
 
 @section Scripts {
