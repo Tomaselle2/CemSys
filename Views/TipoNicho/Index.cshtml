@@ -26,6 +26,7 @@
             <thead>
                 <tr>
                     <th>Tipo</th>
+                    <th>Predeterminado</th>
                     <th>Acción</th>
                 </tr>
             </thead>
@@ -35,19 +36,34 @@
                     <tr>
                         <td>@tipo.TipoNicho1</td>
                         <td>
+                            <!-- Radio buttons agrupados -->
+                            <input type="radio"
+                                   name="idTipoPredeterminado"
+                                   value="@tipo.IdTipoNicho"
+                            @(tipo.PorDefecto ? "checked" : "") />
+                        </td>
+                        <td>
                             <form asp-action="Modificar" method="get" style="display: inline-block;">
                                 <input type="hidden" name="id" value="@tipo.IdTipoNicho" />
-                                <input type="submit" name="name" class="btn btn-dark" value="Modificar" />
+                                <input type="submit" class="btn btn-dark" value="Modificar" />
                             </form>
                             <form asp-action="Eliminar" method="post" style="display: inline-block;">
                                 <input type="hidden" name="id" value="@tipo.IdTipoNicho" />
-                                <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
+                                <input type="submit" class="btn btn-danger" value="Eliminar" />
                             </form>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        <!-- Formulario para guardar el predeterminado -->
+        <form asp-action="EstablecerPredeterminado" method="post">
+            <!-- Campo para capturar el valor del radio seleccionado -->
+            <input type="hidden" id="selectedId" name="idTipoPredeterminado" />
+            <input type="submit" class="btn btn-primary" value="Guardar Predeterminado"
+                   onclick="document.getElementById('selectedId').value = document.querySelector('input[name=idTipoPredeterminado]:checked').value;" />
+        </form>
         <p>@ViewData["MensajeEmitir"]</p>
     }
 </div>

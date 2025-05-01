@@ -2,6 +2,7 @@
 using CemSys.Models;
 using CemSys.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CemSys.Controllers
 {
@@ -112,6 +113,31 @@ namespace CemSys.Controllers
 
             return View("Index", viewModel);
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> EstablecerPredeterminado(int idTipoPredeterminado)
+        {
+            // 1. Quitar el predeterminado actual
+            var tipos = await _serviceBusiness.EmitirListado();
+            var predeterminadoNuevo = await _serviceBusiness.Consultar(idTipoPredeterminado);
+            foreach (var tipo in tipos)
+            {
+                if(tipo.PorDefecto == true)
+                {
+                    tipo.PorDefecto = false;
+                    await _serviceBusiness.Modificar(tipo);
+                    predeterminadoNuevo.PorDefecto = true;
+                    await _serviceBusiness.Modificar(predeterminadoNuevo);
+                }
+                else
+                {
+                    predeterminadoNuevo.PorDefecto = true;
+                    await _serviceBusiness.Modificar(predeterminadoNuevo);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

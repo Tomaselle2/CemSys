@@ -11,6 +11,23 @@ namespace CemSys.Business
         private readonly IRepositoryDB<TipoNicho> _tipoNichoRepository;
 
         private readonly INichosDB _nichosDB;
+        
+        private async Task<int> ValorPorDefectoTipoNicho()
+        {
+            var tipos = await _tipoNichoRepository.EmitirListado();
+            foreach (var tipo in tipos)
+            {
+                if(tipo.PorDefecto == true)
+                {
+                    return tipo.IdTipoNicho;
+                }
+            }
+
+            return 0;
+            
+        }
+
+
         public NichosBusiness(IRepositoryDB<SeccionesNicho> seccionesNichoRepository, INichosDB nichosDB, IRepositoryDB<Nicho> repositoryDB, IRepositoryDB<TipoNicho> tipoNichoRepository)
         {
             _seccionesNichoRepository = seccionesNichoRepository;
@@ -23,6 +40,8 @@ namespace CemSys.Business
             int filas = modelo.Filas;
             int columnas = modelo.Nichos / modelo.Filas;
             int nroNichoContador = 1;
+            int tipoNicho = await ValorPorDefectoTipoNicho();
+            
  
                 for (int i = 1; i <= filas; i++)
                 {
@@ -33,7 +52,7 @@ namespace CemSys.Business
                         nicho.NroNicho = nroNichoContador;
                         nicho.Visibilidad = true;
                         nicho.Difuntos = 0;
-                        nicho.TipoNicho = 1;
+                        nicho.TipoNicho = tipoNicho;
                         nicho.Seccion = modelo.IdSeccionNicho;
 
                         try
@@ -55,6 +74,7 @@ namespace CemSys.Business
         public async Task CrearNichosNumeracionNueva(SeccionesNicho modelo)
         {
             int columnas = modelo.Nichos / modelo.Filas;
+            int tipoNicho = await ValorPorDefectoTipoNicho();
             for (int i = 1; i <= modelo.Filas; i++)
             {
                 for(int j = 1; j <= columnas; j++)
@@ -64,7 +84,7 @@ namespace CemSys.Business
                     nicho.NroNicho = j;
                     nicho.Visibilidad = true;
                     nicho.Difuntos = 0;
-                    nicho.TipoNicho = 2;
+                    nicho.TipoNicho = tipoNicho;
                     nicho.Seccion = modelo.IdSeccionNicho;
 
                     try

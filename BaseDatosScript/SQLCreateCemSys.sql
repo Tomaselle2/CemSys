@@ -176,12 +176,6 @@ CREATE TABLE Usuarios (
     tipoUsuario INT NOT NULL,
     FOREIGN KEY (tipoUsuario) REFERENCES TipoUsuario(idTipoUsuario)
 );
-CREATE TABLE ValoresPorDefecto(
-	idValorPorDefecto INT PRIMARY KEY IDENTITY(1,1),
-	tabla nvarchar(50) NOT NULL,
-	valorID nvarchar(50) NOT NULL
-);
 
+ALTER TABLE TipoNicho ADD porDefecto BIT NOT NULL DEFAULT 0;
 select * from TipoNicho
-insert into ValoresPorDefecto(tabla, valorID) values ('Tipo nicho', '1');
-select * from ValoresPorDefecto

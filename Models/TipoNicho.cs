@@ -9,5 +9,7 @@ public partial class TipoNicho
 
     public string TipoNicho1 { get; set; } = null!;
 
+    public bool PorDefecto { get; set; }
+
     public virtual ICollection<Nicho> Nichos { get; set; } = new List<Nicho>();
 }
