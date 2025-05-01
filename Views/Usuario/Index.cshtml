@@ -1,0 +1,50 @@
+﻿<div class="main-content">
+    <h1>Usuarios</h1>
+    <form asp-action="" method="post">
+        <div>
+            <label class="form-label" for="nombre">Nombre</label>
+            <input class="form-control-sm" type="text" name="nombre" value="" required maxlength="50" id="nombre"/>
+        </div>
+        <div>
+            <label class="form-label" for="correo">Correo</label>
+            <input class="form-control-sm" type="email" name="correo" value="" required maxlength="50" id="correo" />
+        </div>
+        <div class="password-container">
+            <label class="form-label" for="clave">Contraseña</label>
+            <div class="input-group">
+                <input class="form-control-sm" type="password" name="clave" value="" required maxlength="50" id="clave" />
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="togglePassword">
+                    <i class="bi bi-eye"></i> <!-- Ícono de Bootstrap Icons -->
+                </button>
+            </div>
+        </div>
+        <div>
+            <label class="form-label" for="tipo">Tipo</label>
+            <select id="tipo" required>
+              <option value="">--Elije una opción</option>
+            </select>
+        </div>
+        
+        <input class="btn btn-primary" type="submit" name="name" value="Registrar" />
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('clave');
+            const icon = togglePassword.querySelector('i');
+
+            togglePassword.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.replace('bi-eye', 'bi-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.replace('bi-eye-slash', 'bi-eye');
+                }
+            });
+        });
+    </script>
+}

@@ -46,6 +46,11 @@ namespace CemSys.Controllers
             return RedirectToAction("Index", "Panteones");
         }
 
+        public IActionResult Usuario()
+        {
+            return RedirectToAction("Index", "Usuario");
+        }
+
 
     }
 }
