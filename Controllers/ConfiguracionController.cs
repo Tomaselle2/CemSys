@@ -59,6 +59,10 @@ namespace CemSys.Controllers
         {
             return RedirectToAction("Index", "Usuario");
         }
+        public IActionResult EstadoDifunto()
+        {
+            return RedirectToAction("Index", "EstadoDifunto");
+        }
 
 
     }
