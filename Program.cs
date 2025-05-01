@@ -28,7 +28,13 @@ builder.Services.AddScoped<ISeccionesNichosBusiness, SeccionesNichosBusiness>();
 builder.Services.AddScoped<INichosBusiness, NichosBusiness>();
 builder.Services.AddScoped<IFosasBusiness, FosaBusiness>();
 
+//para el manejo de sesiones
+builder.Services.AddSession();
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
+
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

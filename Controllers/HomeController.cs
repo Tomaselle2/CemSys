@@ -15,6 +15,15 @@ namespace CemSys.Controllers
 
         public IActionResult Index()
         {
+            var nombre = HttpContext.Session.GetString("nombreUsuario");
+
+            if (nombre == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+                
+
+            ViewData["UsuarioLogueado"] = nombre;
             return View();
         }
 

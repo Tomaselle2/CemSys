@@ -20,6 +20,13 @@ namespace CemSys.Controllers
 
         public async Task<IActionResult> Index(int id)
         {
+            var nombre = HttpContext.Session.GetString("nombreUsuario");
+            if (nombre == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            ViewData["UsuarioLogueado"] = nombre;
+
             viewModel.seccion = await _nichosBusiness.ObtenerSeccionNicho(id);
             viewModel.ABMRepositoryVM.Lista = await _nichosBusiness.ListaDeNichos(id);
             viewModel.ListaTipoNicho = await _nichosBusiness.ListaTipoNicho();

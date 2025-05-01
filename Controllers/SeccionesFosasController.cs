@@ -22,6 +22,13 @@ namespace CemSys.Controllers
 
         public async Task<IActionResult> Index(ABMRepositoryVM<SeccionesFosa> viewModel)
         {
+            var nombre = HttpContext.Session.GetString("nombreUsuario");
+            if (nombre == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            ViewData["UsuarioLogueado"] = nombre;
+
             if (viewModel.Lista.Count == 0)
             {
                 viewModel.Lista = await EmitirListado();

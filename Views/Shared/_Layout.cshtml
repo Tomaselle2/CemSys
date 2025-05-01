@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-store" />
     <title>CemSys</title>
     <link rel="icon" type="image/png" href="~/fotos/logito.png" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -19,7 +20,10 @@
             <a class="navbar-brand mb-4 d-block text-center" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/fotos/cems.png" alt="CemSys Logo" style="height: 40px;" />
             </a>
+            <p> @ViewData["UsuarioLogueado"]</p>
+            <a asp-action="CerrarSesion" asp-controller="Login">Cerrar sesión</a>
             <ul class="nav flex-column">
+               
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">
                         <i class="bi bi-file-earmark"></i> <span class="nav-text">Trámites</span>

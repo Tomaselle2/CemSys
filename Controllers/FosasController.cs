@@ -16,6 +16,15 @@ namespace CemSys.Controllers
         VMFosas viewModel = new VMFosas();
         public async Task<IActionResult> Index(int id)
         {
+            var nombre = HttpContext.Session.GetString("nombreUsuario");
+
+            if (nombre == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+
+            ViewData["UsuarioLogueado"] = nombre;
 
             viewModel.seccion = await _fosasBusiness.ConsultarSeccionFosa(id);
             viewModel.ABMRepositoryVM.Lista = await _fosasBusiness.ListaFosas(id);
