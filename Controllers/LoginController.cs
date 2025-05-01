@@ -38,13 +38,11 @@ namespace CemSys.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ViewData["Login"] = "Correo o contraseña incorrecta";
-                    return View("Index");
-                }
+                
+                
             }
 
+            ViewData["Login"] = "Correo o contraseña incorrecta";
             return View("Index");
         }
 
