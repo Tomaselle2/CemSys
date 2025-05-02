@@ -1,3 +1,62 @@
 ﻿<div class="main-content">
-    <h1>Difuntos</h1>
+    <form asp-action="Registrar" method="get">
+        <input class="btn btn-primary" type="submit" value="Agregar difunto" />
+    </form>
+    @*Buscador*@
+    <div>
+        <form action="/" method="post">
+           <fieldset>
+               <legend>Difunto</legend>
+                <div>
+                    <label for="nombreDifunto">Nombre</label>
+                    <input class="form-control-sm" type="text" name="" id="nombreDifunto" value="" />
+                </div>
+                <div>
+                    <label for="apellidoDifunto">Apellido</label>
+                    <input class="form-control-sm" type="text" name="" id="apellidoDifunto" value="" />
+                </div>
+           </fieldset>
+            <fieldset>
+                <legend>Titular</legend>
+                <div>
+                    <label for="nombreTitular">Nombre</label>
+                    <input class="form-control-sm" type="text" name="" id="nombreTitular" value="" />
+                </div>
+                <div>
+                    <label for="apellidoTitular">Apellido</label>
+                    <input class="form-control-sm" type="text" name="" id="apellidoTitular" value="" />
+                </div>
+            </fieldset>
+            <div>
+                <label for="nroCuenta">Cuenta</label>
+                <input class="form-control-sm" type="number" value="" id="nroCuenta" />
+            </div>
+        </form>
+        
+    </div>
+
+    @*Tabla*@
+    <div>
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Cuenta</th>
+                            <th>Difunto</th>
+                            <th>Ubicación</th>
+                            <th>Titular</th>
+                            <th>Vto</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+         </div>
+    </div>
 </div>

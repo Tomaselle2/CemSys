@@ -1,0 +1,89 @@
+﻿
+<div class="main-content">
+    <h1>Registrar difunto</h1>
+    <form action="Registrar" method="post">
+        <div>
+            <label for="dni">DNI</label>
+            <input class="form-control-sm" type="text" name="dni" id="dni" value="" required maxlength="8" min="7" pattern="[0-9]+" />
+        </div>
+        <div>
+            <label for="nombreDifunto">Nombre</label>
+            <input class="form-control-sm" type="text" name="nombre" id="nombreDifunto" value="" required maxlength="60" min="2"/>
+        </div>
+        <div>
+            <label for="apellidoDifunto">Apellido</label>
+            <input class="form-control-sm" type="text" name="apellido" id="apellidoDifunto" value="" required maxlength="60" min="2"/>
+        </div>
+        <div>
+            <label for="fechaDefuncion">Defuncion</label>
+            <input class="form-control-sm" type="date" name="defuncionFecha" id="fechaDefuncion" value="" required/>
+        </div>
+        <div>
+            <label for="fechaIngreso">Ingreso</label>
+            <input class="form-control-sm" type="date" name="ingresoFecha" id="fechaIngreso" value="" required />
+        </div>
+        <div>
+            <label for="fechaNacimiento">Nacimiento</label>
+            <input class="form-control-sm" type="date" name="nacimientoFecha" id="fechaNacimiento" value="" required />
+        </div>
+        <div>
+            <label for="estado">Estado</label>
+            <select class="form-select-sm" id="estado" name="estadoId">
+                 <option value="">--Elija una opción</option>
+            </select>
+        </div>
+        <fieldset>
+            <legend>Datos acta defunción</legend>
+            <div>
+                <label for="acta">Acta</label>
+                <input type="number" name="acta" value="" id="acta" min="1"/>
+            </div>
+            <div>
+                <label for="tomo">Tomo</label>
+                <input type="number" name="tomo" value="" id="tomo" min="1" />
+            </div>
+            <div>
+                <label for="folio">Folio</label>
+                <input type="number" name="folio" value="" id="folio" min="1" />
+            </div>
+            <div>
+                <label for="serie">Serie</label>
+                <input type="text" name="serie" value="" id="serie" maxlength="4" />
+            </div>
+            <div>
+                <label for="age">Año</label>
+                <input type="number" name="age" value="" id="age" min="1"/>
+            </div>
+        </fieldset>
+        <div>
+            <fieldset>
+                <legend>Tipo de parcela</legend>
+
+                <label for="nicho">Nicho</label>
+                <input type="radio" name="tipoParcela" value="nicho" id="nicho"/>
+
+                <label for="fosa">Fosa</label>
+                <input type="radio" name="tipoParcela" value="fosa" id="fosa"/>
+
+                <label for="panteon">Panteon</label>
+                <input type="radio" name="tipoParcela" value="panteon" id="panteon" />
+            </fieldset>
+            <fieldset>
+                <legend>Ubicación</legend>
+                <div>
+                    <label for="seccion">Sección</label>
+                    <select required id="seccion" name="seccionElegida">
+                      <option value="">Elija la sección</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="nicho">Nicho</label>
+                    <select required id="nicho" name="nichoElegido">
+                        <option value="">Elija el nicho</option>
+                    </select>
+                </div>
+            </fieldset>
+        </div>
+        <input type="submit" name="name" value="Registrar" />
+    </form>
+</div>
