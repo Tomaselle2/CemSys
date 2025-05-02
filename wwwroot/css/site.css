@@ -51,7 +51,7 @@ body {
     display: inline-block;
     position: relative;
     font-size: 14px;
-    padding: 20px;
+    /*padding: 20px;*/
     text-align: center;
     width: 100%;
 }
@@ -72,10 +72,16 @@ body {
         color: white;
     }
 
-    .square-btn:hover i,
     .square-btn:hover span {
-        color: #fff;
+        color: #12ece9;
     }
+
+    .square-btn:hover i {
+        color: #12ece9;
+        transform: scale(1.2);
+
+    }
+
 
 .nav-link:hover {
     background-color: #9ce0db;
@@ -148,4 +154,11 @@ body {
 
 .sidebar:hover ~ .main-content {
     margin-left: 250px;
+}
+
+/*iconos del menu*/
+.icono-menu:hover i {
+    color: #22b3b0;
+    /*color: #1d8d8b;*/
+    transform: scale(1.3);
 }

@@ -176,16 +176,22 @@ CREATE TABLE Usuarios (
     tipoUsuario INT NOT NULL,
     FOREIGN KEY (tipoUsuario) REFERENCES TipoUsuario(idTipoUsuario)
 );
-
+go
 ALTER TABLE TipoNicho ADD porDefecto BIT NOT NULL DEFAULT 0;
-select * from TipoNumeracionParcela
-select * from Usuarios
-
-select * from TipoUsuario;
-insert into Usuarios(correo, nombre, clave, tipoUsuario) values('tomaselle4@gmail.com', 'agustin', '12345', 1);
-insert into Usuarios(correo, nombre, clave, tipoUsuario) values('tomaselle@gmail.com', 'carlos', 'carlos', 2);
+go
 insert into TipoUsuario(tipoUsuario) values ('Empleado'), ('Encargado');
+go
+insert into TipoNicho(tipoNicho, porDefecto) values ('Féretro', 0), ('Urnario', 0), ('Especial', 0);
+go
+insert into TipoCategoriaPersona(tipo) values ('Titular'), ('Familiar');
+go
+insert into TipoNumeracionParcela(tipoNumeracion) values ('Nueva (nichos repetidos)'), ('Antigua (sin repetir)');
+go
+insert into EstadoDifunto(estado) values ('Cuerpo completo'), ('Reducido'), ('Cremado');
+--select * from EstadoDifunto;
+--insert into Usuarios(correo, nombre, clave, tipoUsuario) values('tomaselle2@gmail.com', 'Tomas Carreras', '12345', 2);
+
 --a tener en cuenta, son los id hardcodeados, revisar en controllers Nicho, y en vista _layout 
 --select * from TipoNumeracionParcela
---select * from TipoUsuario
+--select * from Usuarios
 
