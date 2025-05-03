@@ -43,6 +43,22 @@ namespace CemSys.Business
             }
         }
 
+        public async Task<List<DTO_difunto>> EmitirListadoDifuntos()
+        {
+            try
+            {
+                return (await _difuntosRepository.EmitirListado()).Where(s => s.Visibilidad == true && s.Dni != null).Select(s => new DTO_difunto
+                {
+                    Visibilidad = s.Visibilidad,
+                    DNI = s.Dni
+                }).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<EstadoDifunto>> EmitirListadoEstadoDifunto()
         {
             try

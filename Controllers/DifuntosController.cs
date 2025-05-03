@@ -143,6 +143,8 @@ namespace CemSys.Controllers
             }
             ViewData["UsuarioLogueado"] = nombre;
             //fin login
+            DateOnly year = DateOnly.FromDateTime(DateTime.Now);
+
 
             if (viewModel != null)
             {
@@ -153,6 +155,8 @@ namespace CemSys.Controllers
                     viewModel.ListaSeccionesFosa = await _difuntosBusiness.EmitirListadoSeccionesFosa();//lista todas las secc de fosas en la vista
                     viewModel.ListaNichos = await _difuntosBusiness.EmitirListadoNichos();//lista todos los nichos en la vista
                     viewModel.ListaFosas = await _difuntosBusiness.EmitirListadoFosas();//lista todos las fosas en la vista
+                    viewModel.fechaActual = year;
+                    viewModel.ListaDifuntos = await _difuntosBusiness.EmitirListadoDifuntos();
                 }
                 catch(Exception ex)
                 {

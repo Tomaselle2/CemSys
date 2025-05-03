@@ -6,12 +6,15 @@ namespace CemSys.Interface.Difuntos
     public interface IDifuntosBusiness
     {
         Task<int> RegistrarDifunto(Difunto modelo);
+        Task<int> RegistrarActaDefuncion(ActaDefuncion modeloacta);
+
         Task<List<EstadoDifunto>> EmitirListadoEstadoDifunto();
         Task<List<DTO_seccionesNicho>> EmitirListadoSeccionesNicho();
         Task<List<DTO_seccionesFosa>> EmitirListadoSeccionesFosa();
         Task<List<DTO_nichos>> EmitirListadoNichos();
         Task<List<DTO_fosas>> EmitirListadoFosas();
-        Task<int> RegistrarActaDefuncion(ActaDefuncion modeloacta);
+        Task<List<DTO_difunto>> EmitirListadoDifuntos();
+     
 
         Task<int> RegistrarEnNicho(NichosDifunto modelo);
         Task<int> RegistrarEnFosa(FosasDifunto modelo);

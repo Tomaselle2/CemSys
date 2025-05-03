@@ -1,9 +1,12 @@
 ﻿@using CemSys.Models.ViewModel
 @model VMDifuntos
-
+@{
+    string fecha = Model.fechaActual.ToString("yyyy-MM-dd");
+}
 <div class="main-content">
     <h1>Registrar difunto</h1>
     <form action="Registrar" method="post">
+        
         <div>
             <label for="dni">DNI</label>
             <input class="form-control-sm" type="text" name="dni" id="dni" value="" required maxlength="8" min="7" pattern="[0-9]+" />
@@ -18,15 +21,15 @@
         </div>
         <div>
             <label for="fechaDefuncion">Defuncion</label>
-            <input class="form-control-sm" type="date" name="defuncionFecha" id="fechaDefuncion" value="" required/>
+            <input class="form-control-sm" type="date" name="defuncionFecha" id="fechaDefuncion" value="" max="@fecha" required/>
         </div>
         <div>
             <label for="fechaIngreso">Ingreso</label>
-            <input class="form-control-sm" type="date" name="ingresoFecha" id="fechaIngreso" value="" required />
+            <input class="form-control-sm" type="date" name="ingresoFecha" id="fechaIngreso" value="" max="@fecha" required />
         </div>
         <div>
             <label for="fechaNacimiento">Nacimiento</label>
-            <input class="form-control-sm" type="date" name="nacimientoFecha" id="fechaNacimiento" value="" required />
+            <input class="form-control-sm" type="date" name="nacimientoFecha" id="fechaNacimiento" value="" max="@fecha" required />
         </div>
         <div>
             <label for="estado">Estado</label>
@@ -66,7 +69,7 @@
             </div>
             <div>
                 <label for="age">Año</label>
-                <input type="number" name="age" value="" id="age" min="1"/>
+                <input type="number" name="age" value="" id="age" min="1927" max="@Model.fechaActual.Year"/>
             </div>
         </fieldset>
         <div>
@@ -95,7 +98,7 @@
                 </div>
                 <div>
                     <label for="parcelaElegida">Parcela</label>
-                    <select id="parcelaElegida" name="parcelaElegida">
+                    <select id="parcelaElegida" name="parcelaElegida" required>
                         <option value="">Elija la parcela</option>
                     </select>
                 </div>
@@ -114,16 +117,37 @@
 
     const parcelasPorSeccion = {
         nicho: @Html.Raw(Model.ListaNichos.Any() ? Json.Serialize(Model.ListaNichos) : "[]"),
-        fosa: @Html.Raw(Model.ListaFosas.Any() ? Json.Serialize(Model.ListaFosas) : "[]"),
+        fosa: @Html.Raw(Model.ListaFosas.Any() ? Json.Serialize(Model.ListaFosas) : "[]")
     };
 
+    
+
     // Función para actualizar las opciones del select
-        function actualizarSecciones(tipo) {
+    function actualizarSecciones(tipo) 
+    {
         const select = document.getElementById('seccion');
         select.innerHTML = '<option value="">Elija la sección</option>';
 
         const selecParcelaElegida = document.getElementById('parcelaElegida');
         parcelaElegida.innerHTML = '<option value="">Elija la parcela</option>';
+
+        //logica para saber si el DNI ingresado existe en la base de datos
+        const listaDNIdifuntos = @Html.Raw(Model.ListaDifuntos.Any() ? Json.Serialize(Model.ListaDifuntos) : "[]");
+        
+        const dniText = document.getElementById('dni');
+
+        dniText.addEventListener("blur", (e) => {
+            let dniIngresado = e.target.value.trim();
+
+            const existeDNI = listaDNIdifuntos.some(difunto => difunto.dni === dniIngresado);
+
+            if (existeDNI) {
+                alert("El DNI ya se encuentra registrado");
+                console.log("DNI duplicado:", dniIngresado);
+                e.target.value = "";
+            }
+        });
+
 
         if (!seccionesPorTipo[tipo] || seccionesPorTipo[tipo].length === 0) { //si no hay datos en alguna opcion
                 const option = document.createElement('option');
