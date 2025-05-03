@@ -1,4 +1,6 @@
-﻿
+﻿@using CemSys.Models.ViewModel
+@model VMDifuntos
+
 <div class="main-content">
     <h1>Registrar difunto</h1>
     <form action="Registrar" method="post">
@@ -8,11 +10,11 @@
         </div>
         <div>
             <label for="nombreDifunto">Nombre</label>
-            <input class="form-control-sm" type="text" name="nombre" id="nombreDifunto" value="" required maxlength="60" min="2"/>
+            <input class="form-control-sm" type="text" name="nombre" id="nombreDifunto" value="" required maxlength="60" minlength="2" />
         </div>
         <div>
             <label for="apellidoDifunto">Apellido</label>
-            <input class="form-control-sm" type="text" name="apellido" id="apellidoDifunto" value="" required maxlength="60" min="2"/>
+            <input class="form-control-sm" type="text" name="apellido" id="apellidoDifunto" value="" required maxlength="60" minlength="2" />
         </div>
         <div>
             <label for="fechaDefuncion">Defuncion</label>
@@ -30,8 +32,20 @@
             <label for="estado">Estado</label>
             <select class="form-select-sm" id="estado" name="estadoId">
                  <option value="">--Elija una opción</option>
+                @if (Model.ListaEstadoDifunto.Count == 0)
+                {
+                    <option value="">No hay valores</option>
+                }
+                else
+                {
+                    @foreach (var opc in Model.ListaEstadoDifunto)
+                    {
+                        <option value="@opc.IdEstadoDifunto">@opc.Estado</option>
+                    }
+                }
             </select>
         </div>
+        @*acta defuncion*@
         <fieldset>
             <legend>Datos acta defunción</legend>
             <div>
@@ -56,11 +70,12 @@
             </div>
         </fieldset>
         <div>
+            @*Radios buton*@
             <fieldset>
                 <legend>Tipo de parcela</legend>
 
                 <label for="nicho">Nicho</label>
-                <input type="radio" name="tipoParcela" value="nicho" id="nicho"/>
+                <input type="radio" name="tipoParcela" value="nicho" id="nicho" checked/>
 
                 <label for="fosa">Fosa</label>
                 <input type="radio" name="tipoParcela" value="fosa" id="fosa"/>
@@ -68,18 +83,20 @@
                 <label for="panteon">Panteon</label>
                 <input type="radio" name="tipoParcela" value="panteon" id="panteon" />
             </fieldset>
+
+            @*Desplegables*@
             <fieldset>
                 <legend>Ubicación</legend>
                 <div>
                     <label for="seccion">Sección</label>
                     <select required id="seccion" name="seccionElegida">
-                      <option value="">Elija la sección</option>
+                      <option value="">Elija una opción</option>
                     </select>
                 </div>
                 <div>
-                    <label for="nicho">Nicho</label>
-                    <select required id="nicho" name="nichoElegido">
-                        <option value="">Elija el nicho</option>
+                    <label for="parcelaElegida">Parcela</label>
+                    <select id="parcelaElegida" name="parcelaElegida">
+                        <option value="">Elija la parcela</option>
                     </select>
                 </div>
             </fieldset>
@@ -87,3 +104,96 @@
         <input type="submit" name="name" value="Registrar" />
     </form>
 </div>
+
+<script>
+    // Datos iniciales (debes poblarlos desde tu modelo)
+    const seccionesPorTipo = {
+    nicho: @Html.Raw(Model.ListaSeccionesNicho.Any() ? Json.Serialize(Model.ListaSeccionesNicho) : "[]"),
+    fosa: @Html.Raw(Model.ListaSeccionesFosa.Any() ? Json.Serialize(Model.ListaSeccionesFosa) : "[]")
+    };
+
+    const parcelasPorSeccion = {
+        nicho: @Html.Raw(Model.ListaNichos.Any() ? Json.Serialize(Model.ListaNichos) : "[]"),
+        fosa: @Html.Raw(Model.ListaFosas.Any() ? Json.Serialize(Model.ListaFosas) : "[]"),
+    };
+
+    // Función para actualizar las opciones del select
+        function actualizarSecciones(tipo) {
+        const select = document.getElementById('seccion');
+        select.innerHTML = '<option value="">Elija la sección</option>';
+
+        const selecParcelaElegida = document.getElementById('parcelaElegida');
+        parcelaElegida.innerHTML = '<option value="">Elija la parcela</option>';
+
+        if (!seccionesPorTipo[tipo] || seccionesPorTipo[tipo].length === 0) { //si no hay datos en alguna opcion
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No hay secciones disponibles';
+                option.disabled = true;
+                select.appendChild(option);
+                select.disabled = true;     
+                
+                const optionParcela = document.createElement('option');
+                optionParcela.value = '';
+                optionParcela.textContent = 'No hay parcelas disponibles';
+                optionParcela.disabled = true;
+                parcelaElegida.appendChild(optionParcela);
+                parcelaElegida.disabled = true
+                return;
+        }
+
+
+        select.disabled = false; //si estaba desactivado lo activa
+        parcelaElegida.disabled = false;
+
+        //lógica para propiedades dinámicas
+        const propiedadId = 'id';
+        const propiedadNombre = 'nombre'; // Ajusta si usas diferente nombre
+
+        seccionesPorTipo[tipo].forEach(seccion => {
+            const option = document.createElement('option');
+            option.value = seccion[propiedadId]; // Acceso dinámico
+            option.textContent = seccion[propiedadNombre];
+            select.appendChild(option);
+        });
+
+        //logica para cambiar el select de parcela
+        document.getElementById('seccion').addEventListener('change', function () {
+             //console.log("Esta cambiando de seccion");
+             const seccionId = parseInt(this.value); // el valor del select seccion, convertido a entero
+             selecParcelaElegida.innerHTML = '<option value="">Elija la parcela</option>'; // limpiar
+
+             let parcelasFiltradas = parcelasPorSeccion[tipo].filter(p => p.seccion === seccionId); //filtra por la seccion seleccionada
+
+             const tipoEstado = document.getElementById("estado");
+             let estadoSeleccionado = tipoEstado.value;
+             if(estadoSeleccionado == "1"){
+                 console.log('cuerpo completo')
+                 parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos === 0);
+             }
+             //console.log("estado: " + estadoSeleccionado);
+
+             //console.log(this.value);
+
+            parcelasFiltradas.forEach(parcela => { //recorre todos las parcelas
+                const option = document.createElement('option');
+                option.value = parcela.id;
+                option.textContent = parcela.ubicacion;
+                selecParcelaElegida.appendChild(option);
+            });
+
+        });
+    }
+
+    // Event listeners para los radios
+    document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            actualizarSecciones(e.target.value);
+        });
+    });
+
+    // Cargar opciones iniciales (nicho por defecto)
+    document.addEventListener('DOMContentLoaded', () => {
+        actualizarSecciones('nicho');
+    });
+</script>

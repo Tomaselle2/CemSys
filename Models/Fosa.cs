@@ -17,11 +17,11 @@ public partial class Fosa
 
     public int? NroCuenta { get; set; }
 
+    public virtual ICollection<ContratoConcesion> ContratoConcesions { get; set; } = new List<ContratoConcesion>();
+
     public virtual ICollection<FosasDifunto> FosasDifuntos { get; set; } = new List<FosasDifunto>();
 
     public virtual NumeroCuentum? NroCuentaNavigation { get; set; }
-
-    public virtual ICollection<PersonasFosa> PersonasFosas { get; set; } = new List<PersonasFosa>();
 
     public virtual SeccionesFosa SeccionNavigation { get; set; } = null!;
 }

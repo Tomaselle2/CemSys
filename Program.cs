@@ -2,6 +2,7 @@ using CemSys.Business;
 using CemSys.Data;
 using CemSys.Data.NichosDB;
 using CemSys.Interface;
+using CemSys.Interface.Difuntos;
 using CemSys.Interface.Fosas;
 using CemSys.Interface.Nichos;
 using CemSys.Interface.SeccionesNichos;
@@ -27,6 +28,7 @@ builder.Services.AddScoped(typeof(IRepositoryBusiness<>), typeof(ServiceGenericB
 builder.Services.AddScoped<ISeccionesNichosBusiness, SeccionesNichosBusiness>();
 builder.Services.AddScoped<INichosBusiness, NichosBusiness>();
 builder.Services.AddScoped<IFosasBusiness, FosaBusiness>();
+builder.Services.AddScoped<IDifuntosBusiness, DifuntosBusiness>();
 
 //para el manejo de sesiones
 builder.Services.AddSession();

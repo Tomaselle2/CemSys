@@ -27,9 +27,5 @@ public partial class Persona
 
     public virtual TipoCategoriaPersona CategoriaPersonaNavigation { get; set; } = null!;
 
-    public virtual ICollection<PersonasFosa> PersonasFosas { get; set; } = new List<PersonasFosa>();
-
-    public virtual ICollection<PersonasNicho> PersonasNichos { get; set; } = new List<PersonasNicho>();
-
-    public virtual ICollection<PersonasPanteone> PersonasPanteones { get; set; } = new List<PersonasPanteone>();
+    public virtual ICollection<ContratoConcesion> Contratos { get; set; } = new List<ContratoConcesion>();
 }

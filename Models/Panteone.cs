@@ -13,9 +13,9 @@ public partial class Panteone
 
     public int? NroCuenta { get; set; }
 
+    public virtual ICollection<ContratoConcesion> ContratoConcesions { get; set; } = new List<ContratoConcesion>();
+
     public virtual NumeroCuentum? NroCuentaNavigation { get; set; }
 
     public virtual ICollection<PanteonDifunto> PanteonDifuntos { get; set; } = new List<PanteonDifunto>();
-
-    public virtual ICollection<PersonasPanteone> PersonasPanteones { get; set; } = new List<PersonasPanteone>();
 }
