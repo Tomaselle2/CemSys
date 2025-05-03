@@ -207,7 +207,11 @@ RECONFIGURE
 go
 create table cuotas (idCuota INT PRIMARY KEY IDENTITY(1,1), cuota int);
 go
+insert into cuotas(cuota) values (1), (2), (3), (4), (5), (6);
+go
 create table CantidadAniosConcesion (idCantidadAnios INT PRIMARY KEY IDENTITY(1,1), cantidad int);
+go
+insert into CantidadAniosConcesion (cantidad) values (1), (5), (10), (15), (25);
 go
 create table ContratoConcesion(idContrato INT PRIMARY KEY IDENTITY(1,1), precio decimal(18,2) not null, creacionContrato date not null, vencimiento date not null, cantidadAniosId int not null,
 cantidadCuotas int not null, nichoId int, fosaId int, panteonId int,
