@@ -109,9 +109,14 @@ namespace CemSys.Controllers
                     int idNichoDifuntoGenerado = 0;
                     try
                     {
-                        idDifuntoGenerado = await _difuntosBusiness.RegistrarEnNicho(nichoDifuntoModelo);
+                        //registra en la tabla intermedia
+                        idNichoDifuntoGenerado = await _difuntosBusiness.RegistrarEnNicho(nichoDifuntoModelo);
+
+                        //busco el nicho para ingrementar el nro de difuntos
                         Nicho nichoseleccionado = await _difuntosBusiness.ConsultarNicho(parcelaElegida);
                         nichoseleccionado.Difuntos = nichoseleccionado.Difuntos + 1;
+
+                        //registro el incremento
                         int resultadoAgregarNicho = 0;
                         resultadoAgregarNicho = await _difuntosBusiness.IncrementarDifuntoEnNicho(nichoseleccionado);
                     }
@@ -124,6 +129,28 @@ namespace CemSys.Controllers
 
                     break;
                 case "fosa":
+                    FosasDifunto fosasDifunto = new FosasDifunto();
+                    fosasDifunto.DifuntoId = idDifuntoGenerado;
+                    fosasDifunto.FosaId = parcelaElegida;
+                    int fosaDifuntoGenerado = 0;
+
+                    try
+                    {
+                        //registra en la tabla intermedia
+                        fosaDifuntoGenerado = await _difuntosBusiness.RegistrarEnFosa(fosasDifunto);
+
+                        //busco la fosa para ingrementar el nro de difuntos
+                        Fosa fosaseleccionada = await _difuntosBusiness.ConsultarFosa(parcelaElegida);
+                        fosaseleccionada.Difuntos = fosaseleccionada.Difuntos + 1;
+
+                        //registro el incremento
+                        int resultadoAgregarFosa = 0;
+                        resultadoAgregarFosa = await _difuntosBusiness.IncrementarDifuntoEnFosa(fosaseleccionada);
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewData["RegistrarMensaje"] = ex.Message;
+                    }
                     break;
                 case "panteon":
                     break;

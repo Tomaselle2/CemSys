@@ -15,11 +15,13 @@ namespace CemSys.Business
         private readonly IRepositoryDB<Fosa> _fosaRepository;
         private readonly IRepositoryDB<ActaDefuncion> _actaRepository;
         private readonly IRepositoryDB<NichosDifunto> _nichoDifuntoRepository;
+        private readonly IRepositoryDB<FosasDifunto> _fosaDifuntoRepository;
+
 
 
         public DifuntosBusiness(IRepositoryDB<Difunto> difuntosbd, IRepositoryDB<EstadoDifunto> estadodifuntoRepository, IRepositoryDB<SeccionesNicho> seccionesNichosRepository, 
             IRepositoryDB<SeccionesFosa> seccionesFosasRepository, IRepositoryDB<Nicho> nichoRepository, IRepositoryDB<Fosa> fosaRepository, IRepositoryDB<ActaDefuncion> actaRepository,
-            IRepositoryDB<NichosDifunto> nichoDifuntoRepository)
+            IRepositoryDB<NichosDifunto> nichoDifuntoRepository, IRepositoryDB<FosasDifunto> fosaDifuntoRepository)
         {
             _difuntosRepository = difuntosbd;
             _estadodifuntoRepository = estadodifuntoRepository;
@@ -29,6 +31,19 @@ namespace CemSys.Business
             _fosaRepository = fosaRepository;
             _actaRepository = actaRepository;
             _nichoDifuntoRepository = nichoDifuntoRepository;
+            _fosaDifuntoRepository = fosaDifuntoRepository;
+        }
+
+        public async Task<Fosa> ConsultarFosa(int id)
+        {
+            try
+            {
+                return await _fosaRepository.Consultar(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<Nicho> ConsultarNicho(int id)
@@ -144,11 +159,11 @@ namespace CemSys.Business
             }
         }
 
-        public async Task<int> IncrementarDifuntoEnFosa(Nicho modelo)
+        public async Task<int> IncrementarDifuntoEnFosa(Fosa modelo)
         {
             try
             {
-                return await _nichoRepository.Modificar(modelo);
+                return await _fosaRepository.Modificar(modelo);
             }
             catch (Exception)
             {
@@ -168,7 +183,7 @@ namespace CemSys.Business
             }
         }
 
-        public Task<int> IncrementarDifuntoEnPanteon(Nicho modelo)
+        public Task<int> IncrementarDifuntoEnPanteon(Panteone modelo)
         {
             throw new NotImplementedException();
         }
@@ -191,9 +206,13 @@ namespace CemSys.Business
             catch (Exception) { throw; }
         }
 
-        public Task<int> RegistrarEnFosa(FosasDifunto modelo)
+        public async Task<int> RegistrarEnFosa(FosasDifunto modelo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _fosaDifuntoRepository.Registrar(modelo);
+            }
+            catch (Exception) { throw; }
         }
 
         public async Task<int> RegistrarEnNicho(NichosDifunto modelo)

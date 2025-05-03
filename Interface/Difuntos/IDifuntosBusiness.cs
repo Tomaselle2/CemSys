@@ -21,10 +21,11 @@ namespace CemSys.Interface.Difuntos
         Task<int> RegistrarEnPanteon(PanteonDifunto modelo);
 
         Task<int> IncrementarDifuntoEnNicho(Nicho modelo);
-        Task<int> IncrementarDifuntoEnFosa(Nicho modelo);
-        Task<int> IncrementarDifuntoEnPanteon(Nicho modelo);
+        Task<int> IncrementarDifuntoEnFosa(Fosa modelo);
+        Task<int> IncrementarDifuntoEnPanteon(Panteone modelo);
 
         Task<Nicho> ConsultarNicho(int id);
+        Task<Fosa> ConsultarFosa(int id);
 
 
     }

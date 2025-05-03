@@ -5,7 +5,7 @@
 }
 <div class="main-content">
     <h1>Registrar difunto</h1>
-    <form action="Registrar" method="post">
+    <form action="Registrar" method="post" id="formularioRegistrar">
         
         <div>
             <label for="dni">DNI</label>
@@ -104,10 +104,31 @@
                 </div>
             </fieldset>
         </div>
-        <input type="submit" name="name" value="Registrar" />
+        <input type="button" name="name" value="Registrar" onclick="confirmarEnvio()"/>
     </form>
 </div>
 
+@* Modal de confirmacion*@
+<div class="modal" tabindex="-1" id="modalConfirmacion" style="display:none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registrar difunto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Desea registrar el difunto <strong id="apellidoModal"></strong> <strong id="nombreModal"></strong> ?</p>
+                <p>En la ubicación <strong id="seccionElegidaModal"></strong> <strong id="parcelaElegidaModal"></strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModal()">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="enviarFormulario()">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* logica con js*@
 <script>
     // Datos iniciales (debes poblarlos desde tu modelo)
     const seccionesPorTipo = {
@@ -220,4 +241,53 @@
     document.addEventListener('DOMContentLoaded', () => {
         actualizarSecciones('nicho');
     });
+
+
+    //logica de modal
+    function confirmarEnvio() {
+        const form = document.getElementById("formularioRegistrar");
+
+        if (form.checkValidity()) {
+            const modal = new bootstrap.Modal(document.getElementById("modalConfirmacion"));
+
+            const nombre = document.getElementById("nombreDifunto").value;
+            const apellido = document.getElementById("apellidoDifunto").value;
+
+            const selectSeccion = document.getElementById("seccion");
+            const textoSeccion = selectSeccion.options[selectSeccion.selectedIndex].text;
+
+            const selectParcela = document.getElementById("parcelaElegida");
+            const textoParcela = selectParcela.options[selectParcela.selectedIndex].text;
+
+            //se inserta en el modal
+            document.getElementById("nombreModal").textContent = nombre;
+            document.getElementById("apellidoModal").textContent = apellido;
+            document.getElementById("seccionElegidaModal").textContent = textoSeccion;
+            document.getElementById("parcelaElegidaModal").textContent = textoParcela;
+
+
+
+
+
+
+            modal.show();
+        } else {
+            form.reportValidity();
+        }
+    }
+
+    function cerrarModal() {
+        document.getElementById("modalConfirmacion").style.display = "none";
+    }
+
+    function enviarFormulario() {
+        const form = document.getElementById("formularioRegistrar");
+
+        if (form.checkValidity()) {
+            form.submit(); // Sólo se envía si el formulario es válido
+        } else {
+            form.reportValidity(); // Muestra los mensajes de error del navegador
+            cerrarModal(); // Opcional: cerrá el modal si querés forzar al usuario a revisar
+        }
+    }
 </script>
