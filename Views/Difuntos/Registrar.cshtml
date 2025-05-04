@@ -9,7 +9,7 @@
         
         <div>
             <label for="dni">DNI</label>
-            <input class="form-control-sm" type="text" name="dni" id="dni" value="" required maxlength="8" min="7" pattern="[0-9]+" />
+            <input class="form-control-sm" type="text" name="dni" id="dni" value="" required maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
         </div>
         <div>
             <label for="nombreDifunto">Nombre</label>
@@ -33,7 +33,7 @@
         </div>
         <div>
             <label for="estado">Estado</label>
-            <select class="form-select-sm" id="estado" name="estadoId">
+            <select class="form-select-sm" id="estado" name="estadoId" required>
                  <option value="">--Elija una opción</option>
                 @if (Model.ListaEstadoDifunto.Count == 0)
                 {
@@ -160,6 +160,10 @@
         dniText.addEventListener("blur", (e) => {
             let dniIngresado = e.target.value.trim();
 
+            if(dniIngresado.length < 7 ){
+                alert("El formato del DNI es incorrecto");
+                e.target.value = "";
+            }
             const existeDNI = listaDNIdifuntos.some(difunto => difunto.dni === dniIngresado);
 
             if (existeDNI) {
@@ -212,15 +216,23 @@
 
              const tipoEstado = document.getElementById("estado");
              let estadoSeleccionado = tipoEstado.value;
-             if(estadoSeleccionado == "1"){
-                 console.log('cuerpo completo')
+
+             //valido si es nicho para mostrar los nichos disponibles
+            if(estadoSeleccionado == "1" && tipo == "nicho"){ //si es cuerpo completo
+                console.log('cuerpo completo');
                  parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos === 0);
-             }
-             //console.log("estado: " + estadoSeleccionado);
+            } else if (estadoSeleccionado != "1" && tipo == "nicho") {
+                parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 5);//si tiene menos o igual a 5 difuntos
+            }
 
-             //console.log(this.value);
-
-            parcelasFiltradas.forEach(parcela => { //recorre todos las parcelas
+            if (estadoSeleccionado == "1" && tipo == "fosa") {
+                console.log('cuerpo completo');
+                parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 3);
+            } else if (estadoSeleccionado != "1" && tipo == "fosa") {
+                parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 5);//si tiene menos o igual a 5 difuntos
+            }
+         
+            parcelasFiltradas.forEach(parcela => { //recorre todos las parcelas y las coloca en el select
                 const option = document.createElement('option');
                 option.value = parcela.id;
                 option.textContent = parcela.ubicacion;
@@ -233,6 +245,11 @@
     // Event listeners para los radios
     document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
+           const estadoSelect = document.getElementById('estado');
+            estadoSelect.addEventListener('change', (est) => {
+                actualizarSecciones(e.target.value);
+                console.log("Cambio de select estado");
+            });
             actualizarSecciones(e.target.value);
         });
     });
@@ -264,12 +281,6 @@
             document.getElementById("apellidoModal").textContent = apellido;
             document.getElementById("seccionElegidaModal").textContent = textoSeccion;
             document.getElementById("parcelaElegidaModal").textContent = textoParcela;
-
-
-
-
-
-
             modal.show();
         } else {
             form.reportValidity();
@@ -290,4 +301,5 @@
             cerrarModal(); // Opcional: cerrá el modal si querés forzar al usuario a revisar
         }
     }
+    //fin logica modal
 </script>
