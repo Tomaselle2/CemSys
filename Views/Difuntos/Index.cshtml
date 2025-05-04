@@ -1,41 +1,57 @@
 ﻿<div class="main-content">
-    <form asp-action="Registrar" method="get">
-        <input class="btn btn-primary" type="submit" value="Agregar difunto" />
+
+    <!-- Botón Agregar -->
+    <form asp-action="Registrar" method="get" class="mb-4 text-center">
+        <input class="btn-custom" type="submit" value="Agregar difunto" />
     </form>
-    @*Buscador*@
-    <div>
-        <form action="/" method="post">
-           <fieldset>
-               <legend>Difunto</legend>
+
+    <!-- Contenedores de Difunto, Titular y Cuenta -->
+    <div class="container-difunto-titular d-flex flex-wrap justify-content-center gap-4">
+
+        <!-- Difunto -->
+        <div class="container-difunto flex-fill">
+            <fieldset>
+                <legend>Difunto</legend>
                 <div>
                     <label for="nombreDifunto">Nombre</label>
-                    <input class="form-control-sm" type="text" name="" id="nombreDifunto" value="" />
+                    <input class="form-control-sm" type="text" id="nombreDifunto" />
                 </div>
                 <div>
                     <label for="apellidoDifunto">Apellido</label>
-                    <input class="form-control-sm" type="text" name="" id="apellidoDifunto" value="" />
+                    <input class="form-control-sm" type="text" id="apellidoDifunto" />
                 </div>
-           </fieldset>
+            </fieldset>
+        </div>
+
+        <!-- Titular -->
+        <div class="container-titular flex-fill">
             <fieldset>
                 <legend>Titular</legend>
                 <div>
                     <label for="nombreTitular">Nombre</label>
-                    <input class="form-control-sm" type="text" name="" id="nombreTitular" value="" />
+                    <input class="form-control-sm" type="text" id="nombreTitular" />
                 </div>
                 <div>
                     <label for="apellidoTitular">Apellido</label>
-                    <input class="form-control-sm" type="text" name="" id="apellidoTitular" value="" />
+                    <input class="form-control-sm" type="text" id="apellidoTitular" />
                 </div>
             </fieldset>
-            <div>
-                <label for="nroCuenta">Cuenta</label>
-                <input class="form-control-sm" type="number" value="" id="nroCuenta" />
-            </div>
-        </form>
-        
+        </div>
+
+        <!-- Cuenta -->
+        <div class="container-cuenta flex-fill">
+            <fieldset>
+                <legend>Cuenta</legend>
+                <div>
+                    <label for="nroCuenta">Número de Cuenta</label>
+                    <input class="form-control-sm" type="number" id="nroCuenta" />
+                </div>
+            </fieldset>
+        </div>
+
     </div>
 
-    @*Tabla*@
+    <!-- Tabla de resultados -->
     <div>
         <div class="card shadow-sm">
             <div class="card-body p-0">
@@ -50,13 +66,19 @@
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tr>
-                        <td>
-
-                        </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
-         </div>
+        </div>
     </div>
+
 </div>
