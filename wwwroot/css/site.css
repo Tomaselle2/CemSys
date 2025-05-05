@@ -192,6 +192,7 @@ body {
     margin-bottom: 20px;
     color: #000;
     background-color: #5DC1B9;
+    box-shadow: 1px 2px 5px 1px #7c7c7c
 }
 
 /* Input más chico que el contenedor */

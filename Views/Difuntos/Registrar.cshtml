@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-4 mb-2">
                     <label for="dni">DNI</label>
-                    <input class="form-control form-control-sm input-pequeno" type="text" name="dni" id="dni" required maxlength="8" minlength="8" pattern="[0-9]+" />
+                    <input class="form-control form-control-sm input-pequeno" type="text" name="dni" id="dni" required maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                 </div>
                 <div class="col-md-4 mb-2">
                     <label for="nombreDifunto">Nombre</label>
@@ -175,7 +175,7 @@
         dniText.addEventListener("blur", (e) => {
             let dniIngresado = e.target.value.trim();
 
-            if(dniIngresado.length < 7 ){
+            if(dniIngresado.length <= 7 ){
                 alert("El formato del DNI es incorrecto");
                 e.target.value = "";
             }
