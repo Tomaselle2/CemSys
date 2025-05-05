@@ -176,6 +176,61 @@ CREATE TABLE Usuarios (
     tipoUsuario INT NOT NULL,
     FOREIGN KEY (tipoUsuario) REFERENCES TipoUsuario(idTipoUsuario)
 );
-
+go
 ALTER TABLE TipoNicho ADD porDefecto BIT NOT NULL DEFAULT 0;
-select * from TipoNicho
+go
+insert into TipoUsuario(tipoUsuario) values ('Empleado'), ('Encargado');
+go
+insert into TipoNicho(tipoNicho, porDefecto) values ('Féretro', 0), ('Urnario', 0), ('Especial', 0);
+go
+insert into TipoCategoriaPersona(tipo) values ('Titular'), ('Familiar');
+go
+insert into TipoNumeracionParcela(tipoNumeracion) values ('Nueva (nichos repetidos)'), ('Antigua (sin repetir)');
+go
+insert into EstadoDifunto(estado) values ('Cuerpo completo'), ('Reducido'), ('Cremado');
+go
+--select * from EstadoDifunto;
+--insert into Usuarios(correo, nombre, clave, tipoUsuario) values('tomaselle2@gmail.com', 'Tomas Carreras', '12345', 2);
+
+--a tener en cuenta, son los id hardcodeados, revisar en controllers Nicho, y en vista _layout 
+--select * from TipoNumeracionParcela
+--select * from Usuarios
+DROP TABLE PersonasNichos;
+go
+DROP TABLE PersonasFosas;
+go
+DROP TABLE PersonasPanteones;
+go
+EXEC sp_configure filestream_access_level, 2--para el fileStream
+go
+RECONFIGURE
+go
+create table cuotas (idCuota INT PRIMARY KEY IDENTITY(1,1), cuota int);
+go
+insert into cuotas(cuota) values (1), (2), (3), (4), (5), (6);
+go
+create table CantidadAniosConcesion (idCantidadAnios INT PRIMARY KEY IDENTITY(1,1), cantidad int);
+go
+insert into CantidadAniosConcesion (cantidad) values (1), (5), (10), (15), (25);
+go
+create table ContratoConcesion(idContrato INT PRIMARY KEY IDENTITY(1,1), precio decimal(18,2) not null, creacionContrato date not null, vencimiento date not null, cantidadAniosId int not null,
+cantidadCuotas int not null, nichoId int, fosaId int, panteonId int,
+foreign key (cantidadAniosId) references CantidadAniosConcesion(idCantidadAnios),
+foreign key (cantidadCuotas) references cuotas(idCuota),
+foreign key (nichoId) references Nicho(idNicho),
+foreign key (fosaId) references Fosas(idFosa),
+foreign key (panteonId) references Panteones(idPanteon));
+go
+CREATE TABLE PersonaContrato (personaId int, contratoId int, 
+	Primary key (personaId, contratoId),
+	foreign key (personaId) references Personas(idPersona),
+	foreign key (contratoId) references ContratoConcesion(idContrato));
+go
+CREATE TABLE ContratoArchivo (
+    contratoId INT PRIMARY KEY,
+    nombreArchivo NVARCHAR(255),
+    contenido VARBINARY(MAX) FILESTREAM NULL,
+    rowGuid UNIQUEIDENTIFIER NOT NULL ROWGUIDCOL UNIQUE,
+	extension char(4),
+    FOREIGN KEY (ContratoId) REFERENCES ContratoConcesion(idContrato)
+);

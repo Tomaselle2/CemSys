@@ -83,7 +83,18 @@ namespace CemSys.Data
             try
             {
                 await _dbSet.AddAsync(modelo);
-                return await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+                // Buscar la propiedad que comience con "id"
+                var idProp = typeof(T).GetProperties().FirstOrDefault(p => p.Name.StartsWith("id", StringComparison.OrdinalIgnoreCase) && 
+                                      (p.PropertyType == typeof(int) || p.PropertyType == typeof(long)));
+
+                if (idProp != null)
+                {
+                    var value = idProp.GetValue(modelo);
+                    return Convert.ToInt32(value);
+                }
+
+                throw new InvalidOperationException("No se encontró una propiedad de ID válida.");
 
             }
             catch (Exception)

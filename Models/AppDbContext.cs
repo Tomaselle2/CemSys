@@ -17,6 +17,14 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<ActaDefuncion> ActaDefuncions { get; set; }
 
+    public virtual DbSet<CantidadAniosConcesion> CantidadAniosConcesions { get; set; }
+
+    public virtual DbSet<ContratoArchivo> ContratoArchivos { get; set; }
+
+    public virtual DbSet<ContratoConcesion> ContratoConcesions { get; set; }
+
+    public virtual DbSet<Cuota> Cuotas { get; set; }
+
     public virtual DbSet<Difunto> Difuntos { get; set; }
 
     public virtual DbSet<EstadoDifunto> EstadoDifuntos { get; set; }
@@ -36,12 +44,6 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Panteone> Panteones { get; set; }
 
     public virtual DbSet<Persona> Personas { get; set; }
-
-    public virtual DbSet<PersonasFosa> PersonasFosas { get; set; }
-
-    public virtual DbSet<PersonasNicho> PersonasNichos { get; set; }
-
-    public virtual DbSet<PersonasPanteone> PersonasPanteones { get; set; }
 
     public virtual DbSet<SeccionesFosa> SeccionesFosas { get; set; }
 
@@ -74,6 +76,95 @@ public partial class AppDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("serie");
             entity.Property(e => e.Tomo).HasColumnName("tomo");
+        });
+
+        modelBuilder.Entity<CantidadAniosConcesion>(entity =>
+        {
+            entity.HasKey(e => e.IdCantidadAnios).HasName("PK__Cantidad__3B63B3F266EB6518");
+
+            entity.ToTable("CantidadAniosConcesion");
+
+            entity.Property(e => e.IdCantidadAnios).HasColumnName("idCantidadAnios");
+            entity.Property(e => e.Cantidad).HasColumnName("cantidad");
+        });
+
+        modelBuilder.Entity<ContratoArchivo>(entity =>
+        {
+            entity.HasKey(e => e.ContratoId).HasName("PK__Contrato__F7E1964EEAFED8A5");
+
+            entity.ToTable("ContratoArchivo");
+
+            entity.HasIndex(e => e.RowGuid, "UQ__Contrato__B03806EFE4844DAB").IsUnique();
+
+            entity.Property(e => e.ContratoId)
+                .ValueGeneratedNever()
+                .HasColumnName("contratoId");
+            entity.Property(e => e.Contenido).HasColumnName("contenido");
+            entity.Property(e => e.Extension)
+                .HasMaxLength(4)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("extension");
+            entity.Property(e => e.NombreArchivo)
+                .HasMaxLength(255)
+                .HasColumnName("nombreArchivo");
+            entity.Property(e => e.RowGuid).HasColumnName("rowGuid");
+
+            entity.HasOne(d => d.Contrato).WithOne(p => p.ContratoArchivo)
+                .HasForeignKey<ContratoArchivo>(d => d.ContratoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ContratoA__contr__123EB7A3");
+        });
+
+        modelBuilder.Entity<ContratoConcesion>(entity =>
+        {
+            entity.HasKey(e => e.IdContrato).HasName("PK__Contrato__91431FE1031AE36B");
+
+            entity.ToTable("ContratoConcesion");
+
+            entity.Property(e => e.IdContrato).HasColumnName("idContrato");
+            entity.Property(e => e.CantidadAniosId).HasColumnName("cantidadAniosId");
+            entity.Property(e => e.CantidadCuotas).HasColumnName("cantidadCuotas");
+            entity.Property(e => e.CreacionContrato).HasColumnName("creacionContrato");
+            entity.Property(e => e.FosaId).HasColumnName("fosaId");
+            entity.Property(e => e.NichoId).HasColumnName("nichoId");
+            entity.Property(e => e.PanteonId).HasColumnName("panteonId");
+            entity.Property(e => e.Precio)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("precio");
+            entity.Property(e => e.Vencimiento).HasColumnName("vencimiento");
+
+            entity.HasOne(d => d.CantidadAnios).WithMany(p => p.ContratoConcesions)
+                .HasForeignKey(d => d.CantidadAniosId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ContratoC__canti__06CD04F7");
+
+            entity.HasOne(d => d.CantidadCuotasNavigation).WithMany(p => p.ContratoConcesions)
+                .HasForeignKey(d => d.CantidadCuotas)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ContratoC__canti__07C12930");
+
+            entity.HasOne(d => d.Fosa).WithMany(p => p.ContratoConcesions)
+                .HasForeignKey(d => d.FosaId)
+                .HasConstraintName("FK__ContratoC__fosaI__09A971A2");
+
+            entity.HasOne(d => d.Nicho).WithMany(p => p.ContratoConcesions)
+                .HasForeignKey(d => d.NichoId)
+                .HasConstraintName("FK__ContratoC__nicho__08B54D69");
+
+            entity.HasOne(d => d.Panteon).WithMany(p => p.ContratoConcesions)
+                .HasForeignKey(d => d.PanteonId)
+                .HasConstraintName("FK__ContratoC__pante__0A9D95DB");
+        });
+
+        modelBuilder.Entity<Cuota>(entity =>
+        {
+            entity.HasKey(e => e.IdCuota).HasName("PK__cuotas__9BE53C186B0B0240");
+
+            entity.ToTable("cuotas");
+
+            entity.Property(e => e.IdCuota).HasColumnName("idCuota");
+            entity.Property(e => e.Cuota1).HasColumnName("cuota");
         });
 
         modelBuilder.Entity<Difunto>(entity =>
@@ -296,63 +387,25 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.CategoriaPersona)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Personas__catego__398D8EEE");
-        });
 
-        modelBuilder.Entity<PersonasFosa>(entity =>
-        {
-            entity.HasKey(e => e.IdPersonaFosas).HasName("PK__Personas__9D39D5EA8A48BA76");
-
-            entity.Property(e => e.IdPersonaFosas).HasColumnName("idPersonaFosas");
-            entity.Property(e => e.FosaId).HasColumnName("fosaId");
-            entity.Property(e => e.PersonalId).HasColumnName("personalId");
-
-            entity.HasOne(d => d.Fosa).WithMany(p => p.PersonasFosas)
-                .HasForeignKey(d => d.FosaId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasF__fosaI__59FA5E80");
-
-            entity.HasOne(d => d.Personal).WithMany(p => p.PersonasFosas)
-                .HasForeignKey(d => d.PersonalId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasF__perso__59063A47");
-        });
-
-        modelBuilder.Entity<PersonasNicho>(entity =>
-        {
-            entity.HasKey(e => e.IdPersonaNicho).HasName("PK__Personas__AE19DC27CC22D005");
-
-            entity.Property(e => e.IdPersonaNicho).HasColumnName("idPersonaNicho");
-            entity.Property(e => e.NichoId).HasColumnName("nichoId");
-            entity.Property(e => e.PersonalId).HasColumnName("personalId");
-
-            entity.HasOne(d => d.Nicho).WithMany(p => p.PersonasNichos)
-                .HasForeignKey(d => d.NichoId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasN__nicho__5629CD9C");
-
-            entity.HasOne(d => d.Personal).WithMany(p => p.PersonasNichos)
-                .HasForeignKey(d => d.PersonalId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasN__perso__5535A963");
-        });
-
-        modelBuilder.Entity<PersonasPanteone>(entity =>
-        {
-            entity.HasKey(e => e.IdPersonaFosas).HasName("PK__Personas__9D39D5EAAE063F17");
-
-            entity.Property(e => e.IdPersonaFosas).HasColumnName("idPersonaFosas");
-            entity.Property(e => e.PanteonSeId).HasColumnName("panteonSeId");
-            entity.Property(e => e.PersonalId).HasColumnName("personalId");
-
-            entity.HasOne(d => d.PanteonSe).WithMany(p => p.PersonasPanteones)
-                .HasForeignKey(d => d.PanteonSeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasP__pante__5DCAEF64");
-
-            entity.HasOne(d => d.Personal).WithMany(p => p.PersonasPanteones)
-                .HasForeignKey(d => d.PersonalId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PersonasP__perso__5CD6CB2B");
+            entity.HasMany(d => d.Contratos).WithMany(p => p.Personas)
+                .UsingEntity<Dictionary<string, object>>(
+                    "PersonaContrato",
+                    r => r.HasOne<ContratoConcesion>().WithMany()
+                        .HasForeignKey("ContratoId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__PersonaCo__contr__0E6E26BF"),
+                    l => l.HasOne<Persona>().WithMany()
+                        .HasForeignKey("PersonaId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__PersonaCo__perso__0D7A0286"),
+                    j =>
+                    {
+                        j.HasKey("PersonaId", "ContratoId").HasName("PK__PersonaC__ABC941B1322518FF");
+                        j.ToTable("PersonaContrato");
+                        j.IndexerProperty<int>("PersonaId").HasColumnName("personaId");
+                        j.IndexerProperty<int>("ContratoId").HasColumnName("contratoId");
+                    });
         });
 
         modelBuilder.Entity<SeccionesFosa>(entity =>

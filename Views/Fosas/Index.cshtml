@@ -10,47 +10,51 @@
     }
     else
     {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Cuenta</th>
-                    <th>fosa</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.ABMRepositoryVM != null)
-                {
-                    @foreach (var opc in Model.ABMRepositoryVM.Lista)
-                    {
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            @if (opc.NroCuenta == null)
-                            {
-                                <td>sin asignar</td>
-                            }
-                            else
-                            {
-                                <td>@opc.NroCuenta</td>
-                            }
-
-                            <td>@opc.NroFosa</td>
-                            @if (opc.Difuntos == 0)
-                            {
-                                <td>Desocupado</td>
-                            }
-                            else
-                            {
-                                <td>Ocupado</td>
-                            }
-
+                            <th>Cuenta</th>
+                            <th>fosa</th>
+                            <th>Estado</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.ABMRepositoryVM != null)
+                        {
+                            @foreach (var opc in Model.ABMRepositoryVM.Lista)
+                            {
+                                <tr>
+                                    @if (opc.NroCuenta == null)
+                                    {
+                                        <td>sin asignar</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@opc.NroCuenta</td>
+                                    }
+
+                                    <td>@opc.NroFosa</td>
+                                    @if (opc.Difuntos == 0)
+                                    {
+                                        <td>Desocupado</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Ocupado</td>
+                                    }
+
+                                </tr>
 
 
-                    }
-                }
+                            }
+                        }
 
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <p>@ViewData["MensajeEmitir"]</p>
     }
 

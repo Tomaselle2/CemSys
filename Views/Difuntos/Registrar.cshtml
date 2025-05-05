@@ -1,0 +1,320 @@
+﻿@using CemSys.Models.ViewModel
+@model VMDifuntos
+@{
+    string fecha = Model.fechaActual.ToString("yyyy-MM-dd");
+}
+<div class="registro-difunto-container">
+    <h2>Registrar Difunto</h2>
+    <form action="Registrar" method="post" id="formularioRegistrar">
+
+        <!-- Contenedor 1: Datos Personales -->
+        <div class="subcontenedor">
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <label for="dni">DNI</label>
+                    <input class="form-control form-control-sm input-pequeno" type="text" name="dni" id="dni" required maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label for="nombreDifunto">Nombre</label>
+                    <input class="form-control form-control-sm input-pequeno" type="text" name="nombre" id="nombreDifunto" required maxlength="60" minlength="2" />
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label for="apellidoDifunto">Apellido</label>
+                    <input class="form-control form-control-sm input-pequeno" type="text" name="apellido" id="apellidoDifunto" required maxlength="60" minlength="2" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <label for="fechaDefuncion">Defunción</label>
+                    <input class="form-control form-control-sm input-pequeno" type="date" name="defuncionFecha" id="fechaDefuncion" max="@fecha" required />
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label for="fechaIngreso">Ingreso</label>
+                    <input class="form-control form-control-sm input-pequeno" type="date" name="ingresoFecha" id="fechaIngreso" max="@fecha" required />
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label for="fechaNacimiento">Nacimiento</label>
+                    <input class="form-control form-control-sm input-pequeno" type="date" name="nacimientoFecha" id="fechaNacimiento" max="@fecha" required />
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="estado">Estado</label>
+                <select class="form-select form-select-sm select-estado" id="estado" name="estadoId" required>
+                    <option value="">--Elija una opción</option>
+                    @foreach (var opc in Model.ListaEstadoDifunto)
+                    {
+                        <option value="@opc.IdEstadoDifunto">@opc.Estado</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <!-- Contenedor 2: Acta -->
+        <div class="subcontenedor">
+            <fieldset>
+                <legend class="h6">Datos Acta Defunción</legend>
+                <div class="row">
+                    <div class="col-md-2 mb-2">
+                        <label for="acta">Acta</label>
+                        <input type="number" class="form-control form-control-sm input-pequeno" name="acta" id="acta" min="1" />
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <label for="tomo">Tomo</label>
+                        <input type="number" class="form-control form-control-sm input-pequeno" name="tomo" id="tomo" min="1" />
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <label for="folio">Folio</label>
+                        <input type="number" class="form-control form-control-sm input-pequeno" name="folio" id="folio" min="1" />
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <label for="serie">Serie</label>
+                        <input type="text" class="form-control form-control-sm input-pequeno" name="serie" id="serie" maxlength="4" />
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <label for="age">Año</label>
+                        <input type="number" class="form-control form-control-sm input-pequeno" name="age" id="age" min="1927" max="@Model.fechaActual.Year" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Contenedor 3: Parcela -->
+        <div class="subcontenedor">
+            <fieldset>
+                <legend class="h6">Tipo de Parcela</legend>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="tipoParcela" value="nicho" id="nicho" checked>
+                    <label class="form-check-label" for="nicho">Nicho</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="tipoParcela" value="fosa" id="fosa">
+                    <label class="form-check-label" for="fosa">Fosa</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="tipoParcela" value="panteon" id="panteon">
+                    <label class="form-check-label" for="panteon">Panteón</label>
+                </div>
+            </fieldset>
+
+            <fieldset class="mt-3">
+                <legend class="h6">Ubicación</legend>
+                <div class="mb-2">
+                    <label for="seccion">Sección</label>
+                    <select class="form-select form-select-sm select-estandar" required id="seccion" name="seccionElegida">
+                        <option value="">Elija una opción</option>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label for="parcelaElegida">Parcela</label>
+                    <select class="form-select form-select-sm select-estandar" id="parcelaElegida" name="parcelaElegida" required>
+                        <option value="">Elija la parcela</option>
+                    </select>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Botón al final del contenedor principal -->
+        <div class="text-center mt-3">
+            <input type="button" value="Registrar" onclick="confirmarEnvio()" class="btn btn-custom" />
+        </div>
+    </form>
+</div>
+
+
+
+@* Modal de confirmación *@
+<div class="modal" tabindex="-1" id="modalConfirmacion" style="display:none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registrar difunto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Desea registrar el difunto <strong id="apellidoModal"></strong> <strong id="nombreModal"></strong> ?</p>
+                <p>En la ubicación <strong id="seccionElegidaModal"></strong> <strong id="parcelaElegidaModal"></strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModal()">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="enviarFormulario()">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* logica con js*@
+<script>
+    // Datos iniciales (debes poblarlos desde tu modelo)
+    const seccionesPorTipo = {
+    nicho: @Html.Raw(Model.ListaSeccionesNicho.Any() ? Json.Serialize(Model.ListaSeccionesNicho) : "[]"),
+    fosa: @Html.Raw(Model.ListaSeccionesFosa.Any() ? Json.Serialize(Model.ListaSeccionesFosa) : "[]")
+    };
+
+    const parcelasPorSeccion = {
+        nicho: @Html.Raw(Model.ListaNichos.Any() ? Json.Serialize(Model.ListaNichos) : "[]"),
+        fosa: @Html.Raw(Model.ListaFosas.Any() ? Json.Serialize(Model.ListaFosas) : "[]")
+    };
+
+    
+
+    // Función para actualizar las opciones del select
+    function actualizarSecciones(tipo) 
+    {
+        const select = document.getElementById('seccion');
+        select.innerHTML = '<option value="">Elija la sección</option>';
+
+        const selecParcelaElegida = document.getElementById('parcelaElegida');
+        parcelaElegida.innerHTML = '<option value="">Elija la parcela</option>';
+
+        //logica para saber si el DNI ingresado existe en la base de datos
+        const listaDNIdifuntos = @Html.Raw(Model.ListaDifuntos.Any() ? Json.Serialize(Model.ListaDifuntos) : "[]");
+        
+        const dniText = document.getElementById('dni');
+
+        dniText.addEventListener("blur", (e) => {
+            let dniIngresado = e.target.value.trim();
+
+            if(dniIngresado.length <= 7 ){
+                alert("El formato del DNI es incorrecto");
+                e.target.value = "";
+            }
+            const existeDNI = listaDNIdifuntos.some(difunto => difunto.dni === dniIngresado);
+
+            if (existeDNI) {
+                alert("El DNI ya se encuentra registrado");
+                console.log("DNI duplicado:", dniIngresado);
+                e.target.value = "";
+            }
+        });
+
+
+        if (!seccionesPorTipo[tipo] || seccionesPorTipo[tipo].length === 0) { //si no hay datos en alguna opcion
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No hay secciones disponibles';
+                option.disabled = true;
+                select.appendChild(option);
+                select.disabled = true;     
+                
+                const optionParcela = document.createElement('option');
+                optionParcela.value = '';
+                optionParcela.textContent = 'No hay parcelas disponibles';
+                optionParcela.disabled = true;
+                parcelaElegida.appendChild(optionParcela);
+                parcelaElegida.disabled = true
+                return;
+        }
+
+
+        select.disabled = false; //si estaba desactivado lo activa
+        parcelaElegida.disabled = false;
+
+        //lógica para propiedades dinámicas
+        const propiedadId = 'id';
+        const propiedadNombre = 'nombre'; // Ajusta si usas diferente nombre
+
+        seccionesPorTipo[tipo].forEach(seccion => {
+            const option = document.createElement('option');
+            option.value = seccion[propiedadId]; // Acceso dinámico
+            option.textContent = seccion[propiedadNombre];
+            select.appendChild(option);
+        });
+
+        //logica para cambiar el select de parcela
+        document.getElementById('seccion').addEventListener('change', function () {
+             //console.log("Esta cambiando de seccion");
+             const seccionId = parseInt(this.value); // el valor del select seccion, convertido a entero
+             selecParcelaElegida.innerHTML = '<option value="">Elija la parcela</option>'; // limpiar
+
+             let parcelasFiltradas = parcelasPorSeccion[tipo].filter(p => p.seccion === seccionId); //filtra por la seccion seleccionada
+
+             const tipoEstado = document.getElementById("estado");
+             let estadoSeleccionado = tipoEstado.value;
+
+             //valido si es nicho para mostrar los nichos disponibles
+            if(estadoSeleccionado == "1" && tipo == "nicho"){ //si es cuerpo completo
+                console.log('cuerpo completo');
+                 parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos === 0);
+            } else if (estadoSeleccionado != "1" && tipo == "nicho") {
+                parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 5);//si tiene menos o igual a 5 difuntos
+            }
+
+            if (estadoSeleccionado == "1" && tipo == "fosa") {
+                console.log('cuerpo completo');
+                parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 3);
+            } else if (estadoSeleccionado != "1" && tipo == "fosa") {
+                parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 5);//si tiene menos o igual a 5 difuntos
+            }
+         
+            parcelasFiltradas.forEach(parcela => { //recorre todos las parcelas y las coloca en el select
+                const option = document.createElement('option');
+                option.value = parcela.id;
+                option.textContent = parcela.ubicacion;
+                selecParcelaElegida.appendChild(option);
+            });
+
+        });
+    }
+
+    // Event listeners para los radios
+    document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+           const estadoSelect = document.getElementById('estado');
+            estadoSelect.addEventListener('change', (est) => {
+                actualizarSecciones(e.target.value);
+                console.log("Cambio de select estado");
+            });
+            actualizarSecciones(e.target.value);
+        });
+    });
+
+    // Cargar opciones iniciales (nicho por defecto)
+    document.addEventListener('DOMContentLoaded', () => {
+        actualizarSecciones('nicho');
+    });
+
+
+    //logica de modal
+    function confirmarEnvio() {
+        const form = document.getElementById("formularioRegistrar");
+
+        if (form.checkValidity()) {
+            const modal = new bootstrap.Modal(document.getElementById("modalConfirmacion"));
+
+            const nombre = document.getElementById("nombreDifunto").value;
+            const apellido = document.getElementById("apellidoDifunto").value;
+
+            const selectSeccion = document.getElementById("seccion");
+            const textoSeccion = selectSeccion.options[selectSeccion.selectedIndex].text;
+
+            const selectParcela = document.getElementById("parcelaElegida");
+            const textoParcela = selectParcela.options[selectParcela.selectedIndex].text;
+
+            //se inserta en el modal
+            document.getElementById("nombreModal").textContent = nombre;
+            document.getElementById("apellidoModal").textContent = apellido;
+            document.getElementById("seccionElegidaModal").textContent = textoSeccion;
+            document.getElementById("parcelaElegidaModal").textContent = textoParcela;
+            modal.show();
+        } else {
+            form.reportValidity();
+        }
+    }
+
+    function cerrarModal() {
+        document.getElementById("modalConfirmacion").style.display = "none";
+    }
+
+    function enviarFormulario() {
+        const form = document.getElementById("formularioRegistrar");
+
+        if (form.checkValidity()) {
+            form.submit(); // Sólo se envía si el formulario es válido
+        } else {
+            form.reportValidity(); // Muestra los mensajes de error del navegador
+            cerrarModal(); // Opcional: cerrá el modal si querés forzar al usuario a revisar
+        }
+    }
+    //fin logica modal
+</script>

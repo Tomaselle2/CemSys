@@ -1,0 +1,84 @@
+﻿<div class="main-content">
+
+    <!-- Botón Agregar -->
+    <form asp-action="Registrar" method="get" class="mb-4 text-center">
+        <input class="btn-custom" type="submit" value="Agregar difunto" />
+    </form>
+
+    <!-- Contenedores de Difunto, Titular y Cuenta -->
+    <div class="container-difunto-titular d-flex flex-wrap justify-content-center gap-4">
+
+        <!-- Difunto -->
+        <div class="container-difunto flex-fill">
+            <fieldset>
+                <legend>Difunto</legend>
+                <div>
+                    <label for="nombreDifunto">Nombre</label>
+                    <input class="form-control-sm" type="text" id="nombreDifunto" />
+                </div>
+                <div>
+                    <label for="apellidoDifunto">Apellido</label>
+                    <input class="form-control-sm" type="text" id="apellidoDifunto" />
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Titular -->
+        <div class="container-titular flex-fill">
+            <fieldset>
+                <legend>Titular</legend>
+                <div>
+                    <label for="nombreTitular">Nombre</label>
+                    <input class="form-control-sm" type="text" id="nombreTitular" />
+                </div>
+                <div>
+                    <label for="apellidoTitular">Apellido</label>
+                    <input class="form-control-sm" type="text" id="apellidoTitular" />
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Cuenta -->
+        <div class="container-cuenta flex-fill">
+            <fieldset>
+                <legend>Cuenta</legend>
+                <div>
+                    <label for="nroCuenta">Número de Cuenta</label>
+                    <input class="form-control-sm" type="number" id="nroCuenta" />
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+
+    <!-- Tabla de resultados -->
+    <div>
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Cuenta</th>
+                            <th>Difunto</th>
+                            <th>Ubicación</th>
+                            <th>Titular</th>
+                            <th>Vto</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
