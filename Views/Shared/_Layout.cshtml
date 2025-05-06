@@ -21,7 +21,6 @@
                 <img src="~/fotos/cems.png" alt="CemSys Logo" style="height: 40px;" />
             </a>
             <p> @ViewData["UsuarioLogueado"]</p>
-            <a asp-action="CerrarSesion" asp-controller="Login">Cerrar sesión</a>
             <ul class="nav flex-column">
 
                 <li class="nav-item">
@@ -60,6 +59,7 @@
                         <i class="bi bi-bell"></i> <span class="nav-text">Notificaciones</span>
                     </a>
                 </li>
+
                 @if(Context.Session.GetInt32("tipoUsuario") == 2)
                 {
                     <li class="nav-item">
@@ -68,6 +68,11 @@
                         </a>
                     </li>
                 }
+                <li class="nav-item">
+                    <a class="nav-link text-dark icono-menu" asp-controller="Login" asp-action="CerrarSesion">
+                        <i class="bi bi-box-arrow-right"></i> <span class="nav-text">Cerrar sesión</span>
+                    </a>
+                </li>
                 
             </ul>
         </nav>
