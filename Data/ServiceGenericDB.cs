@@ -1,4 +1,5 @@
-﻿using CemSys.Interface;
+﻿using System.Linq.Expressions;
+using CemSys.Interface;
 using CemSys.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,13 @@ namespace CemSys.Data
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<T> Consultar(int id)
+        public async Task<T?> Consultar(int id)
+
         {
             try
             {
                 var modelo = await _dbSet.FindAsync(id);
-                return modelo;
+                return modelo!;
 
             }
             catch (Exception)
@@ -102,5 +104,10 @@ namespace CemSys.Data
                 throw;
             }
         }
+        public async Task<T?> ObtenerUnoAsync(Expression<Func<T, bool>> predicado)
+        {
+            return await _dbSet.FirstOrDefaultAsync(predicado);
+        }
+
     }
 }

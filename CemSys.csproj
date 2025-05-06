@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Repositories\**" />
+    <Compile Remove="Interface\Interfaces\**" />
+    <Content Remove="Data\Repositories\**" />
+    <Content Remove="Interface\Interfaces\**" />
+    <EmbeddedResource Remove="Data\Repositories\**" />
+    <EmbeddedResource Remove="Interface\Interfaces\**" />
+    <None Remove="Data\Repositories\**" />
+    <None Remove="Interface\Interfaces\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -17,6 +28,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\marti\Source\Repos\CemSys\Views\NewFolder\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\marti\Source\Repos\CemSys\Views\NewFolder\.editorconfig" />
   </ItemGroup>
 
 </Project>

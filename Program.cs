@@ -2,6 +2,7 @@ using CemSys.Business;
 using CemSys.Data;
 using CemSys.Data.NichosDB;
 using CemSys.Interface;
+using CemSys.Interface.Contratos;
 using CemSys.Interface.Difuntos;
 using CemSys.Interface.Fosas;
 using CemSys.Interface.Nichos;
@@ -9,6 +10,7 @@ using CemSys.Interface.SeccionesNichos;
 using CemSys.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using CemSys.Business.ContratosBusiness; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,8 @@ builder.Services.AddScoped<ISeccionesNichosBusiness, SeccionesNichosBusiness>();
 builder.Services.AddScoped<INichosBusiness, NichosBusiness>();
 builder.Services.AddScoped<IFosasBusiness, FosaBusiness>();
 builder.Services.AddScoped<IDifuntosBusiness, DifuntosBusiness>();
+builder.Services.AddScoped<IContratosBusiness, ContratosBusiness>();
+
 
 //para el manejo de sesiones
 builder.Services.AddSession(option =>
