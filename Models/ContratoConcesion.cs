@@ -17,11 +17,15 @@ public partial class ContratoConcesion
 
     public int CantidadCuotas { get; set; }
 
-    public int? NichoId { get; set; }
+    public int? NichoDifuntoId { get; set; }
 
-    public int? FosaId { get; set; }
+    public int? FosaDifuntoId { get; set; }
 
-    public int? PanteonId { get; set; }
+    public int? PanteonDifuntoId { get; set; }
+
+    public string? Descripcion { get; set; }
+
+    public int? NumeroCuentaId { get; set; }
 
     public virtual CantidadAniosConcesion CantidadAnios { get; set; } = null!;
 
@@ -29,11 +33,13 @@ public partial class ContratoConcesion
 
     public virtual ContratoArchivo? ContratoArchivo { get; set; }
 
-    public virtual Fosa? Fosa { get; set; }
+    public virtual FosasDifunto? FosaDifunto { get; set; }
 
-    public virtual Nicho? Nicho { get; set; }
+    public virtual NichosDifunto? NichoDifunto { get; set; }
 
-    public virtual Panteone? Panteon { get; set; }
+    public virtual NumeroCuentum? NumeroCuenta { get; set; }
+
+    public virtual PanteonDifunto? PanteonDifunto { get; set; }
 
     public virtual ICollection<Persona> Personas { get; set; } = new List<Persona>();
 }

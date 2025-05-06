@@ -15,7 +15,6 @@
                 <table class="table table-striped mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>Cuenta</th>
                             <th>Nicho</th>
                             <th>Fila</th>
                             <th>Tipo</th>
@@ -30,15 +29,6 @@
                             @foreach (var opc in Model.ABMRepositoryVM.Lista)
                             {
                                 <tr>
-                                    @if (opc.NroCuenta == null)
-                                    {
-                                        <td>sin asignar</td>
-                                    }
-                                    else
-                                    {
-                                        <td>@opc.NroCuenta</td>
-                                    }
-
                                     <td>@opc.NroNicho</td>
                                     <td>@opc.NroFila</td>
                                     @foreach (var tipoN in Model.ListaTipoNicho)

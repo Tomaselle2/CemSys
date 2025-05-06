@@ -9,9 +9,5 @@ public partial class NumeroCuentum
 
     public int Numero { get; set; }
 
-    public virtual ICollection<Fosa> Fosas { get; set; } = new List<Fosa>();
-
-    public virtual ICollection<Nicho> Nichos { get; set; } = new List<Nicho>();
-
-    public virtual ICollection<Panteone> Panteones { get; set; } = new List<Panteone>();
+    public virtual ICollection<ContratoConcesion> ContratoConcesions { get; set; } = new List<ContratoConcesion>();
 }
