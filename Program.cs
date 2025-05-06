@@ -9,8 +9,7 @@ using CemSys.Interface.Nichos;
 using CemSys.Interface.SeccionesNichos;
 using CemSys.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using CemSys.Business.ContratosBusiness; 
+using Microsoft.Extensions.Options; 
 
 var builder = WebApplication.CreateBuilder(args);
 
