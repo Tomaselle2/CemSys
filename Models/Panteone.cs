@@ -11,11 +11,13 @@ public partial class Panteone
 
     public int Difuntos { get; set; }
 
-    public int? NroCuenta { get; set; }
+    public string? Descripcion { get; set; }
 
-    public virtual ICollection<ContratoConcesion> ContratoConcesions { get; set; } = new List<ContratoConcesion>();
+    public int NroLote { get; set; }
 
-    public virtual NumeroCuentum? NroCuentaNavigation { get; set; }
+    public int? IdSeccionPanteon { get; set; }
+
+    public virtual SeccionesPanteone? IdSeccionPanteonNavigation { get; set; }
 
     public virtual ICollection<PanteonDifunto> PanteonDifuntos { get; set; } = new List<PanteonDifunto>();
 }
