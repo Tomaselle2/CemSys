@@ -132,7 +132,7 @@
             </div>
             <div class="modal-body">
                 <p>¿Desea registrar el difunto <strong id="apellidoModal"></strong> <strong id="nombreModal"></strong> ?</p>
-                <p>En la ubicación <strong id="seccionElegidaModal"></strong> <strong id="parcelaElegidaModal"></strong></p>
+                <p>En la ubicación <strong>"sección </strong><strong id="seccionElegidaModal"></strong> <strong id="parcelaElegidaModal"></strong><strong>"</strong></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModal()">Cancelar</button>
@@ -146,6 +146,8 @@
 @* logica con js*@
 <script>
     // Datos iniciales (debes poblarlos desde tu modelo)
+    const estadoSelect = document.getElementById('estado');
+
     const seccionesPorTipo = {
     nicho: @Html.Raw(Model.ListaSeccionesNicho.Any() ? Json.Serialize(Model.ListaSeccionesNicho) : "[]"),
     fosa: @Html.Raw(Model.ListaSeccionesFosa.Any() ? Json.Serialize(Model.ListaSeccionesFosa) : "[]")
@@ -155,6 +157,29 @@
         nicho: @Html.Raw(Model.ListaNichos.Any() ? Json.Serialize(Model.ListaNichos) : "[]"),
         fosa: @Html.Raw(Model.ListaFosas.Any() ? Json.Serialize(Model.ListaFosas) : "[]")
     };
+
+    //logica para saber si el DNI ingresado existe en la base de datos
+    const listaDNIdifuntos = @Html.Raw(Model.ListaDifuntos.Any() ? Json.Serialize(Model.ListaDifuntos) : "[]");
+
+    const dniText = document.getElementById('dni');
+
+    dniText.addEventListener("blur", (e) =>
+    {
+        let dniIngresado = e.target.value.trim();
+        const existeDNI = listaDNIdifuntos.some(difunto => difunto.dni === dniIngresado);
+        
+        if(dniIngresado.length <= 7 ){
+            alert("El formato del DNI es incorrecto");
+            e.target.value = "";
+        }
+
+
+        if (existeDNI) {
+            alert("El DNI ya se encuentra registrado");
+            console.log("DNI duplicado:", dniIngresado);
+            e.target.value = "";
+        }
+    });
 
     
 
@@ -167,26 +192,7 @@
         const selecParcelaElegida = document.getElementById('parcelaElegida');
         parcelaElegida.innerHTML = '<option value="">Elija la parcela</option>';
 
-        //logica para saber si el DNI ingresado existe en la base de datos
-        const listaDNIdifuntos = @Html.Raw(Model.ListaDifuntos.Any() ? Json.Serialize(Model.ListaDifuntos) : "[]");
         
-        const dniText = document.getElementById('dni');
-
-        dniText.addEventListener("blur", (e) => {
-            let dniIngresado = e.target.value.trim();
-
-            if(dniIngresado.length <= 7 ){
-                alert("El formato del DNI es incorrecto");
-                e.target.value = "";
-            }
-            const existeDNI = listaDNIdifuntos.some(difunto => difunto.dni === dniIngresado);
-
-            if (existeDNI) {
-                alert("El DNI ya se encuentra registrado");
-                console.log("DNI duplicado:", dniIngresado);
-                e.target.value = "";
-            }
-        });
 
 
         if (!seccionesPorTipo[tipo] || seccionesPorTipo[tipo].length === 0) { //si no hay datos en alguna opcion
@@ -260,13 +266,19 @@
     // Event listeners para los radios
     document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
-           const estadoSelect = document.getElementById('estado');
-            estadoSelect.addEventListener('change', (est) => {
-                actualizarSecciones(e.target.value);
-                console.log("Cambio de select estado");
-            });
-            actualizarSecciones(e.target.value);
+             actualizarSecciones(e.target.value);
         });
+    });
+
+    estadoSelect.addEventListener('change', (est) => {
+        document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
+            if(radio.checked){
+                actualizarSecciones(radio.value);
+                console.log("Cambio de select estado" + radio.value);
+            }
+             
+        });
+       
     });
 
     // Cargar opciones iniciales (nicho por defecto)
