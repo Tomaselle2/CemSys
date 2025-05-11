@@ -8,11 +8,9 @@ namespace CemSys.Controllers
 {
     public class NichosController : Controller
     {
-        private readonly IRepositoryBusiness<Nicho> _serviceBusiness;
         private readonly INichosBusiness _nichosBusiness;
-        public NichosController(IRepositoryBusiness<Nicho> serviceBusiness, INichosBusiness nichosBusiness)
+        public NichosController(INichosBusiness nichosBusiness)
         {
-            _serviceBusiness = serviceBusiness;
             _nichosBusiness = nichosBusiness; 
         }
 
@@ -33,10 +31,10 @@ namespace CemSys.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Registrar(string nombre) {
+        public async Task<IActionResult> Registrar(int idSeccionNicho) {
             try
             {
-                SeccionesNicho modelo = await _nichosBusiness.ObtenerSeccionNichoPorNombre(nombre);
+                SeccionesNicho modelo = await _nichosBusiness.ObtenerSeccionNicho(idSeccionNicho);
                 if(modelo.TipoNumeracion == 1)
                 {
                     await _nichosBusiness.CrearNichosNumeracionNueva(modelo);

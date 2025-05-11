@@ -9,8 +9,6 @@ namespace CemSys.Business
         private readonly IRepositoryDB<SeccionesNicho> _seccionesNichoRepository;
         private readonly IRepositoryDB<Nicho> _nichoRepository;
         private readonly IRepositoryDB<TipoNicho> _tipoNichoRepository;
-
-        private readonly INichosDB _nichosDB;
         
         private async Task<int> ValorPorDefectoTipoNicho()
         {
@@ -28,10 +26,9 @@ namespace CemSys.Business
         }
 
 
-        public NichosBusiness(IRepositoryDB<SeccionesNicho> seccionesNichoRepository, INichosDB nichosDB, IRepositoryDB<Nicho> repositoryDB, IRepositoryDB<TipoNicho> tipoNichoRepository)
+        public NichosBusiness(IRepositoryDB<SeccionesNicho> seccionesNichoRepository, IRepositoryDB<Nicho> repositoryDB, IRepositoryDB<TipoNicho> tipoNichoRepository)
         {
             _seccionesNichoRepository = seccionesNichoRepository;
-            _nichosDB = nichosDB;
             _nichoRepository = repositoryDB;
             _tipoNichoRepository = tipoNichoRepository;
         }
@@ -117,9 +114,5 @@ namespace CemSys.Business
             return seccion;
         }
 
-        public async Task<SeccionesNicho> ObtenerSeccionNichoPorNombre(string nombre)
-        {
-            return await _nichosDB.ObtenerSeccionNichoPorNombre(nombre);
-        }
     }
 }

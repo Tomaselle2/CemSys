@@ -9,13 +9,11 @@ namespace CemSys.Business
     {
         private readonly IRepositoryDB<Fosa> _repositoryDB;
         private readonly IRepositoryDB<SeccionesFosa> _repositorySeccionFosaDB;
-        private readonly IFosaDB _fosaBD;
 
-        public FosaBusiness(IRepositoryDB<Fosa> repositoryDB, IRepositoryDB<SeccionesFosa> repositorySeccionFosaDB, IFosaDB fosaBD)
+        public FosaBusiness(IRepositoryDB<Fosa> repositoryDB, IRepositoryDB<SeccionesFosa> repositorySeccionFosaDB)
         {
             _repositoryDB = repositoryDB;
             _repositorySeccionFosaDB = repositorySeccionFosaDB;
-            _fosaBD = fosaBD;
         }
 
         public async Task<SeccionesFosa> ConsultarSeccionFosa(int id)
@@ -49,11 +47,6 @@ namespace CemSys.Business
             //return await _repositoryDB.EmitirListado();
             List<Fosa> listaCompleta = await _repositoryDB.EmitirListado();
             return listaCompleta.Where(opc => opc.Seccion == id).ToList();
-        }
-
-        public async Task<SeccionesFosa> ObtenerSeccionFosaPorNombre(string nombre)
-        {
-            return await _fosaBD.ObtenerSeccionFosaPorNombre(nombre);
         }
 
     }

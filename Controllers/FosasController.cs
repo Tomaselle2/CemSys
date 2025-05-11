@@ -13,7 +13,9 @@ namespace CemSys.Controllers
         {
             _fosasBusiness = fosasBusiness;
         }
+
         VMFosas viewModel = new VMFosas();
+
         public async Task<IActionResult> Index(int id)
         {
             var nombre = HttpContext.Session.GetString("nombreUsuario");
@@ -22,8 +24,6 @@ namespace CemSys.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-
-
             ViewData["UsuarioLogueado"] = nombre;
 
             viewModel.seccion = await _fosasBusiness.ConsultarSeccionFosa(id);
@@ -31,11 +31,11 @@ namespace CemSys.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Registrar(string nombre)
+        public async Task<IActionResult> Registrar(int idFosaSeccion)
         {
             try
             {
-                SeccionesFosa modelo = await _fosasBusiness.ObtenerSeccionFosaPorNombre(nombre);
+                SeccionesFosa modelo = await _fosasBusiness.ConsultarSeccionFosa(idFosaSeccion);
                 await _fosasBusiness.CrearFosas(modelo);
             }
             catch (Exception ex)

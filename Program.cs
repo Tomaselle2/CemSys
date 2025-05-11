@@ -1,10 +1,10 @@
 using CemSys.Business;
 using CemSys.Data;
-using CemSys.Data.NichosDB;
 using CemSys.Interface;
 using CemSys.Interface.Difuntos;
 using CemSys.Interface.Fosas;
 using CemSys.Interface.Nichos;
+using CemSys.Interface.Panteones;
 using CemSys.Interface.SeccionesNichos;
 using CemSys.Models;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +21,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //contenedor de capa de datos
 builder.Services.AddScoped(typeof(IRepositoryDB<>), typeof(ServiceGenericDB<>));
-builder.Services.AddScoped<INichosDB, NichosDB>();
-builder.Services.AddScoped<IFosaDB, FosaBD>();
 
 //contenedor de capa de negocio
 builder.Services.AddScoped(typeof(IRepositoryBusiness<>), typeof(ServiceGenericBusiness<>));
@@ -30,6 +28,7 @@ builder.Services.AddScoped<ISeccionesNichosBusiness, SeccionesNichosBusiness>();
 builder.Services.AddScoped<INichosBusiness, NichosBusiness>();
 builder.Services.AddScoped<IFosasBusiness, FosaBusiness>();
 builder.Services.AddScoped<IDifuntosBusiness, DifuntosBusiness>();
+builder.Services.AddScoped<IPanteonesBusiness, PanteonesBusiness>();
 
 //para el manejo de sesiones
 builder.Services.AddSession(option =>
@@ -60,6 +59,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
 pattern: "{controller=Login}/{action=Index}/{id?}");
-//pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

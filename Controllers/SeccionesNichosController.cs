@@ -59,7 +59,7 @@ namespace CemSys.Controllers
             int resultado = 0;
 
             SeccionesNicho modelo = new SeccionesNicho();
-            modelo.Nombre = nombre;
+            modelo.Nombre = nombre.ToLower();
             modelo.Nichos = nroNichos;
             modelo.Filas = nroFilas;
             modelo.TipoNumeracion = idTipoNumeracionParela;
@@ -71,7 +71,7 @@ namespace CemSys.Controllers
              
                 ViewData["MensajeRegistrar"] = "Exito al registrar";
                    //pasa el nombre de la seccion generada
-                return PasarDatosCrearNichos(nombre);
+                return PasarDatosCrearNichos(resultado);
              
             }
             catch (Exception ex)
@@ -109,9 +109,9 @@ namespace CemSys.Controllers
             return await _seccionesNichosBusiness.ListaTipoNumeracionParcela();
         }
 
-        private IActionResult PasarDatosCrearNichos(string nombre)
+        private IActionResult PasarDatosCrearNichos(int idSeccionNicho)
         {
-            return RedirectToAction("Registrar", "Nichos", new {nombre = nombre});
+            return RedirectToAction("Registrar", "Nichos", new { idSeccionNicho = idSeccionNicho });
         }
 
         [HttpGet]

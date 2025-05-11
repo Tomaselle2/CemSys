@@ -50,9 +50,9 @@ namespace CemSys.Controllers
             return RedirectToAction("Index", "TipoUsuario");
         }
 
-        public IActionResult Panteones()
+        public IActionResult SeccionesPanteones()
         {
-            return RedirectToAction("Index", "Panteones");
+            return RedirectToAction("Index", "SeccionesPanteones");
         }
 
         public IActionResult Usuario()

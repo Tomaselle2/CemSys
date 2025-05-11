@@ -1,3 +1,53 @@
-﻿<div class="main-content">
-    <h1>Crear panteones</h1>
+﻿@using CemSys.Models.ViewModel;
+@model VMPanteones
+<div class="main-content">
+    <h1>Administrar panteones de la sección @Model.seccion!.Nombre</h1>
+
+
+    @if (Model.ABMRepositoryVM?.Lista.Count == 0)
+    {
+        <p>No hay datos para mostrar</p>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Lote</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.ABMRepositoryVM != null)
+                        {
+                            @foreach (var opc in Model.ABMRepositoryVM.Lista)
+                            {
+                                <tr>
+
+                                    <td>@opc.NroLote</td>
+                                    @if (opc.Difuntos == 0)
+                                    {
+                                        <td>Desocupado</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Ocupado</td>
+                                    }
+
+                                </tr>
+
+
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p>@ViewData["MensajeEmitir"]</p>
+    }
+
+
 </div>

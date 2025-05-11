@@ -34,7 +34,7 @@
                 @foreach (var tipo in Model.Lista)
                 {
                     <tr>
-                        <td>@tipo.TipoNicho1</td>
+                        <td>@tipo.TipoNicho1.ToUpper()</td>
                         <td>
                             <!-- Radio buttons agrupados -->
                             <input type="radio"
@@ -47,9 +47,9 @@
                                 <input type="hidden" name="id" value="@tipo.IdTipoNicho" />
                                 <input type="submit" class="btn btn-dark" value="Modificar" />
                             </form>
-                            <form asp-action="Eliminar" method="post" style="display: inline-block;">
+                            <form asp-action="Eliminar" method="post" style="display: inline-block;" id="formularioEliminar">
                                 <input type="hidden" name="id" value="@tipo.IdTipoNicho" />
-                                <input type="submit" class="btn btn-danger" value="Eliminar" />
+                                <input type="button" class="btn btn-danger" value="Eliminar" onclick="enviarFormulario()" />
                             </form>
                         </td>
                     </tr>
@@ -67,3 +67,71 @@
         <p>@ViewData["MensajeEmitir"]</p>
     }
 </div>
+@* Modal de confirmación *@
+<div class="modal" tabindex="-1" id="modalConfirmacion" style="display:none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">¡Advertencia!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Desea eliminar esta sección?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModal()">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="enviarFormulario()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const inputNombre = document.getElementById('nombre');
+    // Convertimos la lista de C# a un formato que JavaScript pueda entender
+    let listaSeccionPanteon = @Html.Raw(Json.Serialize(Model.Lista));
+
+    inputNombre.addEventListener('blur', (e) => {
+        const nombreIngresado = inputNombre.value.trim().toLowerCase();
+
+        // Verificamos si el nombre ya existe
+        const existeNombre = listaSeccionPanteon.some(seccion =>
+            seccion.nombre.toLowerCase() === nombreIngresado &&
+            seccion.visibilidad !== false
+        );
+
+        if(existeNombre) {
+            alert('¡Esta sección ya existe! Por favor ingrese un nombre diferente.');
+            inputNombre.value = "";
+        }
+    });
+</script>
+<script>
+    //logica de modal
+    function confirmarEliminacion() {
+        const form = document.getElementById("formularioEliminar");
+
+        if (form.checkValidity()) {
+            const modal = new bootstrap.Modal(document.getElementById("modalConfirmacion"));
+            modal.show();
+        } else {
+            form.reportValidity();
+        }
+    }
+
+    function cerrarModal() {
+        document.getElementById("modalConfirmacion").style.display = "none";
+    }
+
+    function enviarFormulario() {
+        const form = document.getElementById("formularioEliminar");
+
+        if (form.checkValidity()) {
+            form.submit(); // Sólo se envía si el formulario es válido
+        } else {
+            form.reportValidity(); // Muestra los mensajes de error del navegador
+            cerrarModal(); // Opcional: cerrá el modal si querés forzar al usuario a revisar
+        }
+    }
+    //fin logica modal
+</script>

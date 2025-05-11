@@ -1,8 +1,8 @@
 ﻿@using CemSys.Models.ViewModel
-@model ABMRepositoryVM<SeccionesFosa>
+@model ABMRepositoryVM<SeccionesPanteone>
 
 <div class="container mt-5">
-    <h2 class="mb-4 text-center">Gestión de Secciones de fosas</h2>
+    <h2 class="mb-4 text-center">Gestión de Secciones de panteones</h2>
 
     <!-- Formulario -->
     <div class="card shadow-sm mb-4">
@@ -10,19 +10,19 @@
             Nueva Sección
         </div>
         <div class="card-body">
-            <form asp-action="Registrar" method="post">
+            <form asp-action="Registrar" method="post" >
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label for="nombre" class="form-label">Nombre</label>
-                        <input type="hidden" name="id" value="@Model.Modelo?.IdSeccionFosa" />
+                        <input type="hidden" name="id" value="@Model.Modelo?.IdSeccionPanteones" />
                         <input class="form-control" type="text" name="nombre" required maxlength="50" id="nombre" />
                     </div>
                     <div class="col-md-4">
-                        <label for="nroFosas" class="form-label">Cantidad de fosas</label>
-                        <input class="form-control" type="number" name="nroFosas" required id="nroFosas" min="1"/>
+                        <label for="nroLotes" class="form-label">Cantidad de lotes</label>
+                        <input class="form-control" type="number" name="nroLotes" required id="nroLotes" min="1" />
                     </div>
                     <div class="col-md-6 d-flex align-items-end">
-                        <input class="btn btn-primary w-100" type="submit" value="Registrar" />
+                        <input class="btn btn-primary w-100" type="submit" value="Registrar"/>
                     </div>
                 </div>
             </form>
@@ -45,7 +45,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>Nombre</th>
-                            <th>Nro de fosas</th>
+                            <th>Nro de lotes</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -56,15 +56,15 @@
                             {
                                 <tr>
                                     <td>@opc.Nombre.ToUpper()</td>
-                                    <td>@opc.Fosas</td>
+                                    <td>@opc.Panteones</td>
                                     <td>
                                         <form asp-action="Administrar" method="get" style="display: inline-block;">
-                                            <input type="hidden" name="id" value="@opc.IdSeccionFosa" />
+                                            <input type="hidden" name="id" value="@opc.IdSeccionPanteones" />
                                             <input type="submit" class="btn btn-dark btn-sm" value="Administrar" />
                                         </form>
-                                        <form asp-action="Eliminar" method="post" style="display: inline-block;" id="formularioEliminar_@opc.IdSeccionFosa">
-                                            <input type="hidden" name="id" value="@opc.IdSeccionFosa" />
-                                            <input type="button" name="name" class="btn btn-danger btn-sm" value="Eliminar" onclick="confirmarEliminacion(@opc.IdSeccionFosa)" />
+                                        <form asp-action="Eliminar" method="post" style="display: inline-block;" id="formularioEliminar_@opc.IdSeccionPanteones">
+                                            <input type="hidden" name="id" value="@opc.IdSeccionPanteones" />
+                                            <input type="button" name="name" class="btn btn-danger btn-sm" value="Eliminar" onclick="confirmarEliminacion(@opc.IdSeccionPanteones)" />
                                         </form>
                                     </td>
                                 </tr>
@@ -81,6 +81,7 @@
         @ViewData["MensajeEmitir"]
     </div>
 </div>
+
 @* Modal de confirmación *@
 <div class="modal" tabindex="-1" id="modalConfirmacion" style="display:none">
     <div class="modal-dialog">
@@ -100,6 +101,26 @@
     </div>
 </div>
 
+<script>
+    const inputNombre = document.getElementById('nombre');
+    // Convertimos la lista de C# a un formato que JavaScript pueda entender
+    let listaSeccionPanteon = @Html.Raw(Json.Serialize(Model.Lista));
+
+    inputNombre.addEventListener('blur', (e) => {
+        const nombreIngresado = inputNombre.value.trim().toLowerCase();
+
+        // Verificamos si el nombre ya existe
+        const existeNombre = listaSeccionPanteon.some(seccion =>
+            seccion.nombre.toLowerCase() === nombreIngresado &&
+            seccion.visibilidad !== false
+        );
+
+        if(existeNombre) {
+            alert('¡Esta sección ya existe! Por favor ingrese un nombre diferente.');
+            inputNombre.value = "";
+        }
+    });
+</script>
 <script>
     //logica de modal
     function confirmarEliminacion(idSeccion) {
