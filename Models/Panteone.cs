@@ -15,7 +15,7 @@ public partial class Panteone
 
     public int NroLote { get; set; }
 
-    public int? IdSeccionPanteon { get; set; }
+    public int IdSeccionPanteon { get; set; }
 
     public virtual SeccionesPanteone? IdSeccionPanteonNavigation { get; set; }
 

@@ -11,17 +11,24 @@ namespace CemSys.Business
         private readonly IRepositoryDB<EstadoDifunto> _estadodifuntoRepository;
         private readonly IRepositoryDB<SeccionesNicho> _seccionesNichosRepository;
         private readonly IRepositoryDB<SeccionesFosa> _seccionesFosasRepository;
+        private readonly IRepositoryDB<SeccionesPanteone> _seccionesPanteonesRepository;
+
         private readonly IRepositoryDB<Nicho> _nichoRepository;
         private readonly IRepositoryDB<Fosa> _fosaRepository;
+        private readonly IRepositoryDB<Panteone> _panteonRepository;
         private readonly IRepositoryDB<ActaDefuncion> _actaRepository;
+
         private readonly IRepositoryDB<NichosDifunto> _nichoDifuntoRepository;
         private readonly IRepositoryDB<FosasDifunto> _fosaDifuntoRepository;
+        private readonly IRepositoryDB<PanteonDifunto> _panteonDifuntoRepository;
+
 
 
 
         public DifuntosBusiness(IRepositoryDB<Difunto> difuntosbd, IRepositoryDB<EstadoDifunto> estadodifuntoRepository, IRepositoryDB<SeccionesNicho> seccionesNichosRepository, 
             IRepositoryDB<SeccionesFosa> seccionesFosasRepository, IRepositoryDB<Nicho> nichoRepository, IRepositoryDB<Fosa> fosaRepository, IRepositoryDB<ActaDefuncion> actaRepository,
-            IRepositoryDB<NichosDifunto> nichoDifuntoRepository, IRepositoryDB<FosasDifunto> fosaDifuntoRepository)
+            IRepositoryDB<NichosDifunto> nichoDifuntoRepository, IRepositoryDB<FosasDifunto> fosaDifuntoRepository, IRepositoryDB<Panteone> panteonRepository,
+            IRepositoryDB<SeccionesPanteone> seccionesPanteonesRepository, IRepositoryDB<PanteonDifunto> panteonDifuntoRepository)
         {
             _difuntosRepository = difuntosbd;
             _estadodifuntoRepository = estadodifuntoRepository;
@@ -32,6 +39,9 @@ namespace CemSys.Business
             _actaRepository = actaRepository;
             _nichoDifuntoRepository = nichoDifuntoRepository;
             _fosaDifuntoRepository = fosaDifuntoRepository;
+            _panteonRepository = panteonRepository;
+            _seccionesPanteonesRepository = seccionesPanteonesRepository;
+            _panteonDifuntoRepository = panteonDifuntoRepository;
         }
 
         public async Task<Fosa> ConsultarFosa(int id)
@@ -51,6 +61,18 @@ namespace CemSys.Business
             try
             {
                 return await _nichoRepository.Consultar(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<Panteone> ConsultarPanteon(int id)
+        {
+            try
+            {
+                return await _panteonRepository.Consultar(id);
             }
             catch (Exception)
             {
@@ -125,6 +147,25 @@ namespace CemSys.Business
             }
         }
 
+        public async Task<List<DTO_panteones>> EmitirListadoPanteones()
+        {
+            try
+            {
+                return (await _panteonRepository.EmitirListado()).Where(s => s.Visibilidad == true).Select(s => new DTO_panteones
+                {
+                    Id = s.IdPanteon,
+                    Visibilidad = s.Visibilidad,
+                    Difuntos = s.Difuntos,
+                    Seccion = s.IdSeccionPanteon,
+                    Ubicacion = $"Lote {s.NroLote}"
+                }).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<DTO_seccionesFosa>> EmitirListadoSeccionesFosa()
         {
             try
@@ -132,7 +173,7 @@ namespace CemSys.Business
                 return (await _seccionesFosasRepository.EmitirListado()).Where(s => s.Visibilidad == true).Select(s => new DTO_seccionesFosa
                 {
                     Id = s.IdSeccionFosa,
-                    Nombre = s.Nombre,
+                    Nombre = s.Nombre.ToUpper(),
                     Visibilidad = s.Visibilidad
                 }).ToList();
             }
@@ -149,7 +190,24 @@ namespace CemSys.Business
                 return (await _seccionesNichosRepository.EmitirListado()).Where(s => s.Visibilidad == true).Select(s => new DTO_seccionesNicho
                 {
                     Id = s.IdSeccionNicho,
-                    Nombre = s.Nombre,
+                    Nombre = s.Nombre.ToUpper(),
+                    Visibilidad = s.Visibilidad
+                }).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<DTO_seccionesPanteon>> EmitirListadoSeccionesPanteon()
+        {
+            try
+            {
+                return (await _seccionesPanteonesRepository.EmitirListado()).Where(s => s.Visibilidad == true).Select(s => new DTO_seccionesPanteon
+                {
+                    Id = s.IdSeccionPanteones,
+                    Nombre = s.Nombre.ToUpper(),
                     Visibilidad = s.Visibilidad
                 }).ToList();
             }
@@ -183,9 +241,16 @@ namespace CemSys.Business
             }
         }
 
-        public Task<int> IncrementarDifuntoEnPanteon(Panteone modelo)
+        public async Task<int> IncrementarDifuntoEnPanteon(Panteone modelo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _panteonRepository.Modificar(modelo);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<int> RegistrarActaDefuncion(ActaDefuncion modeloacta)
@@ -224,18 +289,14 @@ namespace CemSys.Business
             catch (Exception) { throw; }
         }
 
-        public Task<int> RegistrarEnPanteon(PanteonDifunto modelo)
+        public async Task<int> RegistrarEnPanteon(PanteonDifunto modelo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _panteonDifuntoRepository.Registrar(modelo);
+            }
+            catch (Exception) { throw; }
         }
-
-        //registrar difunto
-        //listado estado difunto
-        //listado secciones nichos
-        //listado secciones fosas
-        //listado nichos
-        //listado fosas
-        //registrar acta
 
     }
 }

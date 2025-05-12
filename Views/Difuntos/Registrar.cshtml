@@ -145,17 +145,19 @@
 
 @* logica con js*@
 <script>
-    // Datos iniciales (debes poblarlos desde tu modelo)
+    // Datos iniciales
     const estadoSelect = document.getElementById('estado');
 
     const seccionesPorTipo = {
     nicho: @Html.Raw(Model.ListaSeccionesNicho.Any() ? Json.Serialize(Model.ListaSeccionesNicho) : "[]"),
-    fosa: @Html.Raw(Model.ListaSeccionesFosa.Any() ? Json.Serialize(Model.ListaSeccionesFosa) : "[]")
+    fosa: @Html.Raw(Model.ListaSeccionesFosa.Any() ? Json.Serialize(Model.ListaSeccionesFosa) : "[]"),
+    panteon: @Html.Raw(Model.ListaSeccionesPanteon.Any() ? Json.Serialize(Model.ListaSeccionesPanteon) : "[]")
     };
 
     const parcelasPorSeccion = {
         nicho: @Html.Raw(Model.ListaNichos.Any() ? Json.Serialize(Model.ListaNichos) : "[]"),
-        fosa: @Html.Raw(Model.ListaFosas.Any() ? Json.Serialize(Model.ListaFosas) : "[]")
+        fosa: @Html.Raw(Model.ListaFosas.Any() ? Json.Serialize(Model.ListaFosas) : "[]"),
+        panteon: @Html.Raw(Model.ListaPanteones.Any() ? Json.Serialize(Model.ListaPanteones) : "[]")
     };
 
     //logica para saber si el DNI ingresado existe en la base de datos
@@ -251,6 +253,13 @@
                 parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 3);
             } else if (estadoSeleccionado != "1" && tipo == "fosa") {
                 parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 5);//si tiene menos o igual a 5 difuntos
+            }
+
+            if (estadoSeleccionado == "1" && tipo == "panteon") {
+                console.log('cuerpo completo');
+                parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 12);
+            } else if (estadoSeleccionado != "1" && tipo == "panteon") {
+                parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 60);//si tiene menos o igual a 60 difuntos
             }
          
             parcelasFiltradas.forEach(parcela => { //recorre todos las parcelas y las coloca en el select

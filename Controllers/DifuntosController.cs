@@ -63,7 +63,7 @@ namespace CemSys.Controllers
             modeloActa.NroActa = acta;
             modeloActa.Tomo = tomo;
             modeloActa.Folio = folio;
-            modeloActa.Serie = serie;
+            modeloActa.Serie = serie.ToLower();
             modeloActa.Age = age;
             int idActaDefuncionGenerado = 0;
             try
@@ -76,8 +76,8 @@ namespace CemSys.Controllers
 
             //registra el difunto
             Difunto modelo = new Difunto();
-            modelo.Nombre = nombre;
-            modelo.Apellido = apellido;
+            modelo.Nombre = nombre.ToLower();
+            modelo.Apellido = apellido.ToLower();
             modelo.Dni = dni;
             modelo.FechaNacimiento = nacimientoFecha;
             modelo.FechaDefuncion = defuncionFecha;
@@ -153,6 +153,28 @@ namespace CemSys.Controllers
                     }
                     break;
                 case "panteon":
+                    PanteonDifunto panteonDifunto = new PanteonDifunto();
+                    panteonDifunto.DifuntoId = idDifuntoGenerado;
+                    panteonDifunto.PanteonId = parcelaElegida;
+                    int panteonDifuntoGenerado = 0;
+
+                    try
+                    {
+                        //registra en la tabla intermedia
+                        panteonDifuntoGenerado = await _difuntosBusiness.RegistrarEnPanteon(panteonDifunto);
+
+                        //busco el panteon para ingrementar el nro de difuntos
+                        Panteone panteonSeleccionado = await _difuntosBusiness.ConsultarPanteon(parcelaElegida);
+                        panteonSeleccionado.Difuntos = panteonSeleccionado.Difuntos + 1;
+
+                        //registro el incremento
+                        int resultadoAgregarpanteon = 0;
+                        resultadoAgregarpanteon = await _difuntosBusiness.IncrementarDifuntoEnPanteon(panteonSeleccionado);
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewData["RegistrarMensaje"] = ex.Message;
+                    }
                     break;
             }
 
@@ -180,8 +202,12 @@ namespace CemSys.Controllers
                     viewModel.ListaEstadoDifunto = await _difuntosBusiness.EmitirListadoEstadoDifunto();//lista todos los difuntos en la vista
                     viewModel.ListaSeccionesNicho = await _difuntosBusiness.EmitirListadoSeccionesNicho();//lista todas las secc de nichos en la vista
                     viewModel.ListaSeccionesFosa = await _difuntosBusiness.EmitirListadoSeccionesFosa();//lista todas las secc de fosas en la vista
+                    viewModel.ListaSeccionesPanteon = await _difuntosBusiness.EmitirListadoSeccionesPanteon();//lista todas las secc de panteones en la vista
+
                     viewModel.ListaNichos = await _difuntosBusiness.EmitirListadoNichos();//lista todos los nichos en la vista
                     viewModel.ListaFosas = await _difuntosBusiness.EmitirListadoFosas();//lista todos las fosas en la vista
+                    viewModel.ListaPanteones = await _difuntosBusiness.EmitirListadoPanteones();//lista todos los panteones en la vista
+
                     viewModel.fechaActual = year;
                     viewModel.ListaDifuntos = await _difuntosBusiness.EmitirListadoDifuntos();
                 }
