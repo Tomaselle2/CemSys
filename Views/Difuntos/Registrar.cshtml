@@ -9,6 +9,12 @@
 
         <!-- Contenedor 1: Datos Personales -->
         <div class="subcontenedor">
+            @* validar si es N.N *@
+            <div>
+                <label>N.N</label>
+                <input type="checkbox" name="nn" value="nn" id="nnCheck" />
+            </div>
+          
             <div class="row">
                 <div class="col-md-4 mb-2">
                     <label for="dni">DNI</label>
@@ -76,6 +82,12 @@
                     </div>
                 </div>
             </fieldset>
+        </div>
+
+        @* campo de descripcion *@
+        <div>
+            <label for="datosAdicionales">Datos adicionales</label>
+            <textarea id="datosAdicionales" name="datosAdicionales"></textarea>
         </div>
 
         <!-- Contenedor 3: Parcela -->
@@ -163,7 +175,25 @@
 
 
 @* logica con js*@
+
 <script>
+    //logica de N.N
+    const checkNN = document.getElementById('nnCheck');
+    const dniText = document.getElementById('dni');
+    const nombreDifunto = document.getElementById('nombreDifunto');
+
+    checkNN.addEventListener("change", (e) => {
+        console.log("presiona el check");
+        const isChecked = e.target.checked;
+        dniText.disabled = isChecked;
+        nombreDifunto.disabled = isChecked;
+
+        if (isChecked) {
+            dniText.value = "";
+            nombreDifunto.value = "";
+        }
+    });
+
     // Datos iniciales
     const estadoSelect = document.getElementById('estado');
 
@@ -182,7 +212,7 @@
     //logica para saber si el DNI ingresado existe en la base de datos
     const listaDNIdifuntos = @Html.Raw(Model.ListaDifuntos.Any() ? Json.Serialize(Model.ListaDifuntos) : "[]");
 
-    const dniText = document.getElementById('dni');
+
 
     dniText.addEventListener("blur", (e) =>
     {

@@ -17,7 +17,7 @@ public partial class Panteone
 
     public int IdSeccionPanteon { get; set; }
 
-    public virtual SeccionesPanteone? IdSeccionPanteonNavigation { get; set; }
+    public virtual SeccionesPanteone IdSeccionPanteonNavigation { get; set; } = null!;
 
     public virtual ICollection<PanteonDifunto> PanteonDifuntos { get; set; } = new List<PanteonDifunto>();
 }

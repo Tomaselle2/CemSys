@@ -47,7 +47,8 @@ namespace CemSys.Controllers
             int age,
             string tipoParcela,
             int seccionElegida,
-            int parcelaElegida
+            int parcelaElegida,
+            string datosAdicionales
             ) {
             //login
             var nombreLog = HttpContext.Session.GetString("nombreUsuario");
@@ -83,7 +84,14 @@ namespace CemSys.Controllers
 
             //registra el difunto
             Difunto modelo = new Difunto();
-            modelo.Nombre = nombre.ToLower();
+            if(nombre != null)
+            {
+                modelo.Nombre = nombre.ToLower();
+            }
+            else
+            {
+                modelo.Nombre = "NN";
+            }
             modelo.Apellido = apellido.ToLower();
             modelo.Dni = dni;
             modelo.FechaNacimiento = nacimientoFecha;
@@ -92,6 +100,7 @@ namespace CemSys.Controllers
             modelo.Estado = estadoId;
             modelo.ActaDefuncion = idActaDefuncionGenerado;
             modelo.Visibilidad = true;
+            modelo.Descripcion = datosAdicionales;
 
             int idDifuntoGenerado = 0;
             

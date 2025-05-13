@@ -25,6 +25,8 @@ public partial class Difunto
 
     public int Estado { get; set; }
 
+    public string? Descripcion { get; set; }
+
     public virtual ActaDefuncion? ActaDefuncionNavigation { get; set; }
 
     public virtual EstadoDifunto EstadoNavigation { get; set; } = null!;

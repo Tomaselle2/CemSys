@@ -116,6 +116,9 @@ CREATE TABLE Panteones (
     FOREIGN KEY (idSeccionPanteon) REFERENCES SeccionesPanteones(idSeccionPanteones)
 );
 
+ALTER TABLE Panteones
+ALTER COLUMN idSeccionPanteon INT NOT NULL;
+
 -- Tablas de difuntos y actas
 CREATE TABLE ActaDefuncion (
     idActaDefuncion INT PRIMARY KEY IDENTITY(1,1),
@@ -140,6 +143,9 @@ CREATE TABLE Difunto (
     FOREIGN KEY (actaDefuncion) REFERENCES ActaDefuncion(idActaDefuncion),
     FOREIGN KEY (estado) REFERENCES EstadoDifunto(idEstadoDifunto)
 );
+
+ALTER TABLE Difunto
+ADD descripcion NVARCHAR(MAX) NULL;
 
 -- Tablas de relación difuntos-estructuras
 CREATE TABLE NichosDifuntos (
