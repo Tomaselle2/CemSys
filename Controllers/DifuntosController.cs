@@ -63,8 +63,15 @@ namespace CemSys.Controllers
             modeloActa.NroActa = acta;
             modeloActa.Tomo = tomo;
             modeloActa.Folio = folio;
-            modeloActa.Serie = serie.ToLower();
-            modeloActa.Age = age;
+            if (serie != null)
+            {
+                modeloActa.Serie = serie.ToLower();
+            }
+            else
+            {
+                modeloActa.Serie = serie;
+            }
+                modeloActa.Age = age;
             int idActaDefuncionGenerado = 0;
             try
             {
@@ -119,10 +126,11 @@ namespace CemSys.Controllers
                         //registro el incremento
                         int resultadoAgregarNicho = 0;
                         resultadoAgregarNicho = await _difuntosBusiness.IncrementarDifuntoEnNicho(nichoseleccionado);
+                        TempData["RegistrarMensaje"] = "Registro exitoso";
                     }
                     catch(Exception ex)
                     {
-                        ViewData["RegistrarMensaje"] = ex.Message;
+                        TempData["RegistrarMensaje"] = ex.Message;
                     }
 
 
@@ -146,10 +154,12 @@ namespace CemSys.Controllers
                         //registro el incremento
                         int resultadoAgregarFosa = 0;
                         resultadoAgregarFosa = await _difuntosBusiness.IncrementarDifuntoEnFosa(fosaseleccionada);
+                        TempData["RegistrarMensaje"] = "Registro exitoso";
+
                     }
                     catch (Exception ex)
                     {
-                        ViewData["RegistrarMensaje"] = ex.Message;
+                        TempData["RegistrarMensaje"] = ex.Message;
                     }
                     break;
                 case "panteon":
@@ -170,10 +180,11 @@ namespace CemSys.Controllers
                         //registro el incremento
                         int resultadoAgregarpanteon = 0;
                         resultadoAgregarpanteon = await _difuntosBusiness.IncrementarDifuntoEnPanteon(panteonSeleccionado);
+                        TempData["RegistrarMensaje"] = "Registro exitoso";
                     }
                     catch (Exception ex)
                     {
-                        ViewData["RegistrarMensaje"] = ex.Message;
+                        TempData["RegistrarMensaje"] = ex.Message;
                     }
                     break;
             }

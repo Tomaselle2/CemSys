@@ -123,7 +123,7 @@
 
 
 @* Modal de confirmación *@
-<div class="modal" tabindex="-1" id="modalConfirmacion" style="display:none">
+<div class="modal" tabindex="-1" id="modalConfirmacion">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -141,6 +141,25 @@
         </div>
     </div>
 </div>
+
+@* Notificaciones de registrar *@
+@if (!string.IsNullOrEmpty(TempData["RegistrarMensaje"] as string))
+{
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1055;">
+        <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="notificacion">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @TempData["RegistrarMensaje"]
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
 
 
 @* logica con js*@
@@ -230,7 +249,9 @@
         });
 
         //logica para cambiar el select de parcela
-        document.getElementById('seccion').addEventListener('change', function () {
+        const selectSeccion = document.getElementById('seccion');
+
+        selectSeccion.addEventListener('change', function () {
              //console.log("Esta cambiando de seccion");
              const seccionId = parseInt(this.value); // el valor del select seccion, convertido a entero
              selecParcelaElegida.innerHTML = '<option value="">Elija la parcela</option>'; // limpiar
@@ -293,6 +314,11 @@
     // Cargar opciones iniciales (nicho por defecto)
     document.addEventListener('DOMContentLoaded', () => {
         actualizarSecciones('nicho');
+        var toastEl = document.getElementById('notificacion');
+            if (toastEl) {
+                var toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
     });
 
 
@@ -331,11 +357,13 @@
         const form = document.getElementById("formularioRegistrar");
 
         if (form.checkValidity()) {
-            form.submit(); // Sólo se envía si el formulario es válido
+            form.submit(); // Sólo se envía si el formulario es válido  
         } else {
             form.reportValidity(); // Muestra los mensajes de error del navegador
             cerrarModal(); // Opcional: cerrá el modal si querés forzar al usuario a revisar
         }
     }
+
+   
     //fin logica modal
 </script>
