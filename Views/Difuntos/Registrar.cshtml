@@ -182,6 +182,16 @@
     const dniText = document.getElementById('dni');
     const nombreDifunto = document.getElementById('nombreDifunto');
 
+    // Cargar opciones iniciales (nicho por defecto)
+    document.addEventListener('DOMContentLoaded', () => {
+        actualizarSecciones('nicho');
+        var toastEl = document.getElementById('notificacion');
+        if (toastEl) {
+            var toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+    });
+
     checkNN.addEventListener("change", (e) => {
         console.log("presiona el check");
         const isChecked = e.target.checked;
@@ -198,9 +208,9 @@
     const estadoSelect = document.getElementById('estado');
 
     const seccionesPorTipo = {
-    nicho: @Html.Raw(Model.ListaSeccionesNicho.Any() ? Json.Serialize(Model.ListaSeccionesNicho) : "[]"),
-    fosa: @Html.Raw(Model.ListaSeccionesFosa.Any() ? Json.Serialize(Model.ListaSeccionesFosa) : "[]"),
-    panteon: @Html.Raw(Model.ListaSeccionesPanteon.Any() ? Json.Serialize(Model.ListaSeccionesPanteon) : "[]")
+        nicho: @Html.Raw(Model.ListaSeccionesNicho.Any() ? Json.Serialize(Model.ListaSeccionesNicho) : "[]"),
+        fosa: @Html.Raw(Model.ListaSeccionesFosa.Any() ? Json.Serialize(Model.ListaSeccionesFosa) : "[]"),
+        panteon: @Html.Raw(Model.ListaSeccionesPanteon.Any() ? Json.Serialize(Model.ListaSeccionesPanteon) : "[]")
     };
 
     const parcelasPorSeccion = {
@@ -214,12 +224,11 @@
 
 
 
-    dniText.addEventListener("blur", (e) =>
-    {
+    dniText.addEventListener("blur", (e) => {
         let dniIngresado = e.target.value.trim();
         const existeDNI = listaDNIdifuntos.some(difunto => difunto.dni === dniIngresado);
-        
-        if(dniIngresado.length <= 7 ){
+
+        if (dniIngresado.length <= 7) {
             alert("El formato del DNI es incorrecto");
             e.target.value = "";
         }
@@ -232,35 +241,34 @@
         }
     });
 
-    
+
 
     // Función para actualizar las opciones del select
-    function actualizarSecciones(tipo) 
-    {
+    function actualizarSecciones(tipo) {
         const select = document.getElementById('seccion');
         select.innerHTML = '<option value="">Elija la sección</option>';
 
         const selecParcelaElegida = document.getElementById('parcelaElegida');
         parcelaElegida.innerHTML = '<option value="">Elija la parcela</option>';
 
-        
+
 
 
         if (!seccionesPorTipo[tipo] || seccionesPorTipo[tipo].length === 0) { //si no hay datos en alguna opcion
-                const option = document.createElement('option');
-                option.value = '';
-                option.textContent = 'No hay secciones disponibles';
-                option.disabled = true;
-                select.appendChild(option);
-                select.disabled = true;     
-                
-                const optionParcela = document.createElement('option');
-                optionParcela.value = '';
-                optionParcela.textContent = 'No hay parcelas disponibles';
-                optionParcela.disabled = true;
-                parcelaElegida.appendChild(optionParcela);
-                parcelaElegida.disabled = true
-                return;
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No hay secciones disponibles';
+            option.disabled = true;
+            select.appendChild(option);
+            select.disabled = true;
+
+            const optionParcela = document.createElement('option');
+            optionParcela.value = '';
+            optionParcela.textContent = 'No hay parcelas disponibles';
+            optionParcela.disabled = true;
+            parcelaElegida.appendChild(optionParcela);
+            parcelaElegida.disabled = true
+            return;
         }
 
 
@@ -282,19 +290,19 @@
         const selectSeccion = document.getElementById('seccion');
 
         selectSeccion.addEventListener('change', function () {
-             //console.log("Esta cambiando de seccion");
-             const seccionId = parseInt(this.value); // el valor del select seccion, convertido a entero
-             selecParcelaElegida.innerHTML = '<option value="">Elija la parcela</option>'; // limpiar
+            //console.log("Esta cambiando de seccion");
+            const seccionId = parseInt(this.value); // el valor del select seccion, convertido a entero
+            selecParcelaElegida.innerHTML = '<option value="">Elija la parcela</option>'; // limpiar
 
-             let parcelasFiltradas = parcelasPorSeccion[tipo].filter(p => p.seccion === seccionId); //filtra por la seccion seleccionada
+            let parcelasFiltradas = parcelasPorSeccion[tipo].filter(p => p.seccion === seccionId); //filtra por la seccion seleccionada
 
-             const tipoEstado = document.getElementById("estado");
-             let estadoSeleccionado = tipoEstado.value;
+            const tipoEstado = document.getElementById("estado");
+            let estadoSeleccionado = tipoEstado.value;
 
-             //valido si es nicho para mostrar los nichos disponibles
-            if(estadoSeleccionado == "1" && tipo == "nicho"){ //si es cuerpo completo
+            //valido si es nicho para mostrar los nichos disponibles
+            if (estadoSeleccionado == "1" && tipo == "nicho") { //si es cuerpo completo
                 console.log('cuerpo completo');
-                 parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos === 0);
+                parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos === 0);
             } else if (estadoSeleccionado != "1" && tipo == "nicho") {
                 parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 5);//si tiene menos o igual a 5 difuntos
             }
@@ -312,7 +320,7 @@
             } else if (estadoSeleccionado != "1" && tipo == "panteon") {
                 parcelasFiltradas = parcelasFiltradas.filter(m => m.difuntos <= 60);//si tiene menos o igual a 60 difuntos
             }
-         
+
             parcelasFiltradas.forEach(parcela => { //recorre todos las parcelas y las coloca en el select
                 const option = document.createElement('option');
                 option.value = parcela.id;
@@ -326,30 +334,21 @@
     // Event listeners para los radios
     document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
-             actualizarSecciones(e.target.value);
+            actualizarSecciones(e.target.value);
         });
     });
 
     estadoSelect.addEventListener('change', (est) => {
         document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
-            if(radio.checked){
+            if (radio.checked) {
                 actualizarSecciones(radio.value);
                 console.log("Cambio de select estado" + radio.value);
             }
-             
+
         });
-       
+
     });
 
-    // Cargar opciones iniciales (nicho por defecto)
-    document.addEventListener('DOMContentLoaded', () => {
-        actualizarSecciones('nicho');
-        var toastEl = document.getElementById('notificacion');
-            if (toastEl) {
-                var toast = new bootstrap.Toast(toastEl);
-                toast.show();
-            }
-    });
 
 
     //logica de modal
@@ -387,13 +386,14 @@
         const form = document.getElementById("formularioRegistrar");
 
         if (form.checkValidity()) {
-            form.submit(); // Sólo se envía si el formulario es válido  
+            form.submit(); // Sólo se envía si el formulario es válido
         } else {
             form.reportValidity(); // Muestra los mensajes de error del navegador
             cerrarModal(); // Opcional: cerrá el modal si querés forzar al usuario a revisar
         }
     }
 
-   
+
     //fin logica modal
+
 </script>
