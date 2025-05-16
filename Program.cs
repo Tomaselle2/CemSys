@@ -1,6 +1,7 @@
 using CemSys.Business;
 using CemSys.Data;
 using CemSys.Interface;
+using CemSys.Interface.Contratos;
 using CemSys.Interface.Difuntos;
 using CemSys.Interface.Fosas;
 using CemSys.Interface.Nichos;
@@ -8,7 +9,7 @@ using CemSys.Interface.Panteones;
 using CemSys.Interface.SeccionesNichos;
 using CemSys.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,10 +31,11 @@ builder.Services.AddScoped<IFosasBusiness, FosaBusiness>();
 builder.Services.AddScoped<IDifuntosBusiness, DifuntosBusiness>();
 builder.Services.AddScoped<IPanteonesBusiness, PanteonesBusiness>();
 
+
 //para el manejo de sesiones
 builder.Services.AddSession(option =>
 {
-    option.IdleTimeout = TimeSpan.FromMinutes(60); // Tiempo de expiración por inactividad
+    option.IdleTimeout = TimeSpan.FromMinutes(60); // Tiempo de expiraciÃ³n por inactividad
 });
 builder.Services.AddControllersWithViews();
 
