@@ -31,13 +31,12 @@ builder.Services.AddScoped<ISeccionesNichosBusiness, SeccionesNichosBusiness>();
 builder.Services.AddScoped<INichosBusiness, NichosBusiness>();
 builder.Services.AddScoped<IFosasBusiness, FosaBusiness>();
 builder.Services.AddScoped<IDifuntosBusiness, DifuntosBusiness>();
-builder.Services.AddScoped<IContratosBusiness, ContratosBusiness>();
 
 
 //para el manejo de sesiones
 builder.Services.AddSession(option =>
 {
-    option.IdleTimeout = TimeSpan.FromMinutes(60); // Tiempo de expiración por inactividad
+    option.IdleTimeout = TimeSpan.FromMinutes(60); // Tiempo de expiraciÃ³n por inactividad
 });
 builder.Services.AddControllersWithViews();
 
