@@ -1,7 +1,7 @@
 ﻿@using CemSys.Models.ViewModel;
 @model VMFosas
 <div class="main-content">
-    <h1>Administrar fosas de la sección @Model.seccion.Nombre</h1>
+    <h1>Administrar fosas de la sección @Model.seccion.Nombre.ToUpper()</h1>
 
 
     @if (Model.ABMRepositoryVM?.Lista.Count == 0)
