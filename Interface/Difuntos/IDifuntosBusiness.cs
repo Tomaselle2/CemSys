@@ -32,6 +32,11 @@ namespace CemSys.Interface.Difuntos
         Task<Fosa> ConsultarFosa(int id);
         Task<Panteone> ConsultarPanteon(int id);
 
+        Task<List<NichosDifunto>> EmitirListadoNichosDifuntos();
+        Task<List<FosasDifunto>> EmitirListadoFosasDifuntos();
+        Task<List<PanteonDifunto>> EmitirListadoPanteonDifuntos();
+
+
 
 
     }

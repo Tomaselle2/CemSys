@@ -16,7 +16,7 @@ namespace CemSys.Controllers
             _difuntosBusiness = difuntosBusiness;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //login
             var nombre = HttpContext.Session.GetString("nombreUsuario");
@@ -26,9 +26,19 @@ namespace CemSys.Controllers
             }
             ViewData["UsuarioLogueado"] = nombre;
 
-           
+            VM_Introduccion_Listado viewModelListado = new VM_Introduccion_Listado();
+            try
+            {
+                viewModelListado.ListaNichosDifuntos = await _difuntosBusiness.EmitirListadoNichosDifuntos();
+                viewModelListado.ListaFosasDifuntos = await _difuntosBusiness.EmitirListadoFosasDifuntos();
+                viewModelListado.ListaPanteonDifuntos = await _difuntosBusiness.EmitirListadoPanteonDifuntos();
 
-            return View(viewModel);
+            }catch(Exception e)
+            {
+                ViewData["MensajeError"] = e.Message;
+            }
+
+            return View(viewModelListado);
         }
 
         [HttpPost]

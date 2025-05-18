@@ -1,7 +1,6 @@
 using CemSys.Business;
 using CemSys.Data;
 using CemSys.Interface;
-using CemSys.Interface.Contratos;
 using CemSys.Interface.Difuntos;
 using CemSys.Interface.Fosas;
 using CemSys.Interface.Nichos;
@@ -22,6 +21,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //contenedor de capa de datos
 builder.Services.AddScoped(typeof(IRepositoryDB<>), typeof(ServiceGenericDB<>));
+builder.Services.AddScoped<IIntroducion_datos, IntroduccionDatosRepository>();
+
 
 //contenedor de capa de negocio
 builder.Services.AddScoped(typeof(IRepositoryBusiness<>), typeof(ServiceGenericBusiness<>));

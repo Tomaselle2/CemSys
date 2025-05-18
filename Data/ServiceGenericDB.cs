@@ -104,10 +104,6 @@ namespace CemSys.Data
                 throw;
             }
         }
-        public async Task<T?> ObtenerUnoAsync(Expression<Func<T, bool>> predicado)
-        {
-            return await _dbSet.FirstOrDefaultAsync(predicado);
-        }
 
     }
 }

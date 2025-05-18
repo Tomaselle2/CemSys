@@ -22,13 +22,15 @@ namespace CemSys.Business
         private readonly IRepositoryDB<FosasDifunto> _fosaDifuntoRepository;
         private readonly IRepositoryDB<PanteonDifunto> _panteonDifuntoRepository;
 
+        private readonly IIntroducion_datos _introduccionDatosParcelaDifunto;
+
 
 
 
         public DifuntosBusiness(IRepositoryDB<Difunto> difuntosbd, IRepositoryDB<EstadoDifunto> estadodifuntoRepository, IRepositoryDB<SeccionesNicho> seccionesNichosRepository, 
             IRepositoryDB<SeccionesFosa> seccionesFosasRepository, IRepositoryDB<Nicho> nichoRepository, IRepositoryDB<Fosa> fosaRepository, IRepositoryDB<ActaDefuncion> actaRepository,
             IRepositoryDB<NichosDifunto> nichoDifuntoRepository, IRepositoryDB<FosasDifunto> fosaDifuntoRepository, IRepositoryDB<Panteone> panteonRepository,
-            IRepositoryDB<SeccionesPanteone> seccionesPanteonesRepository, IRepositoryDB<PanteonDifunto> panteonDifuntoRepository)
+            IRepositoryDB<SeccionesPanteone> seccionesPanteonesRepository, IRepositoryDB<PanteonDifunto> panteonDifuntoRepository, IIntroducion_datos introduccionDatosParcelaDifunto)
         {
             _difuntosRepository = difuntosbd;
             _estadodifuntoRepository = estadodifuntoRepository;
@@ -42,6 +44,7 @@ namespace CemSys.Business
             _panteonRepository = panteonRepository;
             _seccionesPanteonesRepository = seccionesPanteonesRepository;
             _panteonDifuntoRepository = panteonDifuntoRepository;
+            _introduccionDatosParcelaDifunto = introduccionDatosParcelaDifunto;
         }
 
         public async Task<Fosa> ConsultarFosa(int id)
@@ -127,6 +130,15 @@ namespace CemSys.Business
             }
         }
 
+        public async Task<List<FosasDifunto>> EmitirListadoFosasDifuntos()
+        {
+            try
+            {
+                return await _introduccionDatosParcelaDifunto.EmitirListadoFosasDifuntos();
+            }
+            catch (Exception) { throw; }
+        }
+
         public async Task<List<DTO_nichos>> EmitirListadoNichos()
         {
             try
@@ -145,6 +157,25 @@ namespace CemSys.Business
             {
                 throw;
             }
+        }
+
+        public async Task<List<NichosDifunto>> EmitirListadoNichosDifuntos()
+        {       
+            try
+            {
+
+                return await _introduccionDatosParcelaDifunto.EmitirListadoNichosDifuntos();
+            }
+            catch (Exception) { throw; }
+        }
+
+        public async Task<List<PanteonDifunto>> EmitirListadoPanteonDifuntos()
+        {
+            try
+            {
+                return await _introduccionDatosParcelaDifunto.EmitirListadoPanteonDifuntos();
+            }
+            catch (Exception) { throw; }
         }
 
         public async Task<List<DTO_panteones>> EmitirListadoPanteones()
@@ -297,6 +328,7 @@ namespace CemSys.Business
             }
             catch (Exception) { throw; }
         }
+
 
     }
 }

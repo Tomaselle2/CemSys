@@ -9,6 +9,5 @@ namespace CemSys.Interface
         Task<T> Consultar(int id);
         Task<int> Modificar(T modelo);
         Task Eliminar(int id);
-        Task<T?> ObtenerUnoAsync(Expression<Func<T, bool>> predicado);
     }
 }
