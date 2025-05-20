@@ -39,9 +39,9 @@ namespace CemSys.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Filtrar(string? nombreDifunto, string? apellidoDifunto, string? tipoParcela, int? seccionElegida)
+        public async Task<IActionResult> Filtrar(string? nombreDifunto, string? apellidoDifunto, string? tipoParcela, int? seccionElegida, string? dniDifunto)
         {
-            VM_Introduccion_Listado viewModelListadoFiltrado = await Filtrador(nombreDifunto, apellidoDifunto, tipoParcela, seccionElegida);
+            VM_Introduccion_Listado viewModelListadoFiltrado = await Filtrador(nombreDifunto, apellidoDifunto, tipoParcela, seccionElegida, dniDifunto);
             viewModelListadoFiltrado.ListaSeccionesNichos = await _difuntosBusiness.EmitirListadoSeccionesNicho();
             viewModelListadoFiltrado.ListaSeccionesFosas = await _difuntosBusiness.EmitirListadoSeccionesFosa();
             viewModelListadoFiltrado.ListaSeccionesPanteones = await _difuntosBusiness.EmitirListadoSeccionesPanteon();
@@ -49,7 +49,7 @@ namespace CemSys.Controllers
         }
 
 
-        private async Task<VM_Introduccion_Listado> Filtrador(string? nombreDifunto, string? apellidoDifunto, string? tipoParcela, int? seccionElegida)
+        private async Task<VM_Introduccion_Listado> Filtrador(string? nombreDifunto, string? apellidoDifunto, string? tipoParcela, int? seccionElegida, string? dniDifunto)
         {
             var viewModelListado = new VM_Introduccion_Listado();
 
@@ -58,6 +58,22 @@ namespace CemSys.Controllers
                 var listaNichos = await _difuntosBusiness.EmitirListadoNichosDifuntos();
                 var listaFosas = await _difuntosBusiness.EmitirListadoFosasDifuntos();
                 var listaPanteones = await _difuntosBusiness.EmitirListadoPanteonDifuntos();
+
+                //filtra por dni
+                if (!string.IsNullOrEmpty(dniDifunto))
+                {
+                    listaNichos = listaNichos
+                        .Where(x => (x.Difunto.Dni).ToLower().Contains(dniDifunto.ToLower()))
+                        .ToList();
+
+                    listaFosas = listaFosas
+                        .Where(x => (x.Difunto.Dni).ToLower().Contains(dniDifunto.ToLower()))
+                        .ToList();
+
+                    listaPanteones = listaPanteones
+                        .Where(x => (x.Difunto.Dni).ToLower().Contains(dniDifunto.ToLower()))
+                        .ToList();
+                }
 
                 //filtra por nombre
                 if (!string.IsNullOrEmpty(nombreDifunto))
@@ -72,6 +88,23 @@ namespace CemSys.Controllers
 
                     listaPanteones = listaPanteones
                         .Where(x => (x.Difunto.Nombre).ToLower().Contains(nombreDifunto.ToLower()))
+                        .ToList();
+                }
+
+
+                //filtra por apellido
+                if (!string.IsNullOrEmpty(apellidoDifunto))
+                {
+                    listaNichos = listaNichos
+                        .Where(x => (x.Difunto.Apellido).ToLower().Contains(apellidoDifunto.ToLower()))
+                        .ToList();
+
+                    listaFosas = listaFosas
+                        .Where(x => (x.Difunto.Apellido).ToLower().Contains(apellidoDifunto.ToLower()))
+                        .ToList();
+
+                    listaPanteones = listaPanteones
+                        .Where(x => (x.Difunto.Apellido).ToLower().Contains(apellidoDifunto.ToLower()))
                         .ToList();
                 }
 
@@ -92,6 +125,10 @@ namespace CemSys.Controllers
                     {
                         listaNichos = new List<NichosDifunto>();
                         listaFosas = new List<FosasDifunto>();
+                    }
+                    else
+                    {
+                        //SELECCIONO OPCION TODAS
                     }
                 }
 
