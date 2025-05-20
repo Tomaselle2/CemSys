@@ -134,7 +134,7 @@ namespace CemSys.Business
         {
             try
             {
-                return await _introduccionDatosParcelaDifunto.EmitirListadoFosasDifuntos();
+                return (await _introduccionDatosParcelaDifunto.EmitirListadoFosasDifuntos()).Where(s=>s.Fosa.SeccionNavigation.Visibilidad == true).ToList();
             }
             catch (Exception) { throw; }
         }
@@ -164,7 +164,7 @@ namespace CemSys.Business
             try
             {
 
-                return await _introduccionDatosParcelaDifunto.EmitirListadoNichosDifuntos();
+                return (await _introduccionDatosParcelaDifunto.EmitirListadoNichosDifuntos()).Where(s=> s.Nicho.SeccionNavigation.Visibilidad == true).ToList();
             }
             catch (Exception) { throw; }
         }
@@ -173,7 +173,7 @@ namespace CemSys.Business
         {
             try
             {
-                return await _introduccionDatosParcelaDifunto.EmitirListadoPanteonDifuntos();
+                return (await _introduccionDatosParcelaDifunto.EmitirListadoPanteonDifuntos()).Where(s=>s.Panteon.IdSeccionPanteonNavigation.Visibilidad == true).ToList();
             }
             catch (Exception) { throw; }
         }

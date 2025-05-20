@@ -2,6 +2,7 @@
 using CemSys.Models;
 using CemSys.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 
 namespace CemSys.Controllers
@@ -16,7 +17,7 @@ namespace CemSys.Controllers
             _difuntosBusiness = difuntosBusiness;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index( VM_Introduccion_Listado viewModelListadoFiltrado)
         {
             //login
             var nombre = HttpContext.Session.GetString("nombreUsuario");
@@ -26,19 +27,102 @@ namespace CemSys.Controllers
             }
             ViewData["UsuarioLogueado"] = nombre;
 
-            VM_Introduccion_Listado viewModelListado = new VM_Introduccion_Listado();
+
+            viewModelListadoFiltrado.ListaSeccionesNichos = await _difuntosBusiness.EmitirListadoSeccionesNicho();
+            viewModelListadoFiltrado.ListaSeccionesFosas = await _difuntosBusiness.EmitirListadoSeccionesFosa();
+            viewModelListadoFiltrado.ListaSeccionesPanteones = await _difuntosBusiness.EmitirListadoSeccionesPanteon();
+            
+
+
+
+            return View(viewModelListadoFiltrado);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Filtrar(string? nombreDifunto, string? apellidoDifunto, string? tipoParcela, int? seccionElegida)
+        {
+            VM_Introduccion_Listado viewModelListadoFiltrado = await Filtrador(nombreDifunto, apellidoDifunto, tipoParcela, seccionElegida);
+            viewModelListadoFiltrado.ListaSeccionesNichos = await _difuntosBusiness.EmitirListadoSeccionesNicho();
+            viewModelListadoFiltrado.ListaSeccionesFosas = await _difuntosBusiness.EmitirListadoSeccionesFosa();
+            viewModelListadoFiltrado.ListaSeccionesPanteones = await _difuntosBusiness.EmitirListadoSeccionesPanteon();
+            return View("Index",viewModelListadoFiltrado);
+        }
+
+
+        private async Task<VM_Introduccion_Listado> Filtrador(string? nombreDifunto, string? apellidoDifunto, string? tipoParcela, int? seccionElegida)
+        {
+            var viewModelListado = new VM_Introduccion_Listado();
+
             try
             {
-                viewModelListado.ListaNichosDifuntos = await _difuntosBusiness.EmitirListadoNichosDifuntos();
-                viewModelListado.ListaFosasDifuntos = await _difuntosBusiness.EmitirListadoFosasDifuntos();
-                viewModelListado.ListaPanteonDifuntos = await _difuntosBusiness.EmitirListadoPanteonDifuntos();
+                var listaNichos = await _difuntosBusiness.EmitirListadoNichosDifuntos();
+                var listaFosas = await _difuntosBusiness.EmitirListadoFosasDifuntos();
+                var listaPanteones = await _difuntosBusiness.EmitirListadoPanteonDifuntos();
 
-            }catch(Exception e)
+                //filtra por nombre
+                if (!string.IsNullOrEmpty(nombreDifunto))
+                {
+                    listaNichos = listaNichos
+                        .Where(x => (x.Difunto.Nombre).ToLower().Contains(nombreDifunto.ToLower()))
+                        .ToList();
+
+                    listaFosas = listaFosas
+                        .Where(x => (x.Difunto.Nombre).ToLower().Contains(nombreDifunto.ToLower()))
+                        .ToList();
+
+                    listaPanteones = listaPanteones
+                        .Where(x => (x.Difunto.Nombre).ToLower().Contains(nombreDifunto.ToLower()))
+                        .ToList();
+                }
+
+                // FILTRO POR TIPO
+                if (!string.IsNullOrEmpty(tipoParcela))
+                {
+                    if (tipoParcela == "nicho")
+                    {
+                        listaFosas = new List<FosasDifunto>();
+                        listaPanteones = new List<PanteonDifunto>();
+                    }
+                    else if (tipoParcela == "fosa")
+                    {
+                        listaNichos = new List<NichosDifunto>();
+                        listaPanteones = new List<PanteonDifunto>();
+                    }
+                    else if (tipoParcela == "panteon")
+                    {
+                        listaNichos = new List<NichosDifunto>();
+                        listaFosas = new List<FosasDifunto>();
+                    }
+                }
+
+                // FILTRO POR SECCIÓN
+                if (seccionElegida != null)
+                {
+                    listaNichos = listaNichos
+                        .Where(x => x.Nicho.Seccion == seccionElegida)
+                        .ToList();
+
+                    listaFosas = listaFosas
+                        .Where(x => x.Fosa.Seccion == seccionElegida)
+                        .ToList();
+
+                    listaPanteones = listaPanteones
+                        .Where(x => x.Panteon.IdSeccionPanteon == seccionElegida)
+                        .ToList();
+                }
+
+                viewModelListado.ListaNichosDifuntos = listaNichos;
+                viewModelListado.ListaFosasDifuntos = listaFosas;
+                viewModelListado.ListaPanteonDifuntos = listaPanteones;
+
+            }
+            catch (Exception e)
             {
                 ViewData["MensajeError"] = e.Message;
             }
 
-            return View(viewModelListado);
+            return viewModelListado;
+
         }
 
         [HttpPost]
