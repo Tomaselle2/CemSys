@@ -12,6 +12,20 @@ namespace CemSys.Data
             _context = contex;
         }
 
+        public async Task<Difunto> ConsultarDifunto(int id)
+        {
+            try
+            {
+                Difunto difunto = await _context.Difuntos
+                        .Include(acta => acta.ActaDefuncionNavigation)
+                        .Include(est => est.EstadoNavigation)
+                        .Where(d => d.IdDifunto == id)
+                        .FirstOrDefaultAsync();
+                return difunto;
+            }
+            catch (Exception) { throw; }
+        }
+
         public async Task<List<FosasDifunto>> EmitirListadoFosasDifuntos()
         {
             try

@@ -47,6 +47,18 @@ namespace CemSys.Business
             _introduccionDatosParcelaDifunto = introduccionDatosParcelaDifunto;
         }
 
+        public async Task<Difunto> ConsultarDifunto(int id)
+        {
+            try
+            {
+                return await _introduccionDatosParcelaDifunto.ConsultarDifunto(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<Fosa> ConsultarFosa(int id)
         {
             try
@@ -163,7 +175,6 @@ namespace CemSys.Business
         {       
             try
             {
-
                 return (await _introduccionDatosParcelaDifunto.EmitirListadoNichosDifuntos()).Where(s=> s.Nicho.SeccionNavigation.Visibilidad == true).ToList();
             }
             catch (Exception) { throw; }
@@ -277,6 +288,18 @@ namespace CemSys.Business
             try
             {
                 return await _panteonRepository.Modificar(modelo);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<int> ModificarDifunto(Difunto modelo)
+        {
+            try
+            {
+                return await _difuntosRepository.Modificar(modelo);
             }
             catch (Exception)
             {

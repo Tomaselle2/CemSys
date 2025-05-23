@@ -162,7 +162,100 @@ namespace CemSys.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Modificar(int idDifunto)
+        {
+            try
+            {
+                viewModel.ABMRepositoryVM.Modelo = await _difuntosBusiness.ConsultarDifunto(idDifunto);
+                viewModel.ListaDifuntos = await _difuntosBusiness.EmitirListadoDifuntos();
+                viewModel.ABMRepositoryVM.EsModificacion = true;
+                DateOnly year = DateOnly.FromDateTime(DateTime.Now);
+                viewModel.fechaActual = year;
+
+            }
+            catch(Exception ex)
+            {
+                ViewData["MensajeError"] = ex.Message;
+            }
+            return View("Registrar", viewModel);
+        }
+
         [HttpPost]
+        public async Task<IActionResult> Modificar(int idDifunto, string dni,
+            string nombre,
+            string apellido,
+            DateOnly defuncionFecha,
+            DateOnly ingresoFecha,
+            DateOnly nacimientoFecha,
+            int estadoId,
+            int acta,
+            int tomo,
+            int folio,
+            string serie,
+            int age,
+            string datosAdicionales)
+        {
+
+            try
+            {
+
+                //modificar
+                Difunto modelo = await _difuntosBusiness.ConsultarDifunto(idDifunto);
+                if (nombre != null)
+                {
+                    modelo.Nombre = nombre.ToLower();
+                }
+                else
+                {
+                    modelo.Nombre = "NN";
+                }
+                modelo.Apellido = apellido.ToLower();
+                if (dni != null)
+                {
+                    modelo.Dni = dni;
+                }
+                else { modelo.Dni = "nn"; }
+                modelo.FechaNacimiento = nacimientoFecha;
+                modelo.FechaDefuncion = defuncionFecha;
+                modelo.FechaIngreso = ingresoFecha;
+                modelo.Estado = estadoId;
+                modelo.ActaDefuncionNavigation.NroActa = acta;
+                modelo.ActaDefuncionNavigation.Tomo = tomo;
+                modelo.ActaDefuncionNavigation.Folio = folio;
+                
+                if (serie != null)
+                {
+                    modelo.ActaDefuncionNavigation.Serie = serie.ToLower();
+                }
+                else
+                {
+                    modelo.ActaDefuncionNavigation.Serie = serie;
+                }
+                modelo.ActaDefuncionNavigation.Age = age;
+
+                modelo.Visibilidad = true;
+                modelo.Descripcion = datosAdicionales;
+
+                int idmodificado = await _difuntosBusiness.ModificarDifunto(modelo);
+
+                //llena los datos
+                viewModel.ABMRepositoryVM.Modelo = await _difuntosBusiness.ConsultarDifunto(idDifunto);
+                viewModel.ListaDifuntos = await _difuntosBusiness.EmitirListadoDifuntos();
+                viewModel.ABMRepositoryVM.EsModificacion = true;
+                DateOnly year = DateOnly.FromDateTime(DateTime.Now);
+                viewModel.fechaActual = year;
+                TempData["ModificarMensaje"] = "Modificación exitosa";
+
+            }
+            catch (Exception ex)
+            {
+                TempData["ModificarMensaje"] = ex.Message;
+            }
+            return View("Registrar", viewModel);
+        }
+
+            [HttpPost]
         public async Task<IActionResult> Registrar(
             string dni,
             string nombre,
@@ -224,7 +317,11 @@ namespace CemSys.Controllers
                 modelo.Nombre = "NN";
             }
             modelo.Apellido = apellido.ToLower();
-            modelo.Dni = dni;
+            if(dni != null)
+            {
+                modelo.Dni = dni;
+            }
+            else { modelo.Dni = "nn"; }
             modelo.FechaNacimiento = nacimientoFecha;
             modelo.FechaDefuncion = defuncionFecha;
             modelo.FechaIngreso = ingresoFecha;
@@ -343,26 +440,16 @@ namespace CemSys.Controllers
             }
             ViewData["UsuarioLogueado"] = nombre;
             //fin login
-            DateOnly year = DateOnly.FromDateTime(DateTime.Now);
+           
 
 
             if (viewModel != null)
             {
                 try
                 {
-                    viewModel.ListaEstadoDifunto = await _difuntosBusiness.EmitirListadoEstadoDifunto();//lista todos los difuntos en la vista
-                    viewModel.ListaSeccionesNicho = await _difuntosBusiness.EmitirListadoSeccionesNicho();//lista todas las secc de nichos en la vista
-                    viewModel.ListaSeccionesFosa = await _difuntosBusiness.EmitirListadoSeccionesFosa();//lista todas las secc de fosas en la vista
-                    viewModel.ListaSeccionesPanteon = await _difuntosBusiness.EmitirListadoSeccionesPanteon();//lista todas las secc de panteones en la vista
-
-                    viewModel.ListaNichos = await _difuntosBusiness.EmitirListadoNichos();//lista todos los nichos en la vista
-                    viewModel.ListaFosas = await _difuntosBusiness.EmitirListadoFosas();//lista todos las fosas en la vista
-                    viewModel.ListaPanteones = await _difuntosBusiness.EmitirListadoPanteones();//lista todos los panteones en la vista
-
-                    viewModel.fechaActual = year;
-                    viewModel.ListaDifuntos = await _difuntosBusiness.EmitirListadoDifuntos();
+                   await CargarContenidoInicialenPantallaRegistrar(viewModel);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ViewData["MensajeError"] = ex.Message;
                 }
@@ -371,6 +458,26 @@ namespace CemSys.Controllers
 
             return View(viewModel);
         }
+
+        private async Task CargarContenidoInicialenPantallaRegistrar(VMDifuntos viewModel)
+        {
+            DateOnly year = DateOnly.FromDateTime(DateTime.Now);
+
+            viewModel.ListaEstadoDifunto = await _difuntosBusiness.EmitirListadoEstadoDifunto();//lista todos los difuntos en la vista
+            viewModel.ListaSeccionesNicho = await _difuntosBusiness.EmitirListadoSeccionesNicho();//lista todas las secc de nichos en la vista
+            viewModel.ListaSeccionesFosa = await _difuntosBusiness.EmitirListadoSeccionesFosa();//lista todas las secc de fosas en la vista
+            viewModel.ListaSeccionesPanteon = await _difuntosBusiness.EmitirListadoSeccionesPanteon();//lista todas las secc de panteones en la vista
+
+            viewModel.ListaNichos = await _difuntosBusiness.EmitirListadoNichos();//lista todos los nichos en la vista
+            viewModel.ListaFosas = await _difuntosBusiness.EmitirListadoFosas();//lista todos las fosas en la vista
+            viewModel.ListaPanteones = await _difuntosBusiness.EmitirListadoPanteones();//lista todos los panteones en la vista
+
+            viewModel.fechaActual = year;
+            viewModel.ListaDifuntos = await _difuntosBusiness.EmitirListadoDifuntos();
+            viewModel.ABMRepositoryVM.EsModificacion = false;
+        }
+
+    
     }
     
 }

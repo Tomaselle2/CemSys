@@ -87,6 +87,7 @@ else
                         <th>Tipo</th>
                         <th>Sección</th>
                         <th>Parcela</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,7 +100,7 @@ else
                         {
                             <tr>
 
-                                @if (@opc.Difunto.Dni != null)
+                                @if (@opc.Difunto.Dni != "nn")
                                 {
                                     <td>@opc.Difunto.Dni</td>
                                 }
@@ -121,6 +122,12 @@ else
                                 <td>Nicho</td>
                                 <td>@opc.Nicho.SeccionNavigation.Nombre.ToUpper()</td>
                                 <td>Nicho @opc.Nicho.NroNicho fila @opc.Nicho.NroFila</td>
+                                <td>
+                                    <form action="Modificar" method="get">
+                                        <input type="hidden" name="idDifunto" value="@opc.Difunto.IdDifunto" />
+                                        <button type="submit" class="form-control">Editar</button>    
+                                    </form>
+                                </td>
                             </tr>
                         }
                     }
@@ -134,7 +141,7 @@ else
                         {
                             <tr>
 
-                                @if (@opc.Difunto.Dni != null)
+                                @if (@opc.Difunto.Dni != "nn")
                                 {
                                     <td>@opc.Difunto.Dni</td>
                                 }
@@ -156,6 +163,12 @@ else
                                 <td>Fosa</td>
                                 <td>@opc.Fosa.SeccionNavigation.Nombre.ToUpper()</td>
                                 <td>Fosa @opc.Fosa.NroFosa</td>
+                                <td>
+                                    <form action="Modificar" method="get">
+                                        <input type="hidden" name="idDifunto" value="@opc.Difunto.IdDifunto" />
+                                        <button type="submit" class="form-control">Editar</button>
+                                    </form>
+                                </td>
                             </tr>
                         }
                     }
@@ -169,7 +182,7 @@ else
                         {
                             <tr>
 
-                                @if (@opc.Difunto.Dni != null)
+                                @if (@opc.Difunto.Dni != "nn")
                                 {
                                     <td>@opc.Difunto.Dni</td>
                                 }
@@ -191,6 +204,12 @@ else
                                 <td>Panteón</td>
                                 <td>@opc.Panteon.IdSeccionPanteonNavigation.Nombre.ToUpper()</td>
                                 <td>Lote @opc.Panteon.NroLote</td>
+                                <td>
+                                    <form action="Modificar" method="get">
+                                        <input type="hidden" name="idDifunto" value="@opc.Difunto.IdDifunto" />
+                                        <button type="submit" class="form-control">Editar</button>
+                                    </form>
+                                </td>
                             </tr>
                         }
                     }

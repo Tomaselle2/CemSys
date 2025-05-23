@@ -5,6 +5,7 @@ namespace CemSys.Models.ViewModel
     public class VMDifuntos
     {
         public ABMRepositoryVM<Difunto>? ABMRepositoryVM { get; set; } = new ABMRepositoryVM<Difunto>();
+
         public List<EstadoDifunto> ListaEstadoDifunto { get; set; } = new List<EstadoDifunto>();
         public List<DTO_seccionesFosa> ListaSeccionesFosa { get; set; } = new List<DTO_seccionesFosa>();
         public List<DTO_seccionesNicho> ListaSeccionesNicho { get; set; } = new List<DTO_seccionesNicho>();

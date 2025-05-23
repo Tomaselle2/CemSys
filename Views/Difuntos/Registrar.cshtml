@@ -3,54 +3,73 @@
 @{
     string fecha = Model.fechaActual.ToString("yyyy-MM-dd");
 }
+
+@{
+    string action = (Model.ABMRepositoryVM.EsModificacion == true) ? "Modificar" : "Registrar";
+}
 <div class="registro-difunto-container">
     <h2>Registrar Difunto</h2>
-    <form action="Registrar" method="post" id="formularioRegistrar">
+    <form action="@action" method="post" id="formularioRegistrar">
 
         <!-- Contenedor 1: Datos Personales -->
         <div class="subcontenedor">
             @* validar si es N.N *@
-            <div>
-                <label>N.N</label>
-                <input type="checkbox" name="nn" value="nn" id="nnCheck" />
-            </div>
-          
+            @if (action == "Registrar")
+            {
+                <div>
+                    <label>N.N</label>
+                    <input type="checkbox" name="nn" value="nn" id="nnCheck" />
+                </div>
+            }
+
+
             <div class="row">
                 <div class="col-md-4 mb-2">
                     <label for="dni">DNI</label>
-                    <input class="form-control form-control-sm input-pequeno" type="text" name="dni" id="dni" required maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                    <input class="form-control form-control-sm input-pequeno" type="text" name="dni" id="dni" required maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="@Model.ABMRepositoryVM.Modelo?.Dni" />
                 </div>
                 <div class="col-md-4 mb-2">
                     <label for="nombreDifunto">Nombre</label>
-                    <input class="form-control form-control-sm input-pequeno" type="text" name="nombre" id="nombreDifunto" required maxlength="60" minlength="2" />
+                    <input class="form-control form-control-sm input-pequeno" type="text" name="nombre" id="nombreDifunto" required maxlength="60" minlength="2" value="@Model.ABMRepositoryVM.Modelo?.Nombre.ToUpper()"/>
                 </div>
                 <div class="col-md-4 mb-2">
                     <label for="apellidoDifunto">Apellido</label>
-                    <input class="form-control form-control-sm input-pequeno" type="text" name="apellido" id="apellidoDifunto" required maxlength="60" minlength="2" />
+                    <input class="form-control form-control-sm input-pequeno" type="text" name="apellido" id="apellidoDifunto" required maxlength="60" minlength="2" value="@Model.ABMRepositoryVM.Modelo?.Apellido.ToUpper()" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4 mb-2">
                     <label for="fechaDefuncion">Defunción</label>
-                    <input class="form-control form-control-sm input-pequeno" type="date" name="defuncionFecha" id="fechaDefuncion" max="@fecha" required />
+                    <input class="form-control form-control-sm input-pequeno" type="date" name="defuncionFecha" id="fechaDefuncion" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaDefuncion?.ToString("yyy-MM-dd")" />
                 </div>
                 <div class="col-md-4 mb-2">
                     <label for="fechaIngreso">Ingreso</label>
-                    <input class="form-control form-control-sm input-pequeno" type="date" name="ingresoFecha" id="fechaIngreso" max="@fecha" required />
+                    <input class="form-control form-control-sm input-pequeno" type="date" name="ingresoFecha" id="fechaIngreso" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaIngreso?.ToString("yyy-MM-dd")" />
                 </div>
                 <div class="col-md-4 mb-2">
                     <label for="fechaNacimiento">Nacimiento</label>
-                    <input class="form-control form-control-sm input-pequeno" type="date" name="nacimientoFecha" id="fechaNacimiento" max="@fecha" required />
+                    <input class="form-control form-control-sm input-pequeno" type="date" name="nacimientoFecha" id="fechaNacimiento" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaNacimiento?.ToString("yyy-MM-dd")" />
                 </div>
             </div>
             <div class="mb-2">
                 <label for="estado">Estado</label>
                 <select class="form-select form-select-sm select-estado" id="estado" name="estadoId" required>
-                    <option value="">--Elija una opción</option>
-                    @foreach (var opc in Model.ListaEstadoDifunto)
+                    @if (action == "Registrar")
                     {
-                        <option value="@opc.IdEstadoDifunto">@opc.Estado</option>
+                        <option value="">--Elija una opción</option>
+                        @foreach (var opc in Model.ListaEstadoDifunto)
+                        {
+                            <option value="@opc.IdEstadoDifunto">@opc.Estado</option>
+                        }
                     }
+                    else
+                    {
+                        <option value="@Model.ABMRepositoryVM.Modelo?.EstadoNavigation.IdEstadoDifunto">@Model.ABMRepositoryVM.Modelo?.EstadoNavigation.Estado</option>
+                    }
+
+
+
+
                 </select>
             </div>
         </div>
@@ -62,23 +81,35 @@
                 <div class="row">
                     <div class="col-md-2 mb-2">
                         <label for="acta">Acta</label>
-                        <input type="number" class="form-control form-control-sm input-pequeno" name="acta" id="acta" min="1" />
+                        <input type="number" class="form-control form-control-sm input-pequeno" name="acta" id="acta" min="1"
+                               value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.NroActa != 0
+                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.NroActa.ToString()
+                : "")" />
+
                     </div>
                     <div class="col-md-2 mb-2">
                         <label for="tomo">Tomo</label>
-                        <input type="number" class="form-control form-control-sm input-pequeno" name="tomo" id="tomo" min="1" />
+                        <input type="number" class="form-control form-control-sm input-pequeno" name="tomo" id="tomo" min="1" value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Tomo != 0
+                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Tomo.ToString()
+                : "")" />
                     </div>
                     <div class="col-md-2 mb-2">
                         <label for="folio">Folio</label>
-                        <input type="number" class="form-control form-control-sm input-pequeno" name="folio" id="folio" min="1" />
+                        <input type="number" class="form-control form-control-sm input-pequeno" name="folio" id="folio" min="1" value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Folio != 0
+                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Folio.ToString()
+                : "")" />
                     </div>
                     <div class="col-md-2 mb-2">
                         <label for="serie">Serie</label>
-                        <input type="text" class="form-control form-control-sm input-pequeno" name="serie" id="serie" maxlength="4" />
+                        <input type="text" class="form-control form-control-sm input-pequeno" name="serie" id="serie" maxlength="4" value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Serie != null
+                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Serie.ToString().ToUpper()
+                : "")" />
                     </div>
                     <div class="col-md-2 mb-2">
                         <label for="age">Año</label>
-                        <input type="number" class="form-control form-control-sm input-pequeno" name="age" id="age" min="1927" max="@Model.fechaActual.Year" />
+                        <input type="number" class="form-control form-control-sm input-pequeno" name="age" id="age" min="1927" max="@Model.fechaActual.Year" value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Age != 0
+                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Age.ToString()
+                : "")" />
                     </div>
                 </div>
             </fieldset>
@@ -87,47 +118,58 @@
         @* campo de descripcion *@
         <div>
             <label for="datosAdicionales">Datos adicionales</label>
-            <textarea id="datosAdicionales" name="datosAdicionales"></textarea>
+            <textarea id="datosAdicionales" name="datosAdicionales">@Model.ABMRepositoryVM.Modelo?.Descripcion</textarea>
         </div>
-
         <!-- Contenedor 3: Parcela -->
-        <div class="subcontenedor">
-            <fieldset>
-                <legend class="h6">Tipo de Parcela</legend>
-                <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" name="tipoParcela" value="nicho" id="nicho" checked>
-                    <label class="form-check-label" for="nicho">Nicho</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" name="tipoParcela" value="fosa" id="fosa">
-                    <label class="form-check-label" for="fosa">Fosa</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" name="tipoParcela" value="panteon" id="panteon">
-                    <label class="form-check-label" for="panteon">Panteón</label>
-                </div>
-            </fieldset>
+        @if(action == "Registrar"){
+            <div class="subcontenedor">
+                <fieldset>
+                    <legend class="h6">Tipo de Parcela</legend>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="tipoParcela" value="nicho" id="nicho" checked>
+                        <label class="form-check-label" for="nicho">Nicho</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="tipoParcela" value="fosa" id="fosa">
+                        <label class="form-check-label" for="fosa">Fosa</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="tipoParcela" value="panteon" id="panteon">
+                        <label class="form-check-label" for="panteon">Panteón</label>
+                    </div>
+                </fieldset>
 
-            <fieldset class="mt-3">
-                <legend class="h6">Ubicación</legend>
-                <div class="mb-2">
-                    <label for="seccion">Sección</label>
-                    <select class="form-select form-select-sm select-estandar" required id="seccion" name="seccionElegida">
-                        <option value="">Elija una opción</option>
-                    </select>
-                </div>
-                <div class="mb-2">
-                    <label for="parcelaElegida">Parcela</label>
-                    <select class="form-select form-select-sm select-estandar" id="parcelaElegida" name="parcelaElegida" required>
-                        <option value="">Elija la parcela</option>
-                    </select>
-                </div>
-            </fieldset>
-        </div>
+                <fieldset class="mt-3">
+                    <legend class="h6">Ubicación</legend>
+                    <div class="mb-2">
+                        <label for="seccion">Sección</label>
+                        <select class="form-select form-select-sm select-estandar" required id="seccion" name="seccionElegida">
+                            <option value="">Elija una opción</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label for="parcelaElegida">Parcela</label>
+                        <select class="form-select form-select-sm select-estandar" id="parcelaElegida" name="parcelaElegida" required>
+                            <option value="">Elija la parcela</option>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+        }
+       
+        
 
         <!-- Botón al final del contenedor principal -->
         <div class="text-center mt-3">
-            <input type="button" value="Registrar" onclick="confirmarEnvio()" class="btn btn-custom" />
+            @if(action == "Registrar")
+            {
+                <input type="button" value="@action" onclick="confirmarEnvio()" class="btn btn-custom" />
+            }
+            else
+            {
+                <input type="hidden" value="@Model.ABMRepositoryVM.Modelo.IdDifunto" name="idDifunto"/>
+                <input type="submit" value="@action" class="btn btn-custom" />
+            }
         </div>
     </form>
 </div>
@@ -170,13 +212,27 @@
 
 }
 
+@* Notificaciones de modificar *@
+@if (!string.IsNullOrEmpty(TempData["ModificarMensaje"] as string))
+{
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1055;">
+        <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="notificacion">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @TempData["ModificarMensaje"]
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
 
-
-
+}
 
 @* logica con js*@
 
 <script>
+    const action = "@action";
+
     //logica de N.N
     const checkNN = document.getElementById('nnCheck');
     const dniText = document.getElementById('dni');
@@ -190,9 +246,23 @@
             var toast = new bootstrap.Toast(toastEl);
             toast.show();
         }
+
+        if(action === "Modificar")
+        {
+            if(dniText.value === "nn"){
+                console.log("hay un nn");
+                dniText.value = "";
+                nombreDifunto.value = "";
+                dniText.disabled = true;
+                nombreDifunto.disabled = true;
+            }
+           
+        }
     });
 
-    checkNN.addEventListener("change", (e) => {
+    if(action === "Registrar")
+    {
+        checkNN.addEventListener("change", (e) => {
         console.log("presiona el check");
         const isChecked = e.target.checked;
         dniText.disabled = isChecked;
@@ -202,7 +272,9 @@
             dniText.value = "";
             nombreDifunto.value = "";
         }
-    });
+        });
+    }
+   
 
     // Datos iniciales
     const estadoSelect = document.getElementById('estado');
@@ -245,16 +317,31 @@
 
     // Función para actualizar las opciones del select
     function actualizarSecciones(tipo) {
-        const select = document.getElementById('seccion');
-        select.innerHTML = '<option value="">Elija la sección</option>';
+        if(action === "Registrar"){
+            const select = document.getElementById('seccion');
+            select.innerHTML = '<option value="">Elija la sección</option>';
 
-        const selecParcelaElegida = document.getElementById('parcelaElegida');
-        parcelaElegida.innerHTML = '<option value="">Elija la parcela</option>';
+            const selecParcelaElegida = document.getElementById('parcelaElegida');
+            parcelaElegida.innerHTML = '<option value="">Elija la parcela</option>';
 
+        }
+             
+    }
 
+    // Event listeners para los radios
+    document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            actualizarSecciones(e.target.value);
+        });
+    });
 
+    estadoSelect.addEventListener('change', (est) => {
+        document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
+            if (radio.checked) {
+                actualizarSecciones(radio.value);
+                console.log("Cambio de select estado" + radio.value);
 
-        if (!seccionesPorTipo[tipo] || seccionesPorTipo[tipo].length === 0) { //si no hay datos en alguna opcion
+                if (!seccionesPorTipo[tipo] || seccionesPorTipo[tipo].length === 0) { //si no hay datos en alguna opcion
             const option = document.createElement('option');
             option.value = '';
             option.textContent = 'No hay secciones disponibles';
@@ -329,20 +416,6 @@
             });
 
         });
-    }
-
-    // Event listeners para los radios
-    document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            actualizarSecciones(e.target.value);
-        });
-    });
-
-    estadoSelect.addEventListener('change', (est) => {
-        document.querySelectorAll('input[name="tipoParcela"]').forEach(radio => {
-            if (radio.checked) {
-                actualizarSecciones(radio.value);
-                console.log("Cambio de select estado" + radio.value);
             }
 
         });
@@ -395,5 +468,8 @@
 
 
     //fin logica modal
+    //logica de modificacion
+        
+    //fin logica de modificacion
 
 </script>

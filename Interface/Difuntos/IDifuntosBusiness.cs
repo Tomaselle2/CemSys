@@ -14,6 +14,8 @@ namespace CemSys.Interface.Difuntos
         Task<List<DTO_seccionesFosa>> EmitirListadoSeccionesFosa();
         Task<List<DTO_seccionesPanteon>> EmitirListadoSeccionesPanteon();
 
+        Task<Difunto> ConsultarDifunto(int id);
+
         Task<List<DTO_nichos>> EmitirListadoNichos();
         Task<List<DTO_fosas>> EmitirListadoFosas();
         Task<List<DTO_panteones>> EmitirListadoPanteones();
@@ -35,6 +37,8 @@ namespace CemSys.Interface.Difuntos
         Task<List<NichosDifunto>> EmitirListadoNichosDifuntos();
         Task<List<FosasDifunto>> EmitirListadoFosasDifuntos();
         Task<List<PanteonDifunto>> EmitirListadoPanteonDifuntos();
+
+        Task<int> ModificarDifunto(Difunto modelo);
 
 
 
