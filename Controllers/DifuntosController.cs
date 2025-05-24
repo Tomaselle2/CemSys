@@ -475,6 +475,23 @@ namespace CemSys.Controllers
             viewModel.fechaActual = year;
             viewModel.ListaDifuntos = await _difuntosBusiness.EmitirListadoDifuntos();
             viewModel.ABMRepositoryVM.EsModificacion = false;
+            viewModel.ABMRepositoryVM.Modelo = new Difunto();
+            viewModel.ABMRepositoryVM.Modelo.Nombre = "";
+            viewModel.ABMRepositoryVM.Modelo.Apellido = "";
+            viewModel.ABMRepositoryVM.Modelo.Dni = "";
+            viewModel.ABMRepositoryVM.Modelo.FechaDefuncion = null;
+            viewModel.ABMRepositoryVM.Modelo.FechaIngreso = null;
+            viewModel.ABMRepositoryVM.Modelo.FechaNacimiento = null;
+            viewModel.ABMRepositoryVM.Modelo.ActaDefuncionNavigation = new ActaDefuncion();
+            viewModel.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.NroActa = 0;
+            viewModel.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Tomo = 0;
+            viewModel.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Folio = 0;
+            viewModel.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Serie = "";
+            viewModel.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Age = 0;
+            viewModel.ABMRepositoryVM.Modelo.Estado = 0;
+            viewModel.ABMRepositoryVM.Modelo.Descripcion = "";
+            viewModel.ABMRepositoryVM.Modelo.Visibilidad = true;
+
         }
 
     
