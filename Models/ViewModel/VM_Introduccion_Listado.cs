@@ -10,6 +10,7 @@ namespace CemSys.Models.ViewModel
         public List<DTO_seccionesFosa> ListaSeccionesFosas { get; set; } = new List<DTO_seccionesFosa>();
         public List<DTO_seccionesNicho> ListaSeccionesNichos { get; set; } = new List<DTO_seccionesNicho>();
         public List<DTO_seccionesPanteon> ListaSeccionesPanteones { get; set; } = new List<DTO_seccionesPanteon>();
+        public int CantidadIntroducciones { get; set; } = 0;
 
 
     }

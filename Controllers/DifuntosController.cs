@@ -59,6 +59,20 @@ namespace CemSys.Controllers
                 var listaFosas = await _difuntosBusiness.EmitirListadoFosasDifuntos();
                 var listaPanteones = await _difuntosBusiness.EmitirListadoPanteonDifuntos();
 
+                int contador = 0;
+                foreach (var opc in listaNichos)
+                {
+                    contador++;
+                }
+                foreach (var opc in listaFosas)
+                {
+                    contador++;
+                }
+                foreach (var opc in listaPanteones)
+                {
+                    contador++;
+                }
+
                 //filtra por dni
                 if (!string.IsNullOrEmpty(dniDifunto))
                 {
@@ -151,6 +165,7 @@ namespace CemSys.Controllers
                 viewModelListado.ListaNichosDifuntos = listaNichos;
                 viewModelListado.ListaFosasDifuntos = listaFosas;
                 viewModelListado.ListaPanteonDifuntos = listaPanteones;
+                viewModelListado.CantidadIntroducciones = contador;
 
             }
             catch (Exception e)

@@ -69,12 +69,15 @@
         
 
 <!-- Tabla de introducciones -->
+
 @if (Model.ListaNichosDifuntos.Count == 0 && Model.ListaFosasDifuntos.Count == 0 && Model.ListaPanteonDifuntos.Count == 0)
 {
-    <p></p>
 }
 else
 { 
+        <div>
+            <h4>Total de difuntos: @Model.CantidadIntroducciones</h4>
+        </div>
 <div>
     <div class="card shadow-sm">
         <div class="card-body p-0">
