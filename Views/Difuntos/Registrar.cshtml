@@ -27,7 +27,7 @@
 
                 <div class="row">
                     <div class="col-md-4 mb-2">
-                        <label for="dni">DNI</label>
+                        <label for="dni">DNI<span class="obligatorio">*</span></label>
                         <input class="form-control form-control-sm input-pequeno" type="text" name="dni" id="dni" required maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="@Model.ABMRepositoryVM.Modelo?.Dni" />
                     </div>
                     <div class="col-md-4 mb-2">

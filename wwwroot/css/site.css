@@ -31,6 +31,9 @@ body {
     color: mediumvioletred;
 }
 
+.obligatorio{
+    color: red;
+}
 /* Boton REGISTAR*/
 .btn-custom {
     background-color: #338b85;
@@ -41,7 +44,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     width: 130px;
-    display: block; 
+    display: block;
     text-align: center;
 }
 
