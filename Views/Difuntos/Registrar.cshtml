@@ -11,116 +11,122 @@
     <h2>@action Difunto</h2>
     <form action="@action" method="post" id="formularioRegistrar">
 
-        <!-- Contenedor 1: Datos Personales -->
-        <div class="subcontenedor">
-            @* validar si es N.N *@
-            @if (action == "Registrar")
-            {
-                <div>
-                    <label>N.N</label>
-                    <input type="checkbox" name="nn" value="nn" id="nnCheck" />
-                </div>
-            }
+        <!-- Contenedor =  Datos Personales + Acta + Descripción -->
+        <div class="contenedor-principal">
 
+            <!-- Contenedor 1: Datos Personales -->
+            <div class="subcontenedor">
+                @* validar si es N.N *@
+                @if (action == "Registrar")
+                {
+                    <div>
+                        <label>N.N</label>
+                        <input type="checkbox" name="nn" value="nn" id="nnCheck" />
+                    </div>
+                }
 
-            <div class="row">
-                <div class="col-md-4 mb-2">
-                    <label for="dni">DNI</label>
-                    <input class="form-control form-control-sm input-pequeno" type="text" name="dni" id="dni" required maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="@Model.ABMRepositoryVM.Modelo?.Dni" />
-                </div>
-                <div class="col-md-4 mb-2">
-                    <label for="nombreDifunto">Nombre</label>
-                    <input class="form-control form-control-sm input-pequeno" type="text" name="nombre" id="nombreDifunto" required maxlength="60" minlength="2" value="@Model.ABMRepositoryVM.Modelo?.Nombre.ToUpper()"/>
-                </div>
-                <div class="col-md-4 mb-2">
-                    <label for="apellidoDifunto">Apellido</label>
-                    <input class="form-control form-control-sm input-pequeno" type="text" name="apellido" id="apellidoDifunto" required maxlength="60" minlength="2" value="@Model.ABMRepositoryVM.Modelo?.Apellido.ToUpper()" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-2">
-                    <label for="fechaDefuncion">Defunción</label>
-                    <input class="form-control form-control-sm input-pequeno" type="date" name="defuncionFecha" id="fechaDefuncion" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaDefuncion?.ToString("yyyy-MM-dd")" />
-                </div>
-                <div class="col-md-4 mb-2">
-                    <label for="fechaIngreso">Ingreso</label>
-                    <input class="form-control form-control-sm input-pequeno" type="date" name="ingresoFecha" id="fechaIngreso" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaIngreso?.ToString("yyyy-MM-dd")" />
-                </div>
-                <div class="col-md-4 mb-2">
-                    <label for="fechaNacimiento">Nacimiento</label>
-                    <input class="form-control form-control-sm input-pequeno" type="date" name="nacimientoFecha" id="fechaNacimiento" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaNacimiento?.ToString("yyyy-MM-dd")" />
-                </div>
-            </div>
-            <div class="mb-2">
-                <label for="estado">Estado</label>
-                <select class="form-select form-select-sm select-estado" id="estado" name="estadoId" required>
-                    @if (action == "Registrar")
-                    {
-                        <option value="">--Elija una opción</option>
-                        @foreach (var opc in Model.ListaEstadoDifunto)
-                        {
-                            <option value="@opc.IdEstadoDifunto">@opc.Estado</option>
-                        }
-                    }
-                    else
-                    {
-                        <option value="@Model.ABMRepositoryVM.Modelo?.EstadoNavigation.IdEstadoDifunto">@Model.ABMRepositoryVM.Modelo?.EstadoNavigation.Estado</option>
-                    }
-
-
-
-
-                </select>
-            </div>
-        </div>
-
-        <!-- Contenedor 2: Acta -->
-        <div class="subcontenedor">
-            <fieldset>
-                <legend class="h6">Datos Acta Defunción</legend>
                 <div class="row">
-                    <div class="col-md-2 mb-2">
-                        <label for="acta">Acta</label>
-                        <input type="number" class="form-control form-control-sm input-pequeno" name="acta" id="acta" min="1"
-                               value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.NroActa != 0
-                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.NroActa.ToString()
-                : "")" />
-
+                    <div class="col-md-4 mb-2">
+                        <label for="dni">DNI</label>
+                        <input class="form-control form-control-sm input-pequeno" type="text" name="dni" id="dni" required maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="@Model.ABMRepositoryVM.Modelo?.Dni" />
                     </div>
-                    <div class="col-md-2 mb-2">
-                        <label for="tomo">Tomo</label>
-                        <input type="number" class="form-control form-control-sm input-pequeno" name="tomo" id="tomo" min="1" value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Tomo != 0
-                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Tomo.ToString()
-                : "")" />
+                    <div class="col-md-4 mb-2">
+                        <label for="nombreDifunto">Nombre</label>
+                        <input class="form-control form-control-sm input-pequeno" type="text" name="nombre" id="nombreDifunto" required maxlength="60" minlength="2" value="@Model.ABMRepositoryVM.Modelo?.Nombre.ToUpper()" />
                     </div>
-                    <div class="col-md-2 mb-2">
-                        <label for="folio">Folio</label>
-                        <input type="number" class="form-control form-control-sm input-pequeno" name="folio" id="folio" min="1" value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Folio != 0
-                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Folio.ToString()
-                : "")" />
-                    </div>
-                    <div class="col-md-2 mb-2">
-                        <label for="serie">Serie</label>
-                        <input type="text" class="form-control form-control-sm input-pequeno" name="serie" id="serie" maxlength="4" value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Serie != null
-                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Serie.ToString().ToUpper()
-                : "")" />
-                    </div>
-                    <div class="col-md-2 mb-2">
-                        <label for="age">Año</label>
-                        <input type="number" class="form-control form-control-sm input-pequeno" name="age" id="age" min="1927" max="@Model.fechaActual.Year" value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Age != 0
-                ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Age.ToString()
-                : "")" />
+                    <div class="col-md-4 mb-2">
+                        <label for="apellidoDifunto">Apellido</label>
+                        <input class="form-control form-control-sm input-pequeno" type="text" name="apellido" id="apellidoDifunto" required maxlength="60" minlength="2" value="@Model.ABMRepositoryVM.Modelo?.Apellido.ToUpper()" />
                     </div>
                 </div>
-            </fieldset>
-        </div>
 
-        @* campo de descripcion *@
-        <div>
-            <label for="datosAdicionales">Datos adicionales</label>
-            <textarea id="datosAdicionales" name="datosAdicionales">@Model.ABMRepositoryVM.Modelo?.Descripcion</textarea>
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <label for="fechaDefuncion">Defunción</label>
+                        <input class="form-control form-control-sm input-pequeno" type="date" name="defuncionFecha" id="fechaDefuncion" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaDefuncion?.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label for="fechaIngreso">Ingreso</label>
+                        <input class="form-control form-control-sm input-pequeno" type="date" name="ingresoFecha" id="fechaIngreso" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaIngreso?.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label for="fechaNacimiento">Nacimiento</label>
+                        <input class="form-control form-control-sm input-pequeno" type="date" name="nacimientoFecha" id="fechaNacimiento" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaNacimiento?.ToString("yyyy-MM-dd")" />
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <label for="estado">Estado</label>
+                    <select class="form-select form-select-sm select-estado" id="estado" name="estadoId" required>
+                        @if (action == "Registrar")
+                        {
+                            <option value="">--Elija una opción</option>
+                            @foreach (var opc in Model.ListaEstadoDifunto)
+                            {
+                                <option value="@opc.IdEstadoDifunto">@opc.Estado</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="@Model.ABMRepositoryVM.Modelo?.EstadoNavigation.IdEstadoDifunto">
+                                @Model.ABMRepositoryVM.Modelo?.EstadoNavigation.Estado
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <datosactadefuncion class="h6">Datos Acta Defunción</datosactadefuncion>
+
+
+
+                    <div class="row">
+                        <div class="col-md-2 mb-2">
+                            <label for="acta">Acta</label>
+                            <input type="number" class="form-control form-control-sm input-pequeno" name="acta" id="acta" min="1"
+                                   value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.NroActa != 0
+                                                                                                                                     ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.NroActa.ToString()
+                                                                                                                                     : "")" />
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label for="tomo">Tomo</label>
+                            <input type="number" class="form-control form-control-sm input-pequeno" name="tomo" id="tomo" min="1"
+                                   value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Tomo != 0
+                                                                                                                                     ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Tomo.ToString()
+                                                                                                                                     : "")" />
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label for="folio">Folio</label>
+                            <input type="number" class="form-control form-control-sm input-pequeno" name="folio" id="folio" min="1"
+                                   value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Folio != 0
+                                                                                                                                     ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Folio.ToString()
+                                                                                                                                     : "")" />
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label for="serie">Serie</label>
+                            <input type="text" class="form-control form-control-sm input-pequeno" name="serie" id="serie" maxlength="4"
+                                   value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Serie != null
+                                                                                                                                     ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Serie.ToString().ToUpper()
+                                                                                                                                     : "")" />
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label for="age">Año</label>
+                            <input type="number" class="form-control form-control-sm input-pequeno" name="age" id="age" min="1927" max="@Model.fechaActual.Year"
+                                   value="@(Model.ABMRepositoryVM.Modelo?.ActaDefuncionNavigation?.Age != 0
+                                                                                                                                     ? Model.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.Age.ToString()
+                                                                                                                                     : "")" />
+                        </div>
+                    </div>
+
+                <!-- Datos adicionales -->
+                <div class="mb-2">
+                    <label for="datosAdicionales">Datos adicionales</label>
+                    <textarea class="form-control form-control-sm" id="datosAdicionales" name="datosAdicionales">@Model.ABMRepositoryVM.Modelo?.Descripcion</textarea>
+                </div>
+            </div>
         </div>
-        <!-- Contenedor 3: Parcela -->
+     
+
+        <!-- Contenedor 2: Parcela -->
         @if(action == "Registrar"){
             <div class="subcontenedor">
                 <fieldset>
@@ -163,7 +169,7 @@
         <div class="text-center mt-3">
             @if(action == "Registrar")
             {
-                <input type="button" value="@action" onclick="confirmarEnvio()" class="btn btn-custom" />
+                <input type="button" value="@action" onclick="confirmarEnvio()" class="btn-custom" />
             }
             else
             {

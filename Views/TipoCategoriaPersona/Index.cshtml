@@ -13,7 +13,7 @@
         <label class="form-label" for="tipo">Tipo de categoría</label>
         <input type="hidden" name="id" value="@Model.Modelo?.IdCategoriaPersona" />
         <input class="form-control-sm" type="text" name="tipo" value="@Model.Modelo?.Tipo" required maxlength="20" id="tipo" />
-        <input class="btn btn-primary" type="submit" name="name" value="@actionTexto" />
+        <input class="btn-custom" type="submit" name="name" value="@actionTexto" />
     </form>
 
     @if (Model.Lista.Count == 0)
@@ -37,13 +37,18 @@
                         <td>
                             <form asp-action="Modificar" method="get" style="display: inline-block;">
                                 <input type="hidden" name="id" value="@tipo.IdCategoriaPersona" />
-                                <input type="submit" name="name" class="btn btn-dark" value="Modificar" />
+                                <button type="submit" class="btn-modificar" title="Modificar">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
                             </form>
                             <form asp-action="Eliminar" method="post" style="display: inline-block;">
                                 <input type="hidden" name="id" value="@tipo.IdCategoriaPersona" />
-                                <input type="submit" name="name" class="btn btn-danger" value="Eliminar" />
+                                <button type="submit" class="btn-eliminar" title="Eliminar" onclick="return confirm('¿Estás seguro que deseas eliminar este registro?');">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </form>
                         </td>
+
                     </tr>
                 }
             </tbody>

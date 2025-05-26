@@ -6,7 +6,7 @@
 
     <!-- Formulario -->
     <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
+        <div class="nueva-seccion">
             Nueva Sección
         </div>
         <div class="card-body">
@@ -22,7 +22,7 @@
                         <input class="form-control" type="number" name="nroFosas" required id="nroFosas" min="1"/>
                     </div>
                     <div class="col-md-6 d-flex align-items-end">
-                        <input class="btn btn-primary w-100" type="submit" value="Registrar" />
+                        <input class="btn-custom" type="submit" value="Registrar" />
                     </div>
                 </div>
             </form>
@@ -60,13 +60,19 @@
                                     <td>
                                         <form asp-action="Administrar" method="get" style="display: inline-block;">
                                             <input type="hidden" name="id" value="@opc.IdSeccionFosa" />
-                                            <input type="submit" class="btn btn-dark btn-sm" value="Administrar" />
+                                            <button type="submit" class="btn-modificar btn-sm" title="Administrar">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
                                         </form>
+
                                         <form asp-action="Eliminar" method="post" style="display: inline-block;" id="formularioEliminar_@opc.IdSeccionFosa">
                                             <input type="hidden" name="id" value="@opc.IdSeccionFosa" />
-                                            <input type="button" name="name" class="btn btn-danger btn-sm" value="Eliminar" onclick="confirmarEliminacion(@opc.IdSeccionFosa)" />
+                                            <button type="button" class="btn-eliminar btn-sm" title="Eliminar" onclick="confirmarEliminacion(@opc.IdSeccionFosa)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </form>
                                     </td>
+
                                 </tr>
                             }
                         }

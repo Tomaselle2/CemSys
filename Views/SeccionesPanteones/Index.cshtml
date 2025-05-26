@@ -6,25 +6,26 @@
 
     <!-- Formulario -->
     <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
+        <div class="nueva-seccion">
             Nueva Sección
         </div>
         <div class="card-body">
             <form asp-action="Registrar" method="post" >
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="hidden" name="id" value="@Model.Modelo?.IdSeccionPanteones" />
                         <input class="form-control" type="text" name="nombre" required maxlength="50" id="nombre" />
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label for="nroLotes" class="form-label">Cantidad de lotes</label>
                         <input class="form-control" type="number" name="nroLotes" required id="nroLotes" min="1" />
                     </div>
-                    <div class="col-md-6 d-flex align-items-end">
-                        <input class="btn btn-primary w-100" type="submit" value="Registrar"/>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <input class="btn-custom" type="submit" value="Registrar" />
                     </div>
                 </div>
+
             </form>
         </div>
     </div>
@@ -60,13 +61,18 @@
                                     <td>
                                         <form asp-action="Administrar" method="get" style="display: inline-block;">
                                             <input type="hidden" name="id" value="@opc.IdSeccionPanteones" />
-                                            <input type="submit" class="btn btn-dark btn-sm" value="Administrar" />
+                                            <button type="submit" class="btn-modificar btn-sm" title="Administrar">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
                                         </form>
                                         <form asp-action="Eliminar" method="post" style="display: inline-block;" id="formularioEliminar_@opc.IdSeccionPanteones">
                                             <input type="hidden" name="id" value="@opc.IdSeccionPanteones" />
-                                            <input type="button" name="name" class="btn btn-danger btn-sm" value="Eliminar" onclick="confirmarEliminacion(@opc.IdSeccionPanteones)" />
+                                            <button type="button" class="btn-eliminar btn-sm" title="Eliminar" onclick="confirmarEliminacion(@opc.IdSeccionPanteones)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </form>
                                     </td>
+
                                 </tr>
                             }
                         }
