@@ -67,6 +67,7 @@ body {
     width: 130px;
     display: block;
     text-align: center;
+    margin: 10px;
 }
 
     .btn-custom:hover {
@@ -107,16 +108,17 @@ body {
 
 /*BOTON VOLVER*/
 .btn-volver {
-    background-color: #9ce0db;
-    border-color: #9ce0db;
-    color: #ffffff;
-    font-weight: bold;
+    background-color: #145c57;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
     .btn-volver:hover {
-        background-color: #5dc1b9;
-        border-color: #5dc1b9;
-        color: #ffffff;
+        background-color: #0a302e;
     }
 
 

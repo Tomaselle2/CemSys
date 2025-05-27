@@ -8,7 +8,10 @@
     string action = (Model.ABMRepositoryVM.EsModificacion == true) ? "Modificar" : "Registrar";
 }
 <div class="registro-difunto-container">
-    <h2>@action Difunto</h2>
+
+    <a asp-action="Index" asp-controller="Difuntos" class="btn-volver"><i class="bi bi-box-arrow-left"></i></a>
+
+    <h2 style="text-align: center; margin-top: 20px;">@action Difunto</h2>
     <form action="@action" method="post" id="formularioRegistrar">
 
         <!-- Contenedor =  Datos Personales + Acta + Descripción -->
@@ -75,7 +78,7 @@
                     </select>
                 </div>
 
-                <datosactadefuncion class="h6">Datos Acta Defunción</datosactadefuncion>
+                <h6 style="margin-top: 20px; margin-bottom: 10px;">Datos Acta Defunción</h6>
 
 
 
