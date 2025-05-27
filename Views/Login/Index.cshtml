@@ -12,14 +12,14 @@
         body {
             margin: 0;
             padding: 0;
-            background: url('@Url.Content("~/fotos/fondo.png")') center center no-repeat;
+            background: url('@Url.Content("~/fotos/fondo1.jpg")') center center no-repeat;
             background-size: cover;
             min-height: 100vh;
             position: relative;
         }
 
         .overlay {
-            background-color: rgba(156, 224, 219, 0.5); /* #9ce0db con transparencia */
+            background-color: rgba(156, 224, 219, 0.4); /* #9ce0db con transparencia */
             position: fixed;
             top: 0;
             left: 0;
@@ -87,7 +87,7 @@
                 <form asp-action="IniciarSesion" method="post">
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" id="email" name="correo" placeholder="ejemplo@mail.com" required>
+                        <input type="email" class="form-control" id="email" name="correo" placeholder="correo@mail.com" required>
                     </div>
 
                     <div class="mb-3">
