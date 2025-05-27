@@ -166,10 +166,12 @@ else
                                 <td>@opc.Fosa.SeccionNavigation.Nombre.ToUpper()</td>
                                 <td>Fosa @opc.Fosa.NroFosa</td>
                                 <td>
-                                    <form action="Modificar" method="get">
-                                        <input type="hidden" name="idDifunto" value="@opc.Difunto.IdDifunto" />
-                                        <button type="submit" class="form-control">Editar</button>
-                                    </form>
+                                            <form asp-action="Modificar" method="get" style="display: inline-block;">
+                                                <input type="hidden" name="idDifunto" value="@opc.Difunto.IdDifunto" />
+                                                <button type="submit" class="btn-modificar btn-sm" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                            </form>
                                 </td>
                             </tr>
                         }
@@ -207,10 +209,12 @@ else
                                 <td>@opc.Panteon.IdSeccionPanteonNavigation.Nombre.ToUpper()</td>
                                 <td>Lote @opc.Panteon.NroLote</td>
                                 <td>
-                                    <form action="Modificar" method="get">
-                                        <input type="hidden" name="idDifunto" value="@opc.Difunto.IdDifunto" />
-                                        <button type="submit" class="form-control">Editar</button>
-                                    </form>
+                                            <form asp-action="Modificar" method="get" style="display: inline-block;">
+                                                <input type="hidden" name="idDifunto" value="@opc.Difunto.IdDifunto" />
+                                                <button type="submit" class="btn-modificar btn-sm" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                            </form>
                                 </td>
                             </tr>
                         }
