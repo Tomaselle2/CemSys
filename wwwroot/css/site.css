@@ -31,13 +31,34 @@ body {
     color: mediumvioletred;
 }
 
-.obligatorio{
-    color: red;
+.obligatorio {
+    color: #e6271c;
 }
+
+
+/*BOTON FILTRAR*/
+.btn-filtrar {
+    background-color: #338b85;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 130px;
+    display: block;
+    margin: 0 auto; 
+    text-align: center;
+}
+
+    .btn-filtrar:hover {
+        background-color: #287a6c;
+    }
+
 /* Boton REGISTAR*/
 .btn-custom {
     background-color: #338b85;
-    color: white;
+    color: #ffffff;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
@@ -72,7 +93,7 @@ body {
 
 .btn-eliminar {
     background-color: #e53935;
-    color: white;
+    color: #ffffff;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
@@ -88,14 +109,14 @@ body {
 .btn-volver {
     background-color: #9ce0db;
     border-color: #9ce0db;
-    color: white;
+    color: #ffffff;
     font-weight: bold;
 }
 
     .btn-volver:hover {
         background-color: #5dc1b9;
         border-color: #5dc1b9;
-        color: white;
+        color: #ffffff;
     }
 
 
@@ -103,7 +124,7 @@ body {
 
 .btn-agregar-guardar {
     background-color: #145c57;
-    color: white;
+    color: #ffffff;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
@@ -120,7 +141,7 @@ body {
 
 .nueva-seccion {
     background-color: #005954;
-    color: white;
+    color: #ffffff;
     padding: 16px 24px;
     font-size: 20px;
     font-weight: bold;
@@ -144,7 +165,7 @@ body {
 .btn-configuracion-cemsys {
     width: 100%;
     background-color: #008592;
-    color: white;
+    color: #ffffff;
     border: none;
     text-align: center;
     font-size: 14px;
@@ -154,7 +175,7 @@ body {
 
     .btn-configuracion-cemsys:hover {
         background-color: #006f75;
-        color: white;
+        color: #ffffff;
     }
 
 
@@ -299,6 +320,7 @@ td:last-child {
 
 /* ------------------------ BARRA LATERAL CON ICONOS ------------------------- */
 
+
 .nav-link:hover {
     background-color: #9ce0db;
     border-radius: 5px;
@@ -318,7 +340,6 @@ td:last-child {
     z-index: 1000;
 }
 
-
     .sidebar:hover {
         width: 250px;
     }
@@ -329,11 +350,11 @@ td:last-child {
     }
 
         .sidebar .nav-link .nav-text {
-            display: none; 
+            display: none;
         }
 
     .sidebar:hover .nav-link .nav-text {
-        display: inline; 
+        display: inline;
     }
 
     .sidebar:hover .nav-link {
@@ -354,14 +375,7 @@ td:last-child {
     .sidebar:hover img {
         transform: scale(1.1);
     }
-.main-content {
-    margin-left: 60px;
-    transition: margin-left 0.3s ease;
-}
 
-.sidebar:hover ~ .main-content {
-    margin-left: 250px;
-}
 .main-content {
     margin-left: 60px;
     padding: 20px;
@@ -374,13 +388,29 @@ td:last-child {
 
 .sidebar .bi-person {
     color: #338b85;
-    font-size: 1.2rem; 
+    font-size: 1.2rem;
 }
 
 .bi-box-arrow-right {
-    color: #338b85;
+    color: #e72d27;
     font-size: 1.2rem;
 }
+
+/* ----------- CERRAR SESIÓN EN ROJO ----------- */
+
+.cerrar-sesion {
+    color: #e72d27 !important;
+    font-weight: bold;
+}
+
+    .cerrar-sesion .bi {
+        color: #e72d27 !important;
+    }
+
+    .cerrar-sesion:hover {
+        background-color: #f8d7da; /* rojo claro tipo alerta */
+        border-radius: 5px;
+    }
 
 
 /* --------------------------- ICONOS DEL MENU LATERAL ---------------------------------- */
@@ -433,22 +463,26 @@ td:last-child {
         background-color: #287a6c;
     }
 
-/* Contenedor General de Formularios */
 .container-difunto-titular {
-    margin: 0 auto 30px;
-    max-width: 600px;
+    display: flex;
+    justify-content: center; /* Centra los bloques horizontalmente */
+    gap: 20px; /* Espacio entre los bloques */
+    margin: 0 auto 30px auto; /* Centrado con margen inferior */
+    padding: 10px;
+    max-width: 900px; /* Suficiente espacio para ambos */
+    box-sizing: border-box;
 }
 
-/* Estilo común para Difunto, Titular y Cuenta */
-.container-difunto,
-.container-titular,
-.container-cuenta {
-    background-color: #5DC1B9; /* nuevo color */
+.bloque-filtrado {
+    background-color: #5DC1B9;
     border: 1px solid #ddd;
-    padding: 15px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    padding: 20px;
+    color: #000;
+    box-shadow: 1px 2px 5px 1px #7c7c7c;
+    width: 300px; /* Tamaño igual para los dos bloques */
 }
+
 
 fieldset {
     border: 1px solid #ccc;

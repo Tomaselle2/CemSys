@@ -27,30 +27,30 @@
 
                 <div class="row">
                     <div class="col-md-4 mb-2">
-                        <label for="dni">DNI<span class="obligatorio">*</span></label>
+                        <label for="dni">DNI<span class="obligatorio"> * </span></label>
                         <input class="form-control form-control-sm input-pequeno" type="text" name="dni" id="dni" required maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="@Model.ABMRepositoryVM.Modelo?.Dni" />
                     </div>
                     <div class="col-md-4 mb-2">
-                        <label for="nombreDifunto">Nombre</label>
+                        <label for="nombreDifunto">Nombre<span class="obligatorio"> * </span></label>
                         <input class="form-control form-control-sm input-pequeno" type="text" name="nombre" id="nombreDifunto" required maxlength="60" minlength="2" value="@Model.ABMRepositoryVM.Modelo?.Nombre.ToUpper()" />
                     </div>
                     <div class="col-md-4 mb-2">
-                        <label for="apellidoDifunto">Apellido</label>
+                        <label for="apellidoDifunto">Apellido<span class="obligatorio"> * </span></label>
                         <input class="form-control form-control-sm input-pequeno" type="text" name="apellido" id="apellidoDifunto" required maxlength="60" minlength="2" value="@Model.ABMRepositoryVM.Modelo?.Apellido.ToUpper()" />
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-4 mb-2">
-                        <label for="fechaDefuncion">Defunción</label>
+                        <label for="fechaDefuncion">Defunción<span class="obligatorio"> * </span></label>
                         <input class="form-control form-control-sm input-pequeno" type="date" name="defuncionFecha" id="fechaDefuncion" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaDefuncion?.ToString("yyyy-MM-dd")" />
                     </div>
                     <div class="col-md-4 mb-2">
-                        <label for="fechaIngreso">Ingreso</label>
+                        <label for="fechaIngreso">Ingreso<span class="obligatorio"> * </span></label>
                         <input class="form-control form-control-sm input-pequeno" type="date" name="ingresoFecha" id="fechaIngreso" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaIngreso?.ToString("yyyy-MM-dd")" />
                     </div>
                     <div class="col-md-4 mb-2">
-                        <label for="fechaNacimiento">Nacimiento</label>
+                        <label for="fechaNacimiento">Nacimiento<span class="obligatorio"> * </span></label>
                         <input class="form-control form-control-sm input-pequeno" type="date" name="nacimientoFecha" id="fechaNacimiento" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaNacimiento?.ToString("yyyy-MM-dd")" />
                     </div>
                 </div>
@@ -130,7 +130,7 @@
         @if(action == "Registrar"){
             <div class="subcontenedor">
                 <fieldset>
-                    <legend class="h6">Tipo de Parcela</legend>
+                    <legend class="h6">Tipo de Parcela </legend>
                     <div class="form-check form-check-inline">
                         <input type="radio" class="form-check-input" name="tipoParcela" value="nicho" id="nicho" checked>
                         <label class="form-check-label" for="nicho">Nicho</label>
@@ -148,13 +148,13 @@
                 <fieldset class="mt-3">
                     <legend class="h6">Ubicación</legend>
                     <div class="mb-2">
-                        <label for="seccion">Sección</label>
+                        <label for="seccion">Sección<span class="obligatorio"> * </span></label>
                         <select class="form-select form-select-sm select-estandar" required id="seccion" name="seccionElegida">
                             <option value="">Elija una opción</option>
                         </select>
                     </div>
                     <div class="mb-2">
-                        <label for="parcelaElegida">Parcela</label>
+                        <label for="parcelaElegida">Parcela<span class="obligatorio"> * </span></label>
                         <select class="form-select form-select-sm select-estandar" id="parcelaElegida" name="parcelaElegida" required>
                             <option value="">Elija la parcela</option>
                         </select>

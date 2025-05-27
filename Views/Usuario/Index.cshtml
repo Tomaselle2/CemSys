@@ -88,13 +88,13 @@
                                                 <td>
                                                     <form asp-action="Modificar" method="get" style="display: inline-block;">
                                                         <input type="hidden" name="id" value="@opc.IdUsuario" />
-                                                        <button type="submit" class="btn btn-dark btn-sm" title="Modificar">
+                                                        <button type="submit" class="btn-modificar btn-sm" title="Modificar">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
                                                     </form>
                                                     <form asp-action="Eliminar" method="post" style="display: inline-block;" onsubmit="return confirm('¿Estás seguro que deseas eliminar este usuario?');">
                                                         <input type="hidden" name="id" value="@opc.IdUsuario" />
-                                                        <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                                        <button type="submit" class="btn-eliminar" title="Eliminar">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </form>

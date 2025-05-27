@@ -5,69 +5,63 @@
 
     <!-- Botón Agregar -->
     <form asp-action="Registrar" method="get" class="mb-4 text-center">
-        <input class="btn-agregar-guardar" type="submit" value="Agregar difunto" />
+        <input class="btn-agregar-guardar" type="submit" value="Registrar difunto" />
     </form>
 
-    <!-- Contenedores de Difunto, Titular y Cuenta -->
-    <div class="container-difunto-titular d-flex flex-wrap justify-content-center gap-4">
-        <form asp-action="Filtrar" method="get">
-            <!-- Difunto -->
-            <div class="container-difunto flex-fill">
-                <fieldset>
-                    <legend>Difunto</legend>
-                    <div>
-                        <label for="dniDifunto">DNI</label>
-                        <input class="form-control-sm" type="text" id="dniDifunto" name="dniDifunto" maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
-                    </div>
-                    <div>
-                        <label for="nombreDifunto">Nombre</label>
-                        <input class="form-control-sm" type="text" id="nombreDifunto" name="nombreDifunto" />
-                    </div>
-                    <div>
-                        <label for="apellidoDifunto">Apellido</label>
-                        <input class="form-control-sm" type="text" id="apellidoDifunto" name="apellidoDifunto" />
-                    </div>
-                </fieldset>
-            </div>
+    <!-- Contenedor horizontal centrado -->
+    <form asp-action="Filtrar" method="get" class="filtro-formulario">
+        <div class="container-difunto-titular d-flex justify-content-center flex-wrap gap-4">
+
+            <!-- Bloque Difunto -->
+            <fieldset class="bloque-filtrado">
+                <legend>Difunto</legend>
+                <div>
+                    <label for="dniDifunto">DNI</label>
+                    <input class="form-control-sm input-pequeno" type="text" id="dniDifunto" name="dniDifunto" maxlength="8" minlength="8" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                </div>
+                <div>
+                    <label for="nombreDifunto">Nombre</label>
+                    <input class="form-control-sm input-pequeno" type="text" id="nombreDifunto" name="nombreDifunto" />
+                </div>
+                <div>
+                    <label for="apellidoDifunto">Apellido</label>
+                    <input class="form-control-sm input-pequeno" type="text" id="apellidoDifunto" name="apellidoDifunto" />
+                </div>
+            </fieldset>
+
+            <!-- Bloque Filtro -->
+            <fieldset class="bloque-filtrado">
+                <legend>Filtro</legend>
+                <div>
+                    <label><input type="radio" name="tipoParcela" value="todos" checked /> Todos</label>
+                </div>
+                <div>
+                    <label><input type="radio" name="tipoParcela" value="nicho" /> Nicho</label>
+                </div>
+                <div>
+                    <label><input type="radio" name="tipoParcela" value="fosa" /> Fosa</label>
+                </div>
+                <div>
+                    <label><input type="radio" name="tipoParcela" value="panteon" /> Panteón</label>
+                </div>
+                <div class="mb-2 mt-2">
+                    <label for="seccion">Sección</label>
+                    <select class="form-select form-select-sm select-estandar input-pequeno" id="seccion" name="seccionElegida">
+                        <option value="">Elija una opción</option>
+                    </select>
+                </div>
+            </fieldset>
+
+        </div>
+
+        <!-- Botón -->
+        <div class="text-center mt-3">
+            <button type="submit" class="btn-filtrar">Filtrar</button>
+        </div>
+    </form>
 
 
-            @* filtrador *@
-            <div class="flex-fill">
-                <fieldset>
-                    <legend>Filtro</legend>
-                    <div>
-                        <div>
-                            <label>Todos</label>
-                            <input type="radio" name="tipoParcela" value="todos" checked />
-                        </div>
-                        <div>
-                            <label>Nicho</label>
-                            <input type="radio" name="tipoParcela" value="nicho" />
-                        </div>
-                        <div>
-                            <label>Fosa</label>
-                            <input type="radio" name="tipoParcela" value="fosa" />
-                        </div>
-                        <div>
-                            <label>Panteon</label>
-                            <input type="radio" name="tipoParcela" value="panteon" />
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="seccion">Sección</label>
-                        <select class="form-select form-select-sm select-estandar" id="seccion" name="seccionElegida">
-                            <option value="">Elija una opción</option>
-                        </select>
-                    </div>
-                </fieldset>
-            </div>
-
-            <button type="submit" class="btn-custom">Filtrar</button>
-        </form>
-    </div>
         
-        
-
 <!-- Tabla de introducciones -->
 
 @if (Model.ListaNichosDifuntos.Count == 0 && Model.ListaFosasDifuntos.Count == 0 && Model.ListaPanteonDifuntos.Count == 0)
@@ -126,10 +120,14 @@ else
                                 <td>@opc.Nicho.SeccionNavigation.Nombre.ToUpper()</td>
                                 <td>Nicho @opc.Nicho.NroNicho fila @opc.Nicho.NroFila</td>
                                 <td>
-                                    <form action="Modificar" method="get">
-                                        <input type="hidden" name="idDifunto" value="@opc.Difunto.IdDifunto" />
-                                        <button type="submit" class="form-control">Editar</button>    
-                                    </form>
+                                            <form asp-action="Modificar" method="get" style="display: inline-block;">
+                                                <input type="hidden" name="idDifunto" value="@opc.Difunto.IdDifunto" />
+                                                <button type="submit" class="btn-modificar btn-sm" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                            </form>
+
+
                                 </td>
                             </tr>
                         }
