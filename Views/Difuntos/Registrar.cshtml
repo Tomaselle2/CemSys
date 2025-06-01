@@ -19,7 +19,7 @@
         <div class="contenedor-principal">
 
             <!-- Contenedor 1: Datos Personales -->
-            <div class="accordion mb-2" id="accordionExample">
+            <div class="accordion mb-3" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -58,10 +58,7 @@
                                         <label for="fechaDefuncion">Defunción<span class="obligatorio"> * </span></label>
                                         <input class="form-control form-control-sm input-pequeno" type="date" name="defuncionFecha" id="fechaDefuncion" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaDefuncion?.ToString("yyyy-MM-dd")" />
                                     </div>
-                                    <div class="col-md-4 mb-2">
-                                        <label for="fechaIngreso">Ingreso<span class="obligatorio"> * </span></label>
-                                        <input class="form-control form-control-sm input-pequeno" type="date" name="ingresoFecha" id="fechaIngreso" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaIngreso?.ToString("yyyy-MM-dd")" />
-                                    </div>
+                                    
                                     <div class="col-md-4 mb-2">
                                         <label for="fechaNacimiento">Nacimiento</label>
                                         <input class="form-control form-control-sm input-pequeno" type="date" name="nacimientoFecha" id="fechaNacimiento" max="@fecha" value="@Model.ABMRepositoryVM.Modelo?.FechaNacimiento?.ToString("yyyy-MM-dd")" />
@@ -140,12 +137,14 @@
                     </div>
                 </div>
             </div>
+
+            
             
         </div>
      
 
         <!-- Contenedor 2: Parcela -->
-        <div class="accordion mb-2" id="accordionExample2">
+        <div class="accordion mb-3" id="accordionExample2">
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -190,6 +189,41 @@
                                 </fieldset>
                             </div>
                         }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--detalle del ingreso-->
+        <div class="accordion mb-3" id="accordionExample3">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                        Detalle del ingreso
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#accordionExample3">
+                    <div class="accordion-body">
+                        <div class="subcontenedor">
+                            <div>
+                                <label for="empleadoResponsable">Empleado responsable<span class="obligatorio"> * </span></label>
+                                <div><input type="text" class="form-control" name="empleadoResponsable" value="" id="empleadoResponsable" /></div>
+                            </div>
+                            <div>
+                                <label for="empresaCargo">Traslado a cargo de la empresa<span class="obligatorio"> * </span></label>
+                                <div><input type="text" class="form-control" name="empresaCargo" value="" id="empresaCargo" /></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <label for="fechaIngreso">Fecha<span class="obligatorio"> * </span></label>
+                                    <input class="form-control form-control-sm input-pequeno" type="date" name="ingresoFecha" id="fechaIngreso" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaIngreso?.ToString("yyyy-MM-dd")" />
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <label for="horaIngreso">Hora<span class="obligatorio"> * </span></label>
+                                    <input class="form-control form-control-sm input-pequeno" type="time" name="horaIngreso" />
+                                </div>       
+                            </div> 
+                        </div>
                     </div>
                 </div>
             </div>
