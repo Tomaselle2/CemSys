@@ -378,7 +378,7 @@ namespace CemSys.Controllers
                         //registro el incremento
                         int resultadoAgregarNicho = 0;
                         resultadoAgregarNicho = await _difuntosBusiness.IncrementarDifuntoEnNicho(nichoseleccionado);
-                        TempData["RegistrarMensaje"] = "Registro exitoso";
+                        TempData["RegistrarMensaje"] = "Introducción realizada con éxito";
                     }
                     catch(Exception ex)
                     {
@@ -406,7 +406,7 @@ namespace CemSys.Controllers
                         //registro el incremento
                         int resultadoAgregarFosa = 0;
                         resultadoAgregarFosa = await _difuntosBusiness.IncrementarDifuntoEnFosa(fosaseleccionada);
-                        TempData["RegistrarMensaje"] = "Registro exitoso";
+                        TempData["RegistrarMensaje"] = "Introducción realizada con éxito";
 
                     }
                     catch (Exception ex)
@@ -432,7 +432,7 @@ namespace CemSys.Controllers
                         //registro el incremento
                         int resultadoAgregarpanteon = 0;
                         resultadoAgregarpanteon = await _difuntosBusiness.IncrementarDifuntoEnPanteon(panteonSeleccionado);
-                        TempData["RegistrarMensaje"] = "Registro exitoso";
+                        TempData["RegistrarMensaje"] = "Introducción realizada con éxito";
                     }
                     catch (Exception ex)
                     {
