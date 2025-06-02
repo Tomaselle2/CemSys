@@ -15,5 +15,11 @@ public partial class Usuario
 
     public int TipoUsuario { get; set; }
 
+    public virtual ICollection<FosasDifunto> FosasDifuntos { get; set; } = new List<FosasDifunto>();
+
+    public virtual ICollection<NichosDifunto> NichosDifuntos { get; set; } = new List<NichosDifunto>();
+
+    public virtual ICollection<PanteonDifunto> PanteonDifuntos { get; set; } = new List<PanteonDifunto>();
+
     public virtual TipoUsuario TipoUsuarioNavigation { get; set; } = null!;
 }

@@ -201,7 +201,6 @@ namespace CemSys.Controllers
             string nombre,
             string apellido,
             DateOnly defuncionFecha,
-            DateOnly ingresoFecha,
             DateOnly nacimientoFecha,
             int estadoId,
             int acta,
@@ -233,7 +232,6 @@ namespace CemSys.Controllers
                 else { modelo.Dni = "nn"; }
                 modelo.FechaNacimiento = nacimientoFecha;
                 modelo.FechaDefuncion = defuncionFecha;
-                modelo.FechaIngreso = ingresoFecha;
                 modelo.Estado = estadoId;
                 modelo.ActaDefuncionNavigation.NroActa = acta;
                 modelo.ActaDefuncionNavigation.Tomo = tomo;
@@ -276,7 +274,6 @@ namespace CemSys.Controllers
             string nombre,
             string apellido,
             DateOnly defuncionFecha,
-            DateOnly ingresoFecha,
             DateOnly nacimientoFecha,
             int estadoId,
             int acta,
@@ -287,7 +284,10 @@ namespace CemSys.Controllers
             string tipoParcela,
             int seccionElegida,
             int parcelaElegida,
-            string datosAdicionales
+            string datosAdicionales,
+            string fechaIngreso,
+            int empleadoResponsable,
+            string empresaCargo
             ) {
             //login
             var nombreLog = HttpContext.Session.GetString("nombreUsuario");
@@ -339,7 +339,6 @@ namespace CemSys.Controllers
             else { modelo.Dni = "nn"; }
             modelo.FechaNacimiento = nacimientoFecha;
             modelo.FechaDefuncion = defuncionFecha;
-            modelo.FechaIngreso = ingresoFecha;
             modelo.Estado = estadoId;
             modelo.ActaDefuncion = idActaDefuncionGenerado;
             modelo.Visibilidad = true;
@@ -357,14 +356,24 @@ namespace CemSys.Controllers
             }
 
             //registra en tabla intermedia nichoDifunto
-            
+            bool parseExitoso;
+            DateTime fechaIngresoDateTime;
+            parseExitoso = DateTime.TryParse(fechaIngreso, out fechaIngresoDateTime);
             switch (tipoParcela)
             {
                 case "nicho":
-
                     NichosDifunto nichoDifuntoModelo = new NichosDifunto();
                     nichoDifuntoModelo.NichoId = parcelaElegida;
                     nichoDifuntoModelo.DifuntoId = idDifuntoGenerado;
+                    
+                    if (parseExitoso)
+                    {
+                        nichoDifuntoModelo.FechaIngreso = fechaIngresoDateTime;
+                    }
+                    nichoDifuntoModelo.Visibilidad = true; //por defecto es visible
+                    nichoDifuntoModelo.Empresa = empresaCargo;
+                    nichoDifuntoModelo.Usuario = empleadoResponsable;
+
                     int idNichoDifuntoGenerado = 0;
                     try
                     {
@@ -392,6 +401,14 @@ namespace CemSys.Controllers
                     FosasDifunto fosasDifunto = new FosasDifunto();
                     fosasDifunto.DifuntoId = idDifuntoGenerado;
                     fosasDifunto.FosaId = parcelaElegida;
+
+                    if (parseExitoso)
+                    {
+                        fosasDifunto.FechaIngreso = fechaIngresoDateTime;
+                    }
+                    fosasDifunto.Visibilidad = true; //por defecto es visible
+                    fosasDifunto.Empresa = empresaCargo;
+                    fosasDifunto.Usuario = empleadoResponsable;
                     int fosaDifuntoGenerado = 0;
 
                     try
@@ -418,6 +435,13 @@ namespace CemSys.Controllers
                     PanteonDifunto panteonDifunto = new PanteonDifunto();
                     panteonDifunto.DifuntoId = idDifuntoGenerado;
                     panteonDifunto.PanteonId = parcelaElegida;
+                    if (parseExitoso)
+                    {
+                        panteonDifunto.FechaIngreso = fechaIngresoDateTime;
+                    }
+                    panteonDifunto.Visibilidad = true; //por defecto es visible
+                    panteonDifunto.Empresa = empresaCargo;
+                    panteonDifunto.Usuario = empleadoResponsable;
                     int panteonDifuntoGenerado = 0;
 
                     try
@@ -486,6 +510,7 @@ namespace CemSys.Controllers
             viewModel.ListaNichos = await _difuntosBusiness.EmitirListadoNichos();//lista todos los nichos en la vista
             viewModel.ListaFosas = await _difuntosBusiness.EmitirListadoFosas();//lista todos las fosas en la vista
             viewModel.ListaPanteones = await _difuntosBusiness.EmitirListadoPanteones();//lista todos los panteones en la vista
+            viewModel.ListaUsuarios = await _difuntosBusiness.ListaUsuarios();//lista todos los usuarios en la vista
 
             viewModel.fechaActual = year;
             viewModel.ListaDifuntos = await _difuntosBusiness.EmitirListadoDifuntos();
@@ -495,7 +520,6 @@ namespace CemSys.Controllers
             viewModel.ABMRepositoryVM.Modelo.Apellido = "";
             viewModel.ABMRepositoryVM.Modelo.Dni = "";
             viewModel.ABMRepositoryVM.Modelo.FechaDefuncion = null;
-            viewModel.ABMRepositoryVM.Modelo.FechaIngreso = null;
             viewModel.ABMRepositoryVM.Modelo.FechaNacimiento = null;
             viewModel.ABMRepositoryVM.Modelo.ActaDefuncionNavigation = new ActaDefuncion();
             viewModel.ABMRepositoryVM.Modelo.ActaDefuncionNavigation.NroActa = 0;

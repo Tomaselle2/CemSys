@@ -15,6 +15,8 @@ namespace CemSys.Models.ViewModel
         public List<DTO_fosas> ListaFosas { get; set; } = new List<DTO_fosas>();
         public List<DTO_panteones> ListaPanteones { get; set; } = new List<DTO_panteones>();
 
+        public List<Usuario> ListaUsuarios { get; set; } = new List<Usuario>();
+
         public List<DTO_difunto> ListaDifuntos { get; set; } = new List<DTO_difunto>();
         public ActaDefuncion actaDefuncion { get; set; } = new ActaDefuncion();
         public DateOnly fechaActual { get; set; }

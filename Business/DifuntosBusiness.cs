@@ -21,6 +21,7 @@ namespace CemSys.Business
         private readonly IRepositoryDB<NichosDifunto> _nichoDifuntoRepository;
         private readonly IRepositoryDB<FosasDifunto> _fosaDifuntoRepository;
         private readonly IRepositoryDB<PanteonDifunto> _panteonDifuntoRepository;
+        private readonly IRepositoryDB<Usuario> _usuarioRepository;
 
         private readonly IIntroducion_datos _introduccionDatosParcelaDifunto;
 
@@ -30,7 +31,8 @@ namespace CemSys.Business
         public DifuntosBusiness(IRepositoryDB<Difunto> difuntosbd, IRepositoryDB<EstadoDifunto> estadodifuntoRepository, IRepositoryDB<SeccionesNicho> seccionesNichosRepository, 
             IRepositoryDB<SeccionesFosa> seccionesFosasRepository, IRepositoryDB<Nicho> nichoRepository, IRepositoryDB<Fosa> fosaRepository, IRepositoryDB<ActaDefuncion> actaRepository,
             IRepositoryDB<NichosDifunto> nichoDifuntoRepository, IRepositoryDB<FosasDifunto> fosaDifuntoRepository, IRepositoryDB<Panteone> panteonRepository,
-            IRepositoryDB<SeccionesPanteone> seccionesPanteonesRepository, IRepositoryDB<PanteonDifunto> panteonDifuntoRepository, IIntroducion_datos introduccionDatosParcelaDifunto)
+            IRepositoryDB<SeccionesPanteone> seccionesPanteonesRepository, IRepositoryDB<PanteonDifunto> panteonDifuntoRepository, IIntroducion_datos introduccionDatosParcelaDifunto,
+            IRepositoryDB<Usuario> usuarioRepository)
         {
             _difuntosRepository = difuntosbd;
             _estadodifuntoRepository = estadodifuntoRepository;
@@ -45,6 +47,7 @@ namespace CemSys.Business
             _seccionesPanteonesRepository = seccionesPanteonesRepository;
             _panteonDifuntoRepository = panteonDifuntoRepository;
             _introduccionDatosParcelaDifunto = introduccionDatosParcelaDifunto;
+            _usuarioRepository = usuarioRepository;
         }
 
         public async Task<Difunto> ConsultarDifunto(int id)
@@ -288,6 +291,18 @@ namespace CemSys.Business
             try
             {
                 return await _panteonRepository.Modificar(modelo);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Usuario>> ListaUsuarios()
+        {
+            try
+            {
+                return await _usuarioRepository.EmitirListado();
             }
             catch (Exception)
             {

@@ -19,8 +19,6 @@ public partial class Difunto
 
     public DateOnly? FechaDefuncion { get; set; }
 
-    public DateOnly? FechaIngreso { get; set; }
-
     public int? ActaDefuncion { get; set; }
 
     public int Estado { get; set; }

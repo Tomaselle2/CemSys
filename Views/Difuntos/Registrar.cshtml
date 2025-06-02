@@ -173,7 +173,7 @@
                                 </fieldset>
 
                                 <fieldset class="mt-3">
-                                    <legend class="h6">Ubicación</legend>
+                                    <legend class="h6"></legend>
                                     <div class="mb-2">
                                         <label for="seccion">Sección<span class="obligatorio"> * </span></label>
                                         <select class="form-select form-select-sm select-estandar" required id="seccion" name="seccionElegida">
@@ -205,23 +205,31 @@
                 <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#accordionExample3">
                     <div class="accordion-body">
                         <div class="subcontenedor">
-                            <div>
+                            <div class="mb-2">
                                 <label for="empleadoResponsable">Empleado responsable<span class="obligatorio"> * </span></label>
-                                <div><input type="text" class="form-control" name="empleadoResponsable" value="" id="empleadoResponsable" /></div>
+                                <select class="form-select select-estandar" name="empleadoResponsable">
+                                   <option value="">--Seleccione el empleado responsable--</option>
+                                    @foreach (var empleado in Model.ListaUsuarios)
+                                    {
+                                        <option value="@empleado.IdUsuario">@empleado.Nombre.ToUpper()</option>
+                                    })
+                                </select>
                             </div>
-                            <div>
+                            <div class="mb-2">
                                 <label for="empresaCargo">Traslado a cargo de la empresa<span class="obligatorio"> * </span></label>
                                 <div><input type="text" class="form-control" name="empresaCargo" value="" id="empresaCargo" /></div>
                             </div>
-                            <div class="row">
+                            <div class="row mb-2">
                                 <div class="col-md-4 mb-2">
-                                    <label for="fechaIngreso">Fecha<span class="obligatorio"> * </span></label>
-                                    <input class="form-control form-control-sm input-pequeno" type="date" name="ingresoFecha" id="fechaIngreso" max="@fecha" required value="@Model.ABMRepositoryVM.Modelo?.FechaIngreso?.ToString("yyyy-MM-dd")" />
+                                    <label for="fechaPart">Fecha<span class="obligatorio"> * </span></label>
+                                    <input class="form-control form-control-sm input-pequeno" type="date" value="" id="fechaPart" max="@fecha" required />
                                 </div>
-                                <div class="col-md-4 mb-2">
-                                    <label for="horaIngreso">Hora<span class="obligatorio"> * </span></label>
-                                    <input class="form-control form-control-sm input-pequeno" type="time" name="horaIngreso" />
-                                </div>       
+                                <div class="col-md-6">
+                                    <label for="horaPart">Hora<span class="obligatorio"> * </span></label>
+                                    <input type="time" class="form-control form-control-sm" id="horaPart" required>
+                                </div>
+                                <!-- Campo oculto que enviará el valor combinado -->
+                                <input type="hidden" name="fechaIngreso" id="fechaIngreso">
                             </div> 
                         </div>
                     </div>
@@ -408,6 +416,22 @@
             e.target.value = "";
         }
     });
+
+    // Actualizar el campo oculto cuando cambien fecha/hora
+    document.getElementById('fechaPart').addEventListener('change', combinarFechaHora);
+    document.getElementById('horaPart').addEventListener('change', combinarFechaHora);
+
+    function combinarFechaHora() {
+        const fecha = document.getElementById('fechaPart').value;
+        const hora = document.getElementById('horaPart').value;
+
+        if(fecha && hora) {
+            // Formato: YYYY-MM-DD HH:MM:SS (formato compatible con SQL Server)
+            const fechaHoraCompleta = `${fecha} ${hora}:00`;
+            document.getElementById('fechaIngreso').value = fechaHoraCompleta;
+        }
+    }
+
 
 
 

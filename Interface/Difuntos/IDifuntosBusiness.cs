@@ -38,6 +38,8 @@ namespace CemSys.Interface.Difuntos
         Task<List<FosasDifunto>> EmitirListadoFosasDifuntos();
         Task<List<PanteonDifunto>> EmitirListadoPanteonDifuntos();
 
+        Task<List<Usuario>> ListaUsuarios();
+
         Task<int> ModificarDifunto(Difunto modelo);
 
 
