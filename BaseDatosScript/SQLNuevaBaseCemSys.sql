@@ -144,6 +144,9 @@ CREATE TABLE Difunto (
     FOREIGN KEY (estado) REFERENCES EstadoDifunto(idEstadoDifunto)
 );
 
+alter table difunto
+drop column fechaIngreso
+
 ALTER TABLE Difunto
 ADD descripcion NVARCHAR(MAX) NULL;
 
@@ -157,6 +160,17 @@ CREATE TABLE NichosDifuntos (
     FOREIGN KEY (nichoId) REFERENCES Nicho(idNicho)
 );
 
+-- Agregar las nuevas columnas
+ALTER TABLE NichosDifuntos
+ADD fechaIngreso DATETIME NULL,
+    empresa VARCHAR(50) NULL,
+    usuario INT NULL;
+
+-- Agregar la restricción de clave foránea
+ALTER TABLE NichosDifuntos
+ADD CONSTRAINT FK_NichosDifuntos_Usuarios
+FOREIGN KEY (usuario) REFERENCES Usuarios(idUsuario); 
+
 CREATE TABLE FosasDifuntos (
     idFosasDifuntos INT PRIMARY KEY IDENTITY(1,1),
     difuntoId INT NOT NULL,
@@ -166,6 +180,16 @@ CREATE TABLE FosasDifuntos (
     FOREIGN KEY (fosaId) REFERENCES Fosas(idFosa)
 );
 
+ALTER TABLE FosasDifuntos
+ADD fechaIngreso DATETIME NULL,
+    empresa VARCHAR(50) NULL,
+    usuario INT NULL;
+
+-- Agregar la restricción de clave foránea
+ALTER TABLE FosasDifuntos
+ADD CONSTRAINT FK_FosasDifuntos_Usuarios
+FOREIGN KEY (usuario) REFERENCES Usuarios(idUsuario); 
+
 CREATE TABLE PanteonDifuntos (
     idPanteonDifuntos INT PRIMARY KEY IDENTITY(1,1),
     difuntoId INT NOT NULL,
@@ -174,6 +198,16 @@ CREATE TABLE PanteonDifuntos (
     FOREIGN KEY (difuntoId) REFERENCES Difunto(idDifunto),
     FOREIGN KEY (panteonId) REFERENCES Panteones(idPanteon)
 );
+
+ALTER TABLE PanteonDifuntos
+ADD fechaIngreso DATETIME NULL,
+    empresa VARCHAR(50) NULL,
+    usuario INT NULL;
+
+-- Agregar la restricción de clave foránea
+ALTER TABLE PanteonDifuntos
+ADD CONSTRAINT FK_PanteonDifuntos_Usuarios
+FOREIGN KEY (usuario) REFERENCES Usuarios(idUsuario); 
 
 -- Tablas de contratos y concesiones
 CREATE TABLE cuotas (
@@ -212,6 +246,16 @@ CREATE TABLE PersonaContrato (
     PRIMARY KEY (personaId, contratoId),
     FOREIGN KEY (personaId) REFERENCES Personas(idPersona),
     FOREIGN KEY (contratoId) REFERENCES ContratoConcesion(idContrato)
+);
+
+create table Tramites(
+	idTramite INT PRIMARY KEY IDENTITY(1,1),
+	idNichosDifuntosFK int,
+	idFosasDifuntosFK int,
+	idPanteonesDifuntos int,
+	foreign key (idNichosDifuntosFK) references NichosDifuntos(idNichosDifuntos),
+	foreign key (idFosasDifuntosFK) references FosasDifuntos(idFosasDifuntos),
+	foreign key (idPanteonesDifuntos) references PanteonDifuntos(idPanteonDifuntos),
 );
 
 -- Configuración FILESTREAM para archivos

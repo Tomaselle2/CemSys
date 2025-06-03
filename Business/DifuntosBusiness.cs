@@ -24,6 +24,7 @@ namespace CemSys.Business
         private readonly IRepositoryDB<Usuario> _usuarioRepository;
 
         private readonly IIntroducion_datos _introduccionDatosParcelaDifunto;
+        private readonly IRepositoryDB<Tramite> _tramiteRepository;
 
 
 
@@ -32,7 +33,7 @@ namespace CemSys.Business
             IRepositoryDB<SeccionesFosa> seccionesFosasRepository, IRepositoryDB<Nicho> nichoRepository, IRepositoryDB<Fosa> fosaRepository, IRepositoryDB<ActaDefuncion> actaRepository,
             IRepositoryDB<NichosDifunto> nichoDifuntoRepository, IRepositoryDB<FosasDifunto> fosaDifuntoRepository, IRepositoryDB<Panteone> panteonRepository,
             IRepositoryDB<SeccionesPanteone> seccionesPanteonesRepository, IRepositoryDB<PanteonDifunto> panteonDifuntoRepository, IIntroducion_datos introduccionDatosParcelaDifunto,
-            IRepositoryDB<Usuario> usuarioRepository)
+            IRepositoryDB<Usuario> usuarioRepository, IRepositoryDB<Tramite> tramiteRepository)
         {
             _difuntosRepository = difuntosbd;
             _estadodifuntoRepository = estadodifuntoRepository;
@@ -48,6 +49,7 @@ namespace CemSys.Business
             _panteonDifuntoRepository = panteonDifuntoRepository;
             _introduccionDatosParcelaDifunto = introduccionDatosParcelaDifunto;
             _usuarioRepository = usuarioRepository;
+            _tramiteRepository = tramiteRepository;
         }
 
         public async Task<Difunto> ConsultarDifunto(int id)
@@ -91,6 +93,18 @@ namespace CemSys.Business
             try
             {
                 return await _panteonRepository.Consultar(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<Tramite> ConsultarTramite(int id)
+        {
+            try
+            {
+                return await _introduccionDatosParcelaDifunto.ConsultarTramite(id);
             }
             catch (Exception)
             {
@@ -367,6 +381,13 @@ namespace CemSys.Business
             catch (Exception) { throw; }
         }
 
-
+        public async Task<int> RegistrarTramite(Tramite modelo)
+        {
+            try
+            {
+                return await _tramiteRepository.Registrar(modelo);
+            }
+            catch (Exception) { throw; }
+        }
     }
 }

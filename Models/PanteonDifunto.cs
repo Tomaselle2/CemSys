@@ -25,5 +25,7 @@ public partial class PanteonDifunto
 
     public virtual Panteone Panteon { get; set; } = null!;
 
+    public virtual ICollection<Tramite> Tramites { get; set; } = new List<Tramite>();
+
     public virtual Usuario? UsuarioNavigation { get; set; }
 }

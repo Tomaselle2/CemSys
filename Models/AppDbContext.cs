@@ -59,6 +59,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TipoUsuario> TipoUsuarios { get; set; }
 
+    public virtual DbSet<Tramite> Tramites { get; set; }
+
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -559,6 +561,28 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("tipoUsuario");
+        });
+
+        modelBuilder.Entity<Tramite>(entity =>
+        {
+            entity.HasKey(e => e.IdTramite).HasName("PK__Tramites__5B864698C51F1C38");
+
+            entity.Property(e => e.IdTramite).HasColumnName("idTramite");
+            entity.Property(e => e.IdFosasDifuntosFk).HasColumnName("idFosasDifuntosFK");
+            entity.Property(e => e.IdNichosDifuntosFk).HasColumnName("idNichosDifuntosFK");
+            entity.Property(e => e.IdPanteonesDifuntos).HasColumnName("idPanteonesDifuntos");
+
+            entity.HasOne(d => d.IdFosasDifuntosFkNavigation).WithMany(p => p.Tramites)
+                .HasForeignKey(d => d.IdFosasDifuntosFk)
+                .HasConstraintName("FK__Tramites__idFosa__245D67DE");
+
+            entity.HasOne(d => d.IdNichosDifuntosFkNavigation).WithMany(p => p.Tramites)
+                .HasForeignKey(d => d.IdNichosDifuntosFk)
+                .HasConstraintName("FK__Tramites__idNich__236943A5");
+
+            entity.HasOne(d => d.IdPanteonesDifuntosNavigation).WithMany(p => p.Tramites)
+                .HasForeignKey(d => d.IdPanteonesDifuntos)
+                .HasConstraintName("FK__Tramites__idPant__25518C17");
         });
 
         modelBuilder.Entity<Usuario>(entity =>

@@ -359,6 +359,9 @@ namespace CemSys.Controllers
             bool parseExitoso;
             DateTime fechaIngresoDateTime;
             parseExitoso = DateTime.TryParse(fechaIngreso, out fechaIngresoDateTime);
+            int idTramite = 0;
+            string tipoParcelaResumen = tipoParcela;
+
             switch (tipoParcela)
             {
                 case "nicho":
@@ -387,6 +390,11 @@ namespace CemSys.Controllers
                         //registro el incremento
                         int resultadoAgregarNicho = 0;
                         resultadoAgregarNicho = await _difuntosBusiness.IncrementarDifuntoEnNicho(nichoseleccionado);
+
+                        //registra el tramite
+                        Tramite modeloTramite = new Tramite();
+                        modeloTramite.IdNichosDifuntosFk = idNichoDifuntoGenerado;
+                        idTramite = await _difuntosBusiness.RegistrarTramite(modeloTramite);
                         TempData["RegistrarMensaje"] = "Introducción realizada con éxito";
                     }
                     catch(Exception ex)
@@ -423,6 +431,11 @@ namespace CemSys.Controllers
                         //registro el incremento
                         int resultadoAgregarFosa = 0;
                         resultadoAgregarFosa = await _difuntosBusiness.IncrementarDifuntoEnFosa(fosaseleccionada);
+
+                        //registra el tramite
+                        Tramite modeloTramite = new Tramite();
+                        modeloTramite.IdFosasDifuntosFk = fosaDifuntoGenerado;
+                        idTramite = await _difuntosBusiness.RegistrarTramite(modeloTramite);
                         TempData["RegistrarMensaje"] = "Introducción realizada con éxito";
 
                     }
@@ -443,7 +456,6 @@ namespace CemSys.Controllers
                     panteonDifunto.Empresa = empresaCargo;
                     panteonDifunto.Usuario = empleadoResponsable;
                     int panteonDifuntoGenerado = 0;
-
                     try
                     {
                         //registra en la tabla intermedia
@@ -456,6 +468,11 @@ namespace CemSys.Controllers
                         //registro el incremento
                         int resultadoAgregarpanteon = 0;
                         resultadoAgregarpanteon = await _difuntosBusiness.IncrementarDifuntoEnPanteon(panteonSeleccionado);
+
+                        //registra el tramite
+                        Tramite modeloTramite = new Tramite();
+                        modeloTramite.IdPanteonesDifuntos = panteonDifuntoGenerado;
+                        idTramite = await _difuntosBusiness.RegistrarTramite(modeloTramite);
                         TempData["RegistrarMensaje"] = "Introducción realizada con éxito";
                     }
                     catch (Exception ex)
@@ -465,7 +482,7 @@ namespace CemSys.Controllers
                     break;
             }
 
-            return RedirectToAction("Registrar");
+            return RedirectToAction("ResumenIntroduccion", new { idtramite = idTramite, tipoParcelaResumen = tipoParcela });
         }
 
         [HttpGet]
@@ -531,6 +548,106 @@ namespace CemSys.Controllers
             viewModel.ABMRepositoryVM.Modelo.Descripcion = "";
             viewModel.ABMRepositoryVM.Modelo.Visibilidad = true;
 
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ResumenIntroduccion(int idtramite, string tipoParcelaResumen)
+        {
+            //login
+            var nombreLog = HttpContext.Session.GetString("nombreUsuario");
+            if (nombreLog == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            ViewData["UsuarioLogueado"] = nombreLog;
+            //fin login
+
+            Tramite modelo = new Tramite();
+            VMResumenIntroduccion viewModelResumen = new VMResumenIntroduccion();
+            try { 
+                 modelo = await _difuntosBusiness.ConsultarTramite(idtramite);
+            }
+            catch (Exception ex) {
+                ViewData["MensajeError"] = ex.Message;
+            }
+
+            viewModelResumen.IdTramite = modelo.IdTramite;
+            if(tipoParcelaResumen == "nicho")
+            {
+                viewModelResumen.nombreDifunto = modelo.IdNichosDifuntosFkNavigation.Difunto.Nombre;
+                viewModelResumen.apellidoDifunto = modelo.IdNichosDifuntosFkNavigation.Difunto.Apellido;
+                viewModelResumen.DNI = modelo.IdNichosDifuntosFkNavigation.Difunto.Dni;
+                viewModelResumen.fechaDefuncion = modelo.IdNichosDifuntosFkNavigation.Difunto.FechaDefuncion;
+                viewModelResumen.fechaNacimiento = modelo.IdNichosDifuntosFkNavigation.Difunto.FechaNacimiento;
+
+                viewModelResumen.actaDefuncion = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.NroActa;
+                viewModelResumen.tomo = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Tomo;
+                viewModelResumen.folio = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Folio;
+                viewModelResumen.serie = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Serie;
+                viewModelResumen.age = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Age;
+
+                viewModelResumen.estadoDifunto = modelo.IdNichosDifuntosFkNavigation.Difunto.EstadoNavigation.Estado;
+
+                viewModelResumen.fechaIngreso = modelo.IdNichosDifuntosFkNavigation.FechaIngreso;
+                viewModelResumen.empresa = modelo.IdNichosDifuntosFkNavigation.Empresa;
+
+                viewModelResumen.usuario = modelo.IdNichosDifuntosFkNavigation.UsuarioNavigation.Nombre;
+                viewModelResumen.seccion = modelo.IdNichosDifuntosFkNavigation.Nicho.SeccionNavigation.Nombre;
+                viewModelResumen.ubicacion = modelo.IdNichosDifuntosFkNavigation.Nicho.NroNicho.ToString() +" "+ modelo.IdNichosDifuntosFkNavigation.Nicho.NroFila.ToString();
+
+            }
+
+            if (tipoParcelaResumen == "fosa")
+            {
+                viewModelResumen.nombreDifunto = modelo.IdFosasDifuntosFkNavigation.Difunto.Nombre;
+                viewModelResumen.apellidoDifunto = modelo.IdFosasDifuntosFkNavigation.Difunto.Apellido;
+                viewModelResumen.DNI = modelo.IdFosasDifuntosFkNavigation.Difunto.Dni;
+                viewModelResumen.fechaDefuncion = modelo.IdFosasDifuntosFkNavigation.Difunto.FechaDefuncion;
+                viewModelResumen.fechaNacimiento = modelo.IdFosasDifuntosFkNavigation.Difunto.FechaNacimiento;
+
+                viewModelResumen.actaDefuncion = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.NroActa;
+                viewModelResumen.tomo = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Tomo;
+                viewModelResumen.folio = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Folio;
+                viewModelResumen.serie = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Serie;
+                viewModelResumen.age = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Age;
+
+                viewModelResumen.estadoDifunto = modelo.IdFosasDifuntosFkNavigation.Difunto.EstadoNavigation.Estado;
+
+                viewModelResumen.fechaIngreso = modelo.IdFosasDifuntosFkNavigation.FechaIngreso;
+                viewModelResumen.empresa = modelo.IdFosasDifuntosFkNavigation.Empresa;
+
+                viewModelResumen.usuario = modelo.IdFosasDifuntosFkNavigation.UsuarioNavigation.Nombre;
+                viewModelResumen.seccion = modelo.IdFosasDifuntosFkNavigation.Fosa.SeccionNavigation.Nombre;
+                viewModelResumen.ubicacion = modelo.IdFosasDifuntosFkNavigation.Fosa.NroFosa.ToString();
+
+            }
+
+            if (tipoParcelaResumen == "panteon")
+            {
+                viewModelResumen.nombreDifunto = modelo.IdPanteonesDifuntosNavigation.Difunto.Nombre;
+                viewModelResumen.apellidoDifunto = modelo.IdPanteonesDifuntosNavigation.Difunto.Apellido;
+                viewModelResumen.DNI = modelo.IdPanteonesDifuntosNavigation.Difunto.Dni;
+                viewModelResumen.fechaDefuncion = modelo.IdPanteonesDifuntosNavigation.Difunto.FechaDefuncion;
+                viewModelResumen.fechaNacimiento = modelo.IdPanteonesDifuntosNavigation.Difunto.FechaNacimiento;
+
+                viewModelResumen.actaDefuncion = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.NroActa;
+                viewModelResumen.tomo = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.Tomo;
+                viewModelResumen.folio = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.Folio;
+                viewModelResumen.serie = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.Serie;
+                viewModelResumen.age = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.Age;
+
+                viewModelResumen.estadoDifunto = modelo.IdPanteonesDifuntosNavigation.Difunto.EstadoNavigation.Estado;
+
+                viewModelResumen.fechaIngreso = modelo.IdPanteonesDifuntosNavigation.FechaIngreso;
+                viewModelResumen.empresa = modelo.IdPanteonesDifuntosNavigation.Empresa;
+
+                viewModelResumen.usuario = modelo.IdPanteonesDifuntosNavigation.UsuarioNavigation.Nombre;
+                viewModelResumen.seccion = modelo.IdPanteonesDifuntosNavigation.Panteon.IdSeccionPanteonNavigation.Nombre;
+                viewModelResumen.ubicacion = modelo.IdPanteonesDifuntosNavigation.Panteon.NroLote.ToString();
+
+            }
+            return View(viewModelResumen);
         }
 
     

@@ -8,5 +8,6 @@ namespace CemSys.Interface
         Task<List<FosasDifunto>> EmitirListadoFosasDifuntos();
         Task<List<PanteonDifunto>> EmitirListadoPanteonDifuntos();
         Task<Difunto> ConsultarDifunto(int id);
+        Task<Tramite> ConsultarTramite(int id);
     }
 }

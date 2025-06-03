@@ -25,5 +25,7 @@ public partial class FosasDifunto
 
     public virtual Fosa Fosa { get; set; } = null!;
 
+    public virtual ICollection<Tramite> Tramites { get; set; } = new List<Tramite>();
+
     public virtual Usuario? UsuarioNavigation { get; set; }
 }
