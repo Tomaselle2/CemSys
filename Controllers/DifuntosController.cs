@@ -650,7 +650,21 @@ namespace CemSys.Controllers
             return View(viewModelResumen);
         }
 
-    
+        [HttpGet]
+        public IActionResult IndexIntroduccion()
+        {             
+            //login
+            var nombre = HttpContext.Session.GetString("nombreUsuario");
+            if (nombre == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            ViewData["UsuarioLogueado"] = nombre;
+            //fin login
+            return View();
+        }
+
+
     }
     
 }

@@ -10,7 +10,7 @@
 }
 <div class="registro-difunto-container">
 
-    <a asp-action="Index" asp-controller="Difuntos" class="btn-volver"><i class="bi bi-box-arrow-left"></i></a>
+    <a asp-action="IndexIntroduccion" asp-controller="Difuntos" class="btn-volver"><i class="bi bi-box-arrow-left"></i></a>
 
     <h2 style="text-align: center; margin-top: 20px;">Introducción de difunto</h2>
     <form action="@action" method="post" id="formularioRegistrar">
@@ -22,11 +22,11 @@
             <div class="accordion mb-3" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             Datos del difunto
                         </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <div class="subcontenedor">
                                 @* validar si es N.N *@

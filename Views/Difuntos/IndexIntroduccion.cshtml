@@ -1,0 +1,76 @@
+﻿<div class="main-content">
+    <h1>Introducciones</h1>
+    <!-- Botón Agregar -->
+    <form asp-action="Registrar" method="get" class="mb-4 text-center">
+        <input class="btn-agregar-guardar" type="submit" value="+ Introducir difunto" />
+    </form>
+
+    <!--buscador-->
+    <form action="/" method="post">
+        <div class="bloque-filtrado">
+            <fieldset >
+                <legend>Buscador</legend>
+                <div>
+                    <input type="radio" name="tipoFiltro" value="todas" id="tipoFiltroTodas" checked/>
+                    <label for="tipoFiltroTodas">Todas</label>
+                </div>
+                <div>
+                    <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesde" />
+                    <label for="tipoFiltroDesde">Desde</label>
+                    <input type="date" name="desde" value="" />
+                    <label for="tipoFiltroDesde">Hasta</label>
+                    <input type="date" name="hasta" value="" id="FiltroHasta" />
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Botón Buscar -->
+        <div class="text-center mt-3">
+            <button type="submit" class="btn-filtrar">Buscar</button>
+        </div>
+
+        <!-- Botón Generar reporte -->
+        <div class="text-center mt-3">
+            <button type="submit" class="btn-filtrar">Generar reporte</button>
+        </div>
+    </form>
+    <!-- Tabla de Introducciones -->
+    <table>
+        <thead>
+            <tr>
+                <th>Operación</th>
+                <th>Ingreso</th>
+                <th>DNI</th>
+                <th>Apellido y Nombre</th>
+                <th>Sección</th>
+                <th>Ubicación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>09/02/2025 8:00hs</td>
+                <td>25654986</td>
+                <td>Galperin Marcos Antonio</td>
+                <td>X1</td>
+                <td>Nicho 3 Fila 2</td>
+                <td>Ver</td>
+
+            </tr>
+        </tbody>
+        
+    </table>
+
+</div>
+
+<script>
+    //buscador
+    const inputDesde = document.getElementById('filtroDesde');
+    const inputHasta = document.getElementById('filtroHasta');
+    const inputTodas = document.getElementById('tipoFiltroTodas');
+
+    
+
+
+</script>
