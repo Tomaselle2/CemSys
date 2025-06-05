@@ -276,6 +276,14 @@ namespace CemSys.Business
             }
         }
 
+        public async Task<List<Tramite>> EmitirListadoTramites()
+        {
+            try
+            {
+                return await _introduccionDatosParcelaDifunto.EmitirListadoTramites();
+            } catch (Exception) { throw; }
+        }
+
         public async Task<int> IncrementarDifuntoEnFosa(Fosa modelo)
         {
             try

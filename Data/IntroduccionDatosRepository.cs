@@ -81,5 +81,28 @@ namespace CemSys.Data
             }
             catch (Exception) { throw; }
         }
+
+        public async Task<List<Tramite>> EmitirListadoTramites()
+        {
+            try
+            {
+                List<Tramite> lista = await _context.Tramites
+                    .Include(n => n.IdNichosDifuntosFkNavigation).ThenInclude(d => d.Difunto).ThenInclude(e => e.EstadoNavigation)
+                    .Include(a => a.IdNichosDifuntosFkNavigation).ThenInclude(a => a.Difunto).ThenInclude(a => a.ActaDefuncionNavigation)
+                    .Include(n => n.IdNichosDifuntosFkNavigation).ThenInclude(d => d.UsuarioNavigation)
+                    .Include(n => n.IdNichosDifuntosFkNavigation).ThenInclude(d => d.Nicho).ThenInclude(n => n.SeccionNavigation)
+                    .Include(f => f.IdFosasDifuntosFkNavigation).ThenInclude(d => d.Difunto).ThenInclude(e => e.EstadoNavigation)
+                    .Include(f => f.IdFosasDifuntosFkNavigation).ThenInclude(d => d.Difunto).ThenInclude(e => e.ActaDefuncionNavigation)
+                    .Include(f => f.IdFosasDifuntosFkNavigation).ThenInclude(d => d.UsuarioNavigation)
+                    .Include(f => f.IdFosasDifuntosFkNavigation).ThenInclude(d => d.Fosa).ThenInclude(f => f.SeccionNavigation)
+                    .Include(p => p.IdPanteonesDifuntosNavigation).ThenInclude(d => d.Difunto).ThenInclude(e => e.EstadoNavigation)
+                    .Include(p => p.IdPanteonesDifuntosNavigation).ThenInclude(d => d.Difunto).ThenInclude(e => e.ActaDefuncionNavigation)
+                    .Include(p => p.IdPanteonesDifuntosNavigation).ThenInclude(d => d.UsuarioNavigation)
+                    .Include(p => p.IdPanteonesDifuntosNavigation).ThenInclude(d => d.Panteon).ThenInclude(p => p.IdSeccionPanteonNavigation)
+                    .ToListAsync();
+                return lista;
+            }
+            catch (Exception) { throw; }
+        }
     }
 }

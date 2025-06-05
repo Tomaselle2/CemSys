@@ -1,4 +1,7 @@
-﻿<div class="main-content">
+﻿@using CemSys.Models.ViewModel
+@model VMResumenIntroduccion
+
+<div class="main-content">
     <h1>Introducciones</h1>
     <!-- Botón Agregar -->
     <form asp-action="Registrar" method="get" class="mb-4 text-center">
@@ -6,7 +9,7 @@
     </form>
 
     <!--buscador-->
-    <form action="/" method="post">
+    <form asp-action="IndexIntroduccion" method="post">
         <div class="bloque-filtrado">
             <fieldset >
                 <legend>Buscador</legend>
@@ -15,10 +18,10 @@
                     <label for="tipoFiltroTodas">Todas</label>
                 </div>
                 <div>
-                    <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesde" />
-                    <label for="tipoFiltroDesde">Desde</label>
+                    <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesdeFiltroDesde" />
+                    <label for="FiltroDesde">Desde</label>
                     <input type="date" name="desde" value="" />
-                    <label for="tipoFiltroDesde">Hasta</label>
+                    <label for="FiltroHasta">Hasta</label>
                     <input type="date" name="hasta" value="" id="FiltroHasta" />
                 </div>
             </fieldset>
@@ -34,33 +37,83 @@
             <button type="submit" class="btn-filtrar">Generar reporte</button>
         </div>
     </form>
-    <!-- Tabla de Introducciones -->
-    <table>
-        <thead>
-            <tr>
-                <th>Operación</th>
-                <th>Ingreso</th>
-                <th>DNI</th>
-                <th>Apellido y Nombre</th>
-                <th>Sección</th>
-                <th>Ubicación</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>09/02/2025 8:00hs</td>
-                <td>25654986</td>
-                <td>Galperin Marcos Antonio</td>
-                <td>X1</td>
-                <td>Nicho 3 Fila 2</td>
-                <td>Ver</td>
 
-            </tr>
-        </tbody>
-        
-    </table>
+    <!-- Tabla de Introducciones -->
+    @if (Model.ListaTramites.Count == 0)
+    {
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Operación</th>
+                    <th>Ingreso</th>
+                    <th>DNI</th>
+                    <th>Apellido y Nombre</th>
+                    <th>Sección</th>
+                    <th>Ubicación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tramite in Model.ListaTramites)
+                {
+                    <tr>
+                        <td>@tramite.IdTramite</td>
+                        @* Inicializar variables *@
+                        @{
+                            string dni = "";
+                            string nombreCompleto = "";
+                            string seccion = "";
+                            string ubicacion = "";
+                            string fechaIngreso = "";
+
+                            var difunto = tramite.DifuntoRelacionado;
+
+                            if (difunto is NichosDifunto nicho)
+                            {
+                                dni = nicho.Difunto.Dni;
+                                nombreCompleto = $"{nicho.Difunto.Apellido.ToUpper()} {nicho.Difunto.Nombre.ToUpper()}";
+                                seccion = nicho.Nicho.SeccionNavigation.Nombre;
+                                ubicacion = $"Nicho {nicho.Nicho.NroNicho} Fila {nicho.Nicho.NroFila}";
+                                fechaIngreso = nicho.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
+                            }
+                            else if (difunto is FosasDifunto fosa)
+                            {
+                                dni = fosa.Difunto.Dni;
+                                nombreCompleto = $"{fosa.Difunto.Apellido.ToUpper()} {fosa.Difunto.Nombre.ToUpper()}";
+                                seccion = fosa.Fosa.SeccionNavigation.Nombre;
+                                ubicacion = $"Fosa {fosa.Fosa.NroFosa}";
+                                fechaIngreso = fosa.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
+                            }
+                            else if (difunto is PanteonDifunto panteon)
+                            {
+                                dni = panteon.Difunto.Dni;
+                                nombreCompleto = $"{panteon.Difunto.Apellido.ToUpper()} {panteon.Difunto.Nombre.ToUpper()}";
+                                seccion = panteon.Panteon.IdSeccionPanteonNavigation.Nombre;
+                                ubicacion = $"Lote {panteon.Panteon.NroLote}";
+                                fechaIngreso = panteon.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
+                            }
+                        }
+                        <td>@fechaIngreso hs</td>
+                        <td>@dni</td>
+                        <td>@nombreCompleto</td>
+                        <td>@seccion</td>
+                        <td>@ubicacion</td>
+
+                        <td>
+                            <form asp-action="ResumenIntroduccion" method="get">
+                                    <input type="hidden" name="idTramite" value="@tramite.IdTramite" />
+                                    <input type="submit" class="btn btn-primary" name="" value="Ver" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
 
 </div>
 

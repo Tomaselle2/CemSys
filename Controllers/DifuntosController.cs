@@ -550,9 +550,40 @@ namespace CemSys.Controllers
 
         }
 
+         private async Task<VMResumenIntroduccion> TraerDatosDetallaIntroduccion(int idtramite)
+         {
+             VMResumenIntroduccion viewModelResumen = new VMResumenIntroduccion();
+             Tramite tramite = new Tramite();
+             TramiteViewModel modelo = new TramiteViewModel();
+
+            try
+            {
+                tramite = await _difuntosBusiness.ConsultarTramite(idtramite);
+
+                modelo = new TramiteViewModel
+                {
+                    IdTramite = tramite.IdTramite,
+
+                    idNichoDifuntoFK = tramite.IdNichosDifuntosFk,
+                    idFosaDifuntoFK = tramite.IdFosasDifuntosFk,
+                    idPanteonDifuntoFK = tramite.IdPanteonesDifuntos,
+
+                    nichosDifuntos = tramite.IdNichosDifuntosFkNavigation,
+                    fosasDifuntos = tramite.IdFosasDifuntosFkNavigation,
+                    panteonesDifuntos = tramite.IdPanteonesDifuntosNavigation
+                };
+                viewModelResumen.ListaTramites.Add(modelo);
+            }
+            catch (Exception ex)
+            {
+                 ViewData["MensajeError"] = ex.Message;
+            }
+
+             return viewModelResumen;
+         } 
 
         [HttpGet]
-        public async Task<IActionResult> ResumenIntroduccion(int idtramite, string tipoParcelaResumen)
+        public async Task<IActionResult> ResumenIntroduccion(int idtramite)
         {
             //login
             var nombreLog = HttpContext.Session.GetString("nombreUsuario");
@@ -563,95 +594,12 @@ namespace CemSys.Controllers
             ViewData["UsuarioLogueado"] = nombreLog;
             //fin login
 
-            Tramite modelo = new Tramite();
-            VMResumenIntroduccion viewModelResumen = new VMResumenIntroduccion();
-            try { 
-                 modelo = await _difuntosBusiness.ConsultarTramite(idtramite);
-            }
-            catch (Exception ex) {
-                ViewData["MensajeError"] = ex.Message;
-            }
-
-            viewModelResumen.IdTramite = modelo.IdTramite;
-            if(tipoParcelaResumen == "nicho")
-            {
-                viewModelResumen.nombreDifunto = modelo.IdNichosDifuntosFkNavigation.Difunto.Nombre;
-                viewModelResumen.apellidoDifunto = modelo.IdNichosDifuntosFkNavigation.Difunto.Apellido;
-                viewModelResumen.DNI = modelo.IdNichosDifuntosFkNavigation.Difunto.Dni;
-                viewModelResumen.fechaDefuncion = modelo.IdNichosDifuntosFkNavigation.Difunto.FechaDefuncion;
-                viewModelResumen.fechaNacimiento = modelo.IdNichosDifuntosFkNavigation.Difunto.FechaNacimiento;
-
-                viewModelResumen.actaDefuncion = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.NroActa;
-                viewModelResumen.tomo = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Tomo;
-                viewModelResumen.folio = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Folio;
-                viewModelResumen.serie = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Serie;
-                viewModelResumen.age = modelo.IdNichosDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Age;
-
-                viewModelResumen.estadoDifunto = modelo.IdNichosDifuntosFkNavigation.Difunto.EstadoNavigation.Estado;
-
-                viewModelResumen.fechaIngreso = modelo.IdNichosDifuntosFkNavigation.FechaIngreso;
-                viewModelResumen.empresa = modelo.IdNichosDifuntosFkNavigation.Empresa;
-
-                viewModelResumen.usuario = modelo.IdNichosDifuntosFkNavigation.UsuarioNavigation.Nombre;
-                viewModelResumen.seccion = modelo.IdNichosDifuntosFkNavigation.Nicho.SeccionNavigation.Nombre;
-                viewModelResumen.ubicacion = modelo.IdNichosDifuntosFkNavigation.Nicho.NroNicho.ToString() +" "+ modelo.IdNichosDifuntosFkNavigation.Nicho.NroFila.ToString();
-
-            }
-
-            if (tipoParcelaResumen == "fosa")
-            {
-                viewModelResumen.nombreDifunto = modelo.IdFosasDifuntosFkNavigation.Difunto.Nombre;
-                viewModelResumen.apellidoDifunto = modelo.IdFosasDifuntosFkNavigation.Difunto.Apellido;
-                viewModelResumen.DNI = modelo.IdFosasDifuntosFkNavigation.Difunto.Dni;
-                viewModelResumen.fechaDefuncion = modelo.IdFosasDifuntosFkNavigation.Difunto.FechaDefuncion;
-                viewModelResumen.fechaNacimiento = modelo.IdFosasDifuntosFkNavigation.Difunto.FechaNacimiento;
-
-                viewModelResumen.actaDefuncion = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.NroActa;
-                viewModelResumen.tomo = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Tomo;
-                viewModelResumen.folio = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Folio;
-                viewModelResumen.serie = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Serie;
-                viewModelResumen.age = modelo.IdFosasDifuntosFkNavigation.Difunto.ActaDefuncionNavigation.Age;
-
-                viewModelResumen.estadoDifunto = modelo.IdFosasDifuntosFkNavigation.Difunto.EstadoNavigation.Estado;
-
-                viewModelResumen.fechaIngreso = modelo.IdFosasDifuntosFkNavigation.FechaIngreso;
-                viewModelResumen.empresa = modelo.IdFosasDifuntosFkNavigation.Empresa;
-
-                viewModelResumen.usuario = modelo.IdFosasDifuntosFkNavigation.UsuarioNavigation.Nombre;
-                viewModelResumen.seccion = modelo.IdFosasDifuntosFkNavigation.Fosa.SeccionNavigation.Nombre;
-                viewModelResumen.ubicacion = modelo.IdFosasDifuntosFkNavigation.Fosa.NroFosa.ToString();
-
-            }
-
-            if (tipoParcelaResumen == "panteon")
-            {
-                viewModelResumen.nombreDifunto = modelo.IdPanteonesDifuntosNavigation.Difunto.Nombre;
-                viewModelResumen.apellidoDifunto = modelo.IdPanteonesDifuntosNavigation.Difunto.Apellido;
-                viewModelResumen.DNI = modelo.IdPanteonesDifuntosNavigation.Difunto.Dni;
-                viewModelResumen.fechaDefuncion = modelo.IdPanteonesDifuntosNavigation.Difunto.FechaDefuncion;
-                viewModelResumen.fechaNacimiento = modelo.IdPanteonesDifuntosNavigation.Difunto.FechaNacimiento;
-
-                viewModelResumen.actaDefuncion = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.NroActa;
-                viewModelResumen.tomo = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.Tomo;
-                viewModelResumen.folio = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.Folio;
-                viewModelResumen.serie = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.Serie;
-                viewModelResumen.age = modelo.IdPanteonesDifuntosNavigation.Difunto.ActaDefuncionNavigation.Age;
-
-                viewModelResumen.estadoDifunto = modelo.IdPanteonesDifuntosNavigation.Difunto.EstadoNavigation.Estado;
-
-                viewModelResumen.fechaIngreso = modelo.IdPanteonesDifuntosNavigation.FechaIngreso;
-                viewModelResumen.empresa = modelo.IdPanteonesDifuntosNavigation.Empresa;
-
-                viewModelResumen.usuario = modelo.IdPanteonesDifuntosNavigation.UsuarioNavigation.Nombre;
-                viewModelResumen.seccion = modelo.IdPanteonesDifuntosNavigation.Panteon.IdSeccionPanteonNavigation.Nombre;
-                viewModelResumen.ubicacion = modelo.IdPanteonesDifuntosNavigation.Panteon.NroLote.ToString();
-
-            }
+            VMResumenIntroduccion viewModelResumen = await TraerDatosDetallaIntroduccion(idtramite);
             return View(viewModelResumen);
         }
 
         [HttpGet]
-        public IActionResult IndexIntroduccion()
+        public IActionResult IndexIntroduccion( VMResumenIntroduccion viewModel)
         {             
             //login
             var nombre = HttpContext.Session.GetString("nombreUsuario");
@@ -661,7 +609,47 @@ namespace CemSys.Controllers
             }
             ViewData["UsuarioLogueado"] = nombre;
             //fin login
-            return View();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> IndexIntroduccion(string tipoFiltro)
+        {
+            //login
+            var nombre = HttpContext.Session.GetString("nombreUsuario");
+            if (nombre == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            ViewData["UsuarioLogueado"] = nombre;
+            //fin login
+            VMResumenIntroduccion viewModelResumen = new VMResumenIntroduccion();
+
+
+
+            if (tipoFiltro == "todas")
+            {
+                try{
+                    viewModelResumen.ListaTramites = (await _difuntosBusiness.EmitirListadoTramites())
+                    .Select(t => new TramiteViewModel
+                    {
+                        IdTramite = t.IdTramite,
+                        idNichoDifuntoFK = t.IdNichosDifuntosFk,
+                        idFosaDifuntoFK = t.IdFosasDifuntosFk,
+                        idPanteonDifuntoFK = t.IdPanteonesDifuntos,
+
+                        nichosDifuntos = t.IdNichosDifuntosFkNavigation,
+                        fosasDifuntos = t.IdFosasDifuntosFkNavigation,
+                        panteonesDifuntos = t.IdPanteonesDifuntosNavigation
+                    })
+                    .ToList();
+                }
+                catch (Exception ex)
+                {
+                    ViewData["MensajeError"] = ex.Message;
+                }
+            }
+            return View(viewModelResumen);
         }
 
 

@@ -42,6 +42,7 @@ namespace CemSys.Interface.Difuntos
 
         Task<int> RegistrarTramite(Tramite modelo);
         Task<Tramite> ConsultarTramite(int id);
+        Task<List<Tramite>> EmitirListadoTramites();
 
 
         Task<int> ModificarDifunto(Difunto modelo);
