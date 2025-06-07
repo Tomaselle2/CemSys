@@ -22,10 +22,10 @@
                     <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesde" />
 
                     <label for="FiltroDesde">Desde</label>
-                    <input type="date" name="desde" value="" />
+                    <input type="date" name="desdeFecha" value="" />
 
                     <label for="FiltroHasta">Hasta</label>
-                    <input type="date" name="hasta" value="" id="FiltroHasta" />
+                    <input type="date" name="hastaFecha" value="" id="FiltroHasta" />
                 </div>
             </fieldset>
         </div>
@@ -40,10 +40,13 @@
     <!-- Botón Generar reporte -->
     <form id="formGenerarReporte" asp-action="GenerarReporteIntroducciones" method="post">
         <input type="hidden" name="idsTramites" id="idsTramites" />
+        <input type="hidden" name="desdeFecha" id="desdeFechaHidden" />
+        <input type="hidden" name="hastaFecha" id="hastaFechaHidden" />
         <div class="text-center mt-3">
             <button type="submit" class="btn-filtrar">Generar reporte</button>
         </div>
     </form>
+
 
     <!-- Tabla de Introducciones -->
     @if (Model.ListaTramites.Count == 0)
@@ -144,21 +147,56 @@
         const btnBuscar = document.getElementById("btnBuscar");
         const radioTodas = document.getElementById("tipoFiltroTodas");
         const radioDesde = document.getElementById("FiltroDesde");
-        const inputDesde = document.querySelector("input[name='desde']");
-        const inputHasta = document.querySelector("input[name='hasta']");
-        const filas = document.querySelectorAll("tbody tr");
+        const inputDesde = document.querySelector("input[name='desdeFecha']");
+        const inputHasta = document.querySelector("input[name='hastaFecha']");
 
+        const inputHiddenDesde = document.getElementById("desdeFechaHidden");
+        const inputHiddenHasta = document.getElementById("hastaFechaHidden");
+
+        const filas = document.querySelectorAll("tbody tr");
 
         const formReporte = document.getElementById("formGenerarReporte");
         const hiddenInputIds = document.getElementById("idsTramites");
+
+        // Función para obtener fecha mínima y máxima de las filas visibles
+        function actualizarFechasHidden() {
+            const fechas = Array.from(filas)
+                .filter(fila => fila.style.display !== "none")
+                .map(fila => fila.dataset.fecha)
+                .filter(fecha => fecha)
+                .map(fecha => new Date(fecha));
+
+            if (fechas.length > 0) {
+                const minFecha = new Date(Math.min(...fechas));
+                const maxFecha = new Date(Math.max(...fechas));
+                const formato = fecha => fecha.toISOString().split("T")[0];
+                inputDesde.value = formato(minFecha);
+                inputHasta.value = formato(maxFecha);
+                inputHiddenDesde.value = inputDesde.value;
+                inputHiddenHasta.value = inputHasta.value;
+            } else {
+                inputDesde.value = "";
+                inputHasta.value = "";
+                inputHiddenDesde.value = "";
+                inputHiddenHasta.value = "";
+            }
+        }
+
+        // Al cargar la página, actualizar fechas hidden según todas las filas visibles
+        actualizarFechasHidden();
+
         btnBuscar.addEventListener("click", function (e) {
             e.preventDefault();
 
             if (radioTodas.checked) {
-                // Mostrar todas
+                // Mostrar todas las filas
                 filas.forEach(fila => fila.style.display = "");
-                inputDesde.value = "";
-                inputHasta.value = "";
+
+                // Actualizar fechas min y max
+                actualizarFechasHidden();
+
+                formReporte.submit();
+
             } else if (radioDesde.checked) {
                 const desdeValue = inputDesde.value;
                 const hastaValue = inputHasta.value;
@@ -176,22 +214,22 @@
                     const fechaFila = new Date(dataFecha);
                     let mostrar = true;
 
-                    if (fechaDesde && fechaFila < fechaDesde) {
-                        mostrar = false;
-                    }
-                    if (fechaHasta && fechaFila > fechaHasta) {
-                        mostrar = false;
-                    }
+                    if (fechaDesde && fechaFila < fechaDesde) mostrar = false;
+                    if (fechaHasta && fechaFila > fechaHasta) mostrar = false;
 
                     fila.style.display = mostrar ? "" : "none";
-                    console.log("Fecha Fila:", dataFecha);
-
                 });
+
+                // Actualizar fechas hidden según filas filtradas
+                actualizarFechasHidden();
+
+                formReporte.submit();
             }
         });
 
-        // Generar reporte
         formReporte.addEventListener("submit", function (e) {
+            e.preventDefault();
+
             const ids = [];
             filas.forEach(fila => {
                 if (fila.style.display !== "none") {
@@ -199,10 +237,23 @@
                     ids.push(id);
                 }
             });
+
             hiddenInputIds.value = ids.join(',');
+
+            // Actualizar fechas hidden para asegurar estén sincronizadas
+            inputHiddenDesde.value = inputDesde.value;
+            inputHiddenHasta.value = inputHasta.value;
+
+            formReporte.submit();
+
+            console.log("ids:", hiddenInputIds.value);
+            console.log("desde:", inputHiddenDesde.value);
+            console.log("hasta:", inputHiddenHasta.value);
         });
     });
 </script>
+
+
 
 
 

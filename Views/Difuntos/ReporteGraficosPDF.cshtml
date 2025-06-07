@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "";
+    var imagenReporte = ViewData["ImagenBase64"] as string;
+    var baseUrl = ViewData["BaseUrl"] as string;
+    var imageUrlCemsys = $"{baseUrl}/fotos/cems.png";
+    var imageUrlLogoMuni = $"{baseUrl}/fotos/logoMuni.png";
+    var fechaDesde = ViewData["FechaDesde"] as string;
+    var fechaHasta = ViewData["FechaHasta"] as string;
+
+}
+
+<style>
+    html {
+        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+</style>
+
+<h1>Reporte Grafico</h1>
+<div>
+    <img src="@imageUrlCemsys" alt="Logo Cems" height="120" />
+</div>
+<div>
+    <img src="@imageUrlLogoMuni" alt="Logo Muni" height="70" />
+</div>
+<p>Fecha desde: @fechaDesde.Replace('-', '/')</p>
+<p>Fecha hasta: @fechaHasta.Replace('-', '/')</p>
+<img src="@imagenReporte" alt="Gráfico" style="width: 600px;" />

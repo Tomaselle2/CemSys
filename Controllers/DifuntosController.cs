@@ -631,6 +631,27 @@ namespace CemSys.Controllers
             return pdf;
         }
 
+        //reportesGraficos
+        [HttpPost]
+        public IActionResult ReporteGraficosPDF(string imagenBase64, string fechaDesde, string fechaHasta)
+        {
+            var pdf = new ViewAsPdf("ReporteGraficosPDF")
+            {
+                PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 5, 10),
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                FileName = $"Reporte.pdf"
+            };
+
+            // Agregá el valor directamente a su ViewData actual
+            pdf.ViewData["ImagenBase64"] = imagenBase64;
+            pdf.ViewData["BaseUrl"] = $"{Request.Scheme}://{Request.Host}";
+            pdf.ViewData["FechaDesde"] = fechaDesde;
+            pdf.ViewData["FechaHasta"] = fechaHasta;
+
+
+            return pdf;
+        }
+
         [HttpGet]
         public async Task<IActionResult> IndexIntroduccion()
         {             
@@ -712,7 +733,7 @@ namespace CemSys.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GenerarReporteIntroducciones(string idsTramites)
+        public async Task<IActionResult> GenerarReporteIntroducciones(string idsTramites, DateOnly? desdeFecha, DateOnly? hastaFecha)
         {
             //login
             var nombre = HttpContext.Session.GetString("nombreUsuario");
@@ -749,7 +770,9 @@ namespace CemSys.Controllers
 
             var viewModelResumen = new VMResumenIntroduccion
             {
-                ListaTramites = tramitesFiltrados
+                ListaTramites = tramitesFiltrados,
+                fechaDesde = desdeFecha,
+                fechaHasta = hastaFecha
             };
 
 

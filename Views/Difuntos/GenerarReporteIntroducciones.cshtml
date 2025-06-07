@@ -8,102 +8,6 @@
     <a asp-action="IndexIntroduccion" asp-controller="Difuntos" class="btn-volver"><i class="btn"></i>Volver</a>
 
     @{
-        string nroTramite = "";
-        string dni = "";
-        string nombreCompleto = "";
-        string fechaDefuncion = "";
-        string fechaNacimiento = "";
-
-        string actaDefuncion = "";
-        string tomo = "";
-        string folio = "";
-        string serie = "";
-        string age = "";
-        string estadoDifunto = "";
-        string empresa = "";
-        string usuario = "";
-
-        string seccion = "";
-        string ubicacion = "";
-        string fechaIngreso = "";
-        string datosAdicionales = "";
-    }
-
-    @foreach (var tramite in Model.ListaTramites)
-    {
-        @* Inicializar variables *@
-
-
-        nroTramite = tramite.IdTramite.ToString();
-        var difunto = tramite.DifuntoRelacionado;
-
-        if (difunto is NichosDifunto nicho)
-        {
-            dni = nicho.Difunto.Dni;
-            nombreCompleto = $"{nicho.Difunto.Apellido.ToUpper()} {nicho.Difunto.Nombre.ToUpper()}";
-            seccion = nicho.Nicho.SeccionNavigation.Nombre.ToLower();
-            ubicacion = $"Nicho {nicho.Nicho.NroNicho} Fila {nicho.Nicho.NroFila}";
-            fechaIngreso = nicho.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
-
-            fechaDefuncion = nicho.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
-            fechaNacimiento = nicho.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
-            actaDefuncion = (nicho.Difunto.ActaDefuncionNavigation.NroActa != 0) ? nicho.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "";
-            tomo = (nicho.Difunto.ActaDefuncionNavigation.Tomo != 0) ? nicho.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "";
-            folio = (nicho.Difunto.ActaDefuncionNavigation.Folio != 0) ? nicho.Difunto.ActaDefuncionNavigation.Folio.ToString() : "";
-            serie = (nicho.Difunto.ActaDefuncionNavigation.Serie != null) ? nicho.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "";
-            age = (nicho.Difunto.ActaDefuncionNavigation.Age != 0) ? nicho.Difunto.ActaDefuncionNavigation.Age.ToString() : "";
-            estadoDifunto = nicho.Difunto.EstadoNavigation.Estado;
-            empresa = nicho.Empresa.ToLower();
-            usuario = nicho.UsuarioNavigation.Nombre.ToLower();
-            datosAdicionales = nicho.Difunto.Descripcion;
-
-
-        }
-        else if (difunto is FosasDifunto fosa)
-        {
-            dni = fosa.Difunto.Dni;
-            nombreCompleto = $"{fosa.Difunto.Apellido.ToUpper()} {fosa.Difunto.Nombre.ToUpper()}";
-            seccion = fosa.Fosa.SeccionNavigation.Nombre.ToLower();
-            ubicacion = $"Fosa {fosa.Fosa.NroFosa}";
-            fechaIngreso = fosa.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
-
-            fechaDefuncion = fosa.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
-            fechaNacimiento = fosa.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
-            actaDefuncion = (fosa.Difunto.ActaDefuncionNavigation.NroActa != 0) ? fosa.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "";
-            tomo = (fosa.Difunto.ActaDefuncionNavigation.Tomo != 0) ? fosa.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "";
-            folio = (fosa.Difunto.ActaDefuncionNavigation.Folio != 0) ? fosa.Difunto.ActaDefuncionNavigation.Folio.ToString() : "";
-            serie = (fosa.Difunto.ActaDefuncionNavigation.Serie != null) ? fosa.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "";
-            age = (fosa.Difunto.ActaDefuncionNavigation.Age != 0) ? fosa.Difunto.ActaDefuncionNavigation.Age.ToString() : "";
-            estadoDifunto = fosa.Difunto.EstadoNavigation.Estado;
-            empresa = fosa.Empresa.ToString();
-            usuario = fosa.UsuarioNavigation.Nombre.ToUpper();
-            datosAdicionales = fosa.Difunto.Descripcion;
-
-        }
-        else if (difunto is PanteonDifunto panteon)
-        {
-            dni = panteon.Difunto.Dni;
-            nombreCompleto = $"{panteon.Difunto.Apellido.ToUpper()} {panteon.Difunto.Nombre.ToUpper()}";
-            seccion = panteon.Panteon.IdSeccionPanteonNavigation.Nombre.ToLower();
-            ubicacion = $"Lote {panteon.Panteon.NroLote}";
-            fechaIngreso = panteon.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
-
-            fechaDefuncion = panteon.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
-            fechaNacimiento = panteon.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
-            actaDefuncion = (panteon.Difunto.ActaDefuncionNavigation.NroActa != 0) ? panteon.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "";
-            tomo = (panteon.Difunto.ActaDefuncionNavigation.Tomo != 0) ? panteon.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "";
-            folio = (panteon.Difunto.ActaDefuncionNavigation.Folio != 0) ? panteon.Difunto.ActaDefuncionNavigation.Folio.ToString() : "";
-            serie = (panteon.Difunto.ActaDefuncionNavigation.Serie != null) ? panteon.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "";
-            age = (panteon.Difunto.ActaDefuncionNavigation.Age != 0) ? panteon.Difunto.ActaDefuncionNavigation.Age.ToString() : "";
-            estadoDifunto = panteon.Difunto.EstadoNavigation.Estado;
-            empresa = panteon.Empresa.ToLower();
-            usuario = panteon.UsuarioNavigation.Nombre.ToLower();
-            datosAdicionales = panteon.Difunto.Descripcion;
-
-        }
-    }
-
-    @{
         var agrupados = Model.ListaTramites
         .Where(t =>
         (t.nichosDifuntos?.FechaIngreso ??
@@ -149,24 +53,56 @@
         var labelsEmpleados = introduccionesPorEmpleado.Select(g => g.Key).ToList(); // nombres
         var valoresEmpleados = introduccionesPorEmpleado.Select(g => g.Count()).ToList(); // cantidad
     }
+    @{
+        string fechaDesde = (Model.fechaDesde != null) ? Model.fechaDesde?.ToString("dd-MM-yyyy") : "";
+        string fechaHasta = (Model.fechaHasta != null) ? Model.fechaHasta?.ToString("dd-MM-yyyy") : "";
+    }
 
     <!--Gráficos-->
     <!--Barra por mes-->
     <div style="max-width: 800px; margin: auto;">
         <canvas id="graficoPorMes" width="800" height="400"></canvas>
     </div>
+    <!-- Botón para enviar imagen a PDF grafico de barras -->
+    <form id="formPdfBarraMes" method="post" asp-action="ReporteGraficosPDF">
+        <input type="hidden" id="imagenBase64BarraMes" name="imagenBase64" />
+        <input type="hidden" name="fechaDesde" value="@fechaDesde" />
+        <input type="hidden" name="fechaHasta" value="@fechaHasta" />
+        <button type="submit">Exportar PDF</button>
+    </form>
 
-    <!--torta y barra por parcela-->
+    <!--torta por parcela-->
     <div style="max-width: 700px; margin: auto; margin-top: 40px;">
         <canvas id="graficoTortaParcela" style="margin-bottom: 40px; width: 300px; height: 300px" width="300" height="300"></canvas>
+    </div>
+    <form id="formPdfTortaParcela" method="post" asp-action="ReporteGraficosPDF">
+        <input type="hidden" id="imagenBase64TortaParcela" name="imagenBase64" />
+        <input type="hidden" name="fechaDesde" value="@fechaDesde" />
+        <input type="hidden" name="fechaHasta" value="@fechaHasta" />
+        <button type="submit">Exportar PDF</button>
+    </form>
+
+    <!-- barra por parcela-->
+    <div style="max-width: 700px; margin: auto; margin-top: 40px;">
         <canvas id="graficoBarraParcela" width="800" height="400"></canvas>
     </div>
+    <form id="formPdfBarraParcela" method="post" asp-action="ReporteGraficosPDF">
+        <input type="hidden" id="imagenBase64BarraParcela" name="imagenBase64" />
+        <input type="hidden" name="fechaDesde" value="@fechaDesde" />
+        <input type="hidden" name="fechaHasta" value="@fechaHasta" />
+        <button type="submit">Exportar PDF</button>
+    </form>
 
     <!-- barra horizontales por empleado-->
     <div style="max-width: 700px; margin: auto; margin-top: 40px;">
         <canvas id="graficoEmpleados" width="800" height="400"></canvas>
     </div>
-
+    <form id="formPdfEmpleados" method="post" asp-action="ReporteGraficosPDF">
+        <input type="hidden" id="imagenBase64Empleados" name="imagenBase64" />
+        <input type="hidden" name="fechaDesde" value="@fechaDesde" />
+        <input type="hidden" name="fechaHasta" value="@fechaHasta" />
+        <button type="submit">Exportar PDF</button>
+    </form>
 
 
 </div>
@@ -188,6 +124,31 @@
 
 
 <script>
+    //Botones para descargar en PDF
+        document.getElementById('formPdfBarraMes').addEventListener('submit', function (e) {
+            var canvas = document.getElementById("graficoPorMes");
+            var imagen = canvas.toDataURL("image/png"); // convierte el canvas a base64 PNG
+                document.getElementById("imagenBase64BarraMes").value = imagen;
+        });
+
+        document.getElementById('formPdfTortaParcela').addEventListener('submit', function (e) {
+            var canvas = document.getElementById("graficoTortaParcela");
+            var imagen = canvas.toDataURL("image/png"); // convierte el canvas a base64 PNG
+                document.getElementById("imagenBase64TortaParcela").value = imagen;
+        });
+
+        document.getElementById('formPdfBarraParcela').addEventListener('submit', function (e) {
+                var canvas = document.getElementById("graficoBarraParcela");
+            var imagen = canvas.toDataURL("image/png"); // convierte el canvas a base64 PNG
+                document.getElementById("imagenBase64BarraParcela").value = imagen;
+        });
+
+        document.getElementById('formPdfEmpleados').addEventListener('submit', function (e) {
+            var canvas = document.getElementById("graficoEmpleados");
+            var imagen = canvas.toDataURL("image/png"); // convierte el canvas a base64 PNG
+                document.getElementById("imagenBase64Empleados").value = imagen;
+        });
+            
     document.addEventListener("DOMContentLoaded", function () {
         const ctx = document.getElementById('graficoPorMes').getContext('2d');
         const chart = new Chart(ctx, {
