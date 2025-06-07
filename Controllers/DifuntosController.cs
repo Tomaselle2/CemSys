@@ -1,6 +1,7 @@
 ﻿using CemSys.Interface.Difuntos;
 using CemSys.Models;
 using CemSys.Models.ViewModel;
+using HeyRed.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Rotativa.AspNetCore;
@@ -12,10 +13,12 @@ namespace CemSys.Controllers
     {
         VMDifuntos viewModel = new VMDifuntos();
         private readonly IDifuntosBusiness _difuntosBusiness;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public DifuntosController(IDifuntosBusiness difuntosBusiness)
+        public DifuntosController(IDifuntosBusiness difuntosBusiness, IWebHostEnvironment webHostEnvironment)
         {
             _difuntosBusiness = difuntosBusiness;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index( VM_Introduccion_Listado viewModelListadoFiltrado)
@@ -611,8 +614,29 @@ namespace CemSys.Controllers
             ViewData["UsuarioLogueado"] = nombreLog;
             //fin login
 
+            Dictionary<string, string> fotos = new();
+            string rutaImagenes = Path.Combine(_webHostEnvironment.WebRootPath, "fotos");
+            string[] arhivos = Directory.GetFiles(rutaImagenes);
+            string nombre, mimeType;
+            byte[] data;
+
+            foreach (string item in arhivos)
+            {
+                nombre = Path.GetFileNameWithoutExtension(item);
+                mimeType = MimeTypesMap.GetMimeType(item);
+                data = System.IO.File.ReadAllBytes(item);
+                fotos.Add(nombre, string.Concat("data:", mimeType, ";base64,", Convert.ToBase64String(data)));
+            }
+            var viewData = ViewData;
+            viewData["fotos"] = fotos;
             VMResumenIntroduccion viewModelResumen = await TraerDatosDetallaIntroduccion(idtramite);
-            return new ViewAsPdf(viewModelResumen);
+            return new ViewAsPdf(viewModelResumen)
+            {
+                PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 5, 10),
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                FileName = $"Tramite {viewModelResumen.ListaTramites[0].IdTramite}.pdf",
+                ViewData = viewData
+            };
         }
 
         [HttpGet]

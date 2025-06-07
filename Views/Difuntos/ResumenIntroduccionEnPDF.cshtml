@@ -2,24 +2,21 @@
 @model VMResumenIntroduccion
 @{
     Layout = "";
+    Dictionary<string, string> fotos = ViewBag.fotos;
 }
-<div class="main-content">
-    <h1>Resumen de la operación</h1>
-    @* Notificaciones de registrar *@
-    @if (!string.IsNullOrEmpty(TempData["RegistrarMensaje"] as string))
-    {
-        <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1055;">
-            <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="notificacion">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        @TempData["RegistrarMensaje"]
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
-
+<style>
+    html{
+        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
     }
+
+</style>
+<div class="main-content">
+    <div>
+        <img src="@Url.Content("~/fotos/fondo1.jpg")" alt="Descripción de la imagen">
+    </div>
+    <h1>Resumen de la operación</h1>
+
     @{
         string nroTramite = "";
         string dni = "";
@@ -60,11 +57,11 @@
 
             fechaDefuncion = nicho.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
             fechaNacimiento = nicho.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
-            actaDefuncion = nicho.Difunto.ActaDefuncionNavigation.NroActa.ToString();
-            tomo = nicho.Difunto.ActaDefuncionNavigation.Tomo.ToString();
-            folio = nicho.Difunto.ActaDefuncionNavigation.Folio.ToString();
-            serie = nicho.Difunto.ActaDefuncionNavigation.Serie;
-            age = nicho.Difunto.ActaDefuncionNavigation.Age.ToString();
+            actaDefuncion = (nicho.Difunto.ActaDefuncionNavigation.NroActa != 0) ? nicho.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "";
+            tomo = (nicho.Difunto.ActaDefuncionNavigation.Tomo != 0) ? nicho.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "";
+            folio = (nicho.Difunto.ActaDefuncionNavigation.Folio != 0) ? nicho.Difunto.ActaDefuncionNavigation.Folio.ToString() : "";
+            serie = (nicho.Difunto.ActaDefuncionNavigation.Serie != null) ? nicho.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "";
+            age = (nicho.Difunto.ActaDefuncionNavigation.Age != 0) ? nicho.Difunto.ActaDefuncionNavigation.Age.ToString() : "";
             estadoDifunto = nicho.Difunto.EstadoNavigation.Estado;
             empresa = nicho.Empresa.ToLower();
             usuario = nicho.UsuarioNavigation.Nombre.ToLower();
@@ -82,11 +79,11 @@
 
             fechaDefuncion = fosa.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
             fechaNacimiento = fosa.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
-            actaDefuncion = fosa.Difunto.ActaDefuncionNavigation.NroActa.ToString();
-            tomo = fosa.Difunto.ActaDefuncionNavigation.Tomo.ToString();
-            folio = fosa.Difunto.ActaDefuncionNavigation.Folio.ToString();
-            serie = fosa.Difunto.ActaDefuncionNavigation.Serie.ToUpper();
-            age = fosa.Difunto.ActaDefuncionNavigation.Age.ToString();
+            actaDefuncion = (fosa.Difunto.ActaDefuncionNavigation.NroActa != 0) ? fosa.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "";
+            tomo = (fosa.Difunto.ActaDefuncionNavigation.Tomo != 0) ? fosa.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "";
+            folio = (fosa.Difunto.ActaDefuncionNavigation.Folio != 0) ? fosa.Difunto.ActaDefuncionNavigation.Folio.ToString() : "";
+            serie = (fosa.Difunto.ActaDefuncionNavigation.Serie != null) ? fosa.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "";
+            age = (fosa.Difunto.ActaDefuncionNavigation.Age != 0) ? fosa.Difunto.ActaDefuncionNavigation.Age.ToString() : "";
             estadoDifunto = fosa.Difunto.EstadoNavigation.Estado;
             empresa = fosa.Empresa.ToString();
             usuario = fosa.UsuarioNavigation.Nombre.ToUpper();
@@ -103,11 +100,11 @@
 
             fechaDefuncion = panteon.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
             fechaNacimiento = panteon.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
-            actaDefuncion = panteon.Difunto.ActaDefuncionNavigation.NroActa.ToString();
-            tomo = panteon.Difunto.ActaDefuncionNavigation.Tomo.ToString();
-            folio = panteon.Difunto.ActaDefuncionNavigation.Folio.ToString();
-            serie = panteon.Difunto.ActaDefuncionNavigation.Serie;
-            age = panteon.Difunto.ActaDefuncionNavigation.Age.ToString();
+            actaDefuncion = (panteon.Difunto.ActaDefuncionNavigation.NroActa != 0) ? panteon.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "";
+            tomo = (panteon.Difunto.ActaDefuncionNavigation.Tomo != 0) ? panteon.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "";
+            folio = (panteon.Difunto.ActaDefuncionNavigation.Folio != 0) ? panteon.Difunto.ActaDefuncionNavigation.Folio.ToString() : "";
+            serie = (panteon.Difunto.ActaDefuncionNavigation.Serie != null) ? panteon.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "";
+            age = (panteon.Difunto.ActaDefuncionNavigation.Age != 0) ? panteon.Difunto.ActaDefuncionNavigation.Age.ToString() : "";
             estadoDifunto = panteon.Difunto.EstadoNavigation.Estado;
             empresa = panteon.Empresa.ToLower();
             usuario = panteon.UsuarioNavigation.Nombre.ToLower();
