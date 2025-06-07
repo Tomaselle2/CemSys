@@ -2,24 +2,9 @@
 @model VMResumenIntroduccion
 <div class="main-content">
     <div>
-        <!--<img src="Server.MapPath("~/wwwroot/fotos/imagen.png")" alt="Descripción de la imagen" height="100"> -->
+        <img src="~/fotos/cems.png" alt="Imagen logo cemsys" height="100">
     </div>
     <h1>Resumen de la operación</h1>
-    @* Notificaciones de registrar *@
-    @if (!string.IsNullOrEmpty(TempData["RegistrarMensaje"] as string))
-    {
-        <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1055;">
-            <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="notificacion">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        @TempData["RegistrarMensaje"]
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
-
-    }
     @{
         string nroTramite = "";
         string dni = "";

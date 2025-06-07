@@ -614,29 +614,21 @@ namespace CemSys.Controllers
             ViewData["UsuarioLogueado"] = nombreLog;
             //fin login
 
-            Dictionary<string, string> fotos = new();
-            string rutaImagenes = Path.Combine(_webHostEnvironment.WebRootPath, "fotos");
-            string[] arhivos = Directory.GetFiles(rutaImagenes);
-            string nombre, mimeType;
-            byte[] data;
+           
 
-            foreach (string item in arhivos)
-            {
-                nombre = Path.GetFileNameWithoutExtension(item);
-                mimeType = MimeTypesMap.GetMimeType(item);
-                data = System.IO.File.ReadAllBytes(item);
-                fotos.Add(nombre, string.Concat("data:", mimeType, ";base64,", Convert.ToBase64String(data)));
-            }
-            var viewData = ViewData;
-            viewData["fotos"] = fotos;
             VMResumenIntroduccion viewModelResumen = await TraerDatosDetallaIntroduccion(idtramite);
-            return new ViewAsPdf(viewModelResumen)
+
+            var pdf = new ViewAsPdf("ResumenIntroduccionEnPDF", viewModelResumen)
             {
                 PageMargins = new Rotativa.AspNetCore.Options.Margins(10, 5, 5, 10),
                 PageSize = Rotativa.AspNetCore.Options.Size.A4,
-                FileName = $"Tramite {viewModelResumen.ListaTramites[0].IdTramite}.pdf",
-                ViewData = viewData
+                FileName = $"Tramite {viewModelResumen.ListaTramites[0].IdTramite}.pdf"
             };
+
+            // Agregá el valor directamente a su ViewData actual
+            pdf.ViewData["BaseUrl"] = $"{Request.Scheme}://{Request.Host}";
+
+            return pdf;
         }
 
         [HttpGet]

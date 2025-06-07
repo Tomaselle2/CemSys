@@ -2,7 +2,9 @@
 @model VMResumenIntroduccion
 @{
     Layout = "";
-    Dictionary<string, string> fotos = ViewBag.fotos;
+    var baseUrl = ViewData["BaseUrl"] as string;
+    var imageUrlCemsys = $"{baseUrl}/fotos/cems.png";
+    var imageUrlLogoMuni = $"{baseUrl}/fotos/logoMuni.png";
 }
 <style>
     html{
@@ -13,7 +15,10 @@
 </style>
 <div class="main-content">
     <div>
-        <img src="@Url.Content("~/fotos/fondo1.jpg")" alt="Descripción de la imagen">
+        <img src="@imageUrlCemsys" alt="Logo Cems" height="120" />
+    </div>
+    <div>
+        <img src="@imageUrlLogoMuni" alt="Logo Muni" height="70" />
     </div>
     <h1>Resumen de la operación</h1>
 
