@@ -711,6 +711,52 @@ namespace CemSys.Controllers
             return View(viewModelResumen);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GenerarReporteIntroducciones(string idsTramites)
+        {
+            //login
+            var nombre = HttpContext.Session.GetString("nombreUsuario");
+            if (nombre == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            ViewData["UsuarioLogueado"] = nombre;
+            //fin login
+
+            // Aquí puedes implementar la lógica para generar el reporte
+
+            if (string.IsNullOrEmpty(idsTramites))
+            {
+                return RedirectToAction("IndexIntroduccion");
+            }
+
+            var ids = idsTramites.Split(',').Select(int.Parse).ToList();
+
+            var todosTramites = await _difuntosBusiness.EmitirListadoTramites();
+            var tramitesFiltrados = todosTramites
+                .Where(t => ids.Contains(t.IdTramite))
+                .Select(t => new TramiteViewModel
+                {
+                    IdTramite = t.IdTramite,
+                    idNichoDifuntoFK = t.IdNichosDifuntosFk,
+                    idFosaDifuntoFK = t.IdFosasDifuntosFk,
+                    idPanteonDifuntoFK = t.IdPanteonesDifuntos,
+                    nichosDifuntos = t.IdNichosDifuntosFkNavigation,
+                    fosasDifuntos = t.IdFosasDifuntosFkNavigation,
+                    panteonesDifuntos = t.IdPanteonesDifuntosNavigation
+                })
+                .ToList();
+
+            var viewModelResumen = new VMResumenIntroduccion
+            {
+                ListaTramites = tramitesFiltrados
+            };
+
+
+
+            return View(viewModelResumen); // Vista personalizada
+        }
+
 
     }
     

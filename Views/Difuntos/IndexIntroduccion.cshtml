@@ -3,6 +3,7 @@
 
 <div class="main-content">
     <h1>Introducciones</h1>
+
     <!-- Botón Agregar -->
     <form asp-action="Registrar" method="get" class="mb-4 text-center">
         <input class="btn-agregar-guardar" type="submit" value="+ Introducir difunto" />
@@ -34,7 +35,11 @@
             <button type="submit" class="btn-filtrar" id="btnBuscar">Buscar</button>
         </div>
 
-        <!-- Botón Generar reporte -->
+    </form>
+
+    <!-- Botón Generar reporte -->
+    <form id="formGenerarReporte" asp-action="GenerarReporteIntroducciones" method="post">
+        <input type="hidden" name="idsTramites" id="idsTramites" />
         <div class="text-center mt-3">
             <button type="submit" class="btn-filtrar">Generar reporte</button>
         </div>
@@ -143,6 +148,9 @@
         const inputHasta = document.querySelector("input[name='hasta']");
         const filas = document.querySelectorAll("tbody tr");
 
+
+        const formReporte = document.getElementById("formGenerarReporte");
+        const hiddenInputIds = document.getElementById("idsTramites");
         btnBuscar.addEventListener("click", function (e) {
             e.preventDefault();
 
@@ -180,6 +188,18 @@
 
                 });
             }
+        });
+
+        // Generar reporte
+        formReporte.addEventListener("submit", function (e) {
+            const ids = [];
+            filas.forEach(fila => {
+                if (fila.style.display !== "none") {
+                    const id = fila.querySelector("td:first-child").textContent.trim();
+                    ids.push(id);
+                }
+            });
+            hiddenInputIds.value = ids.join(',');
         });
     });
 </script>
