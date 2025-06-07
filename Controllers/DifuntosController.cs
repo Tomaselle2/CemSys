@@ -3,6 +3,7 @@ using CemSys.Models;
 using CemSys.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Rotativa.AspNetCore;
 using System.Threading.Tasks;
 
 namespace CemSys.Controllers
@@ -596,6 +597,22 @@ namespace CemSys.Controllers
 
             VMResumenIntroduccion viewModelResumen = await TraerDatosDetallaIntroduccion(idtramite);
             return View(viewModelResumen);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ResumenIntroduccionEnPDF(int idtramite)
+        {
+            //login
+            var nombreLog = HttpContext.Session.GetString("nombreUsuario");
+            if (nombreLog == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            ViewData["UsuarioLogueado"] = nombreLog;
+            //fin login
+
+            VMResumenIntroduccion viewModelResumen = await TraerDatosDetallaIntroduccion(idtramite);
+            return new ViewAsPdf(viewModelResumen);
         }
 
         [HttpGet]

@@ -135,7 +135,11 @@
     <p>Parcela: @ubicacion</p>
 
     <a asp-action="IndexIntroduccion" asp-controller="Difuntos" class="btn-volver"><i class="btn"></i>Volver</a>
-    <a asp-action="" asp-controller="" class="btn-volver"><i class="btn"></i>Descargar operación</a>
+
+    <form asp-action="ResumenIntroduccionEnPDF" asp-controller="Difuntos" method="get">
+        <input type="hidden" name="idTramite" value="@nroTramite" />
+        <button type="submit" class="btn-volver"><i class="btn"></i>Descargar PDF</button>
+    </form>
 
 </div>
 

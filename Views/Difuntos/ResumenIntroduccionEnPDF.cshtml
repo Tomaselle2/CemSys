@@ -1,0 +1,140 @@
+﻿@using CemSys.Models.ViewModel
+@model VMResumenIntroduccion
+@{
+    Layout = "";
+}
+<div class="main-content">
+    <h1>Resumen de la operación</h1>
+    @* Notificaciones de registrar *@
+    @if (!string.IsNullOrEmpty(TempData["RegistrarMensaje"] as string))
+    {
+        <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1055;">
+            <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="notificacion">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @TempData["RegistrarMensaje"]
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+    }
+    @{
+        string nroTramite = "";
+        string dni = "";
+        string nombreCompleto = "";
+        string fechaDefuncion = "";
+        string fechaNacimiento = "";
+
+        string actaDefuncion = "";
+        string tomo = "";
+        string folio = "";
+        string serie = "";
+        string age = "";
+        string estadoDifunto = "";
+        string empresa = "";
+        string usuario = "";
+
+        string seccion = "";
+        string ubicacion = "";
+        string fechaIngreso = "";
+        string datosAdicionales = "";
+    }
+
+    @foreach (var tramite in Model.ListaTramites)
+    {
+        @* Inicializar variables *@
+
+
+        nroTramite = tramite.IdTramite.ToString();
+        var difunto = tramite.DifuntoRelacionado;
+
+        if (difunto is NichosDifunto nicho)
+        {
+            dni = nicho.Difunto.Dni;
+            nombreCompleto = $"{nicho.Difunto.Apellido.ToUpper()} {nicho.Difunto.Nombre.ToUpper()}";
+            seccion = nicho.Nicho.SeccionNavigation.Nombre.ToLower();
+            ubicacion = $"Nicho {nicho.Nicho.NroNicho} Fila {nicho.Nicho.NroFila}";
+            fechaIngreso = nicho.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
+
+            fechaDefuncion = nicho.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
+            fechaNacimiento = nicho.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
+            actaDefuncion = nicho.Difunto.ActaDefuncionNavigation.NroActa.ToString();
+            tomo = nicho.Difunto.ActaDefuncionNavigation.Tomo.ToString();
+            folio = nicho.Difunto.ActaDefuncionNavigation.Folio.ToString();
+            serie = nicho.Difunto.ActaDefuncionNavigation.Serie;
+            age = nicho.Difunto.ActaDefuncionNavigation.Age.ToString();
+            estadoDifunto = nicho.Difunto.EstadoNavigation.Estado;
+            empresa = nicho.Empresa.ToLower();
+            usuario = nicho.UsuarioNavigation.Nombre.ToLower();
+            datosAdicionales = nicho.Difunto.Descripcion;
+
+
+        }
+        else if (difunto is FosasDifunto fosa)
+        {
+            dni = fosa.Difunto.Dni;
+            nombreCompleto = $"{fosa.Difunto.Apellido.ToUpper()} {fosa.Difunto.Nombre.ToUpper()}";
+            seccion = fosa.Fosa.SeccionNavigation.Nombre.ToLower();
+            ubicacion = $"Fosa {fosa.Fosa.NroFosa}";
+            fechaIngreso = fosa.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
+
+            fechaDefuncion = fosa.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
+            fechaNacimiento = fosa.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
+            actaDefuncion = fosa.Difunto.ActaDefuncionNavigation.NroActa.ToString();
+            tomo = fosa.Difunto.ActaDefuncionNavigation.Tomo.ToString();
+            folio = fosa.Difunto.ActaDefuncionNavigation.Folio.ToString();
+            serie = fosa.Difunto.ActaDefuncionNavigation.Serie.ToUpper();
+            age = fosa.Difunto.ActaDefuncionNavigation.Age.ToString();
+            estadoDifunto = fosa.Difunto.EstadoNavigation.Estado;
+            empresa = fosa.Empresa.ToString();
+            usuario = fosa.UsuarioNavigation.Nombre.ToUpper();
+            datosAdicionales = fosa.Difunto.Descripcion;
+
+        }
+        else if (difunto is PanteonDifunto panteon)
+        {
+            dni = panteon.Difunto.Dni;
+            nombreCompleto = $"{panteon.Difunto.Apellido.ToUpper()} {panteon.Difunto.Nombre.ToUpper()}";
+            seccion = panteon.Panteon.IdSeccionPanteonNavigation.Nombre.ToLower();
+            ubicacion = $"Lote {panteon.Panteon.NroLote}";
+            fechaIngreso = panteon.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
+
+            fechaDefuncion = panteon.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
+            fechaNacimiento = panteon.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
+            actaDefuncion = panteon.Difunto.ActaDefuncionNavigation.NroActa.ToString();
+            tomo = panteon.Difunto.ActaDefuncionNavigation.Tomo.ToString();
+            folio = panteon.Difunto.ActaDefuncionNavigation.Folio.ToString();
+            serie = panteon.Difunto.ActaDefuncionNavigation.Serie;
+            age = panteon.Difunto.ActaDefuncionNavigation.Age.ToString();
+            estadoDifunto = panteon.Difunto.EstadoNavigation.Estado;
+            empresa = panteon.Empresa.ToLower();
+            usuario = panteon.UsuarioNavigation.Nombre.ToLower();
+            datosAdicionales = panteon.Difunto.Descripcion;
+
+        }
+    }
+
+    <h2>Tramite @nroTramite</h2>
+    <p>Ingreso @fechaIngreso</p>
+    <p>Empresa: @empresa.ToUpper()</p>
+
+    <p>DNI: @dni</p>
+    <p>Apellido y nombre: @nombreCompleto.ToUpper()</p>
+    <p>Fecha nacimiento @fechaNacimiento</p>
+    <p>Fecha defunción: @fechaDefuncion</p>
+    <p>Estado difunto: @estadoDifunto</p>
+    <p>Datos adicionales: @datosAdicionales</p>
+
+    <p>Acta: @actaDefuncion</p>
+    <p>Tomo: @tomo</p>
+    <p>Folio: @folio</p>
+    <p>Serie: @serie</p>
+    <p>Año: @age</p>
+
+    <p>Empleado responsable: @usuario.ToUpper()</p>
+    <p>Sección: @seccion.ToUpper()</p>
+    <p>Parcela: @ubicacion</p>
+
+</div>

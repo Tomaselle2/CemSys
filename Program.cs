@@ -8,7 +8,8 @@ using CemSys.Interface.Panteones;
 using CemSys.Interface.SeccionesNichos;
 using CemSys.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options; 
+using Microsoft.Extensions.Options;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,10 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+// Configura Rotativa con la ruta de wkhtmltopdf
+string wwwroot = app.Environment.WebRootPath;
+RotativaConfiguration.Setup(wwwroot, "rotativa");
+
 app.UseSession();
 
 // Configure the HTTP request pipeline.
@@ -64,3 +69,4 @@ app.MapControllerRoute(
 pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();
+
