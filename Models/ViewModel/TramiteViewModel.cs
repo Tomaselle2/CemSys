@@ -16,6 +16,7 @@
         public int? age { get; set; }
 
         public string? estadoDifunto { get; set; }
+        public string? datosAdicionales { get; set; }
 
         public DateTime? fechaIngreso { get; set; }
         public string? empresa { get; set; }

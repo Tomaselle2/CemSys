@@ -599,7 +599,7 @@ namespace CemSys.Controllers
         }
 
         [HttpGet]
-        public IActionResult IndexIntroduccion( VMResumenIntroduccion viewModel)
+        public async Task<IActionResult> IndexIntroduccion()
         {             
             //login
             var nombre = HttpContext.Session.GetString("nombreUsuario");
@@ -609,28 +609,11 @@ namespace CemSys.Controllers
             }
             ViewData["UsuarioLogueado"] = nombre;
             //fin login
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> IndexIntroduccion(string tipoFiltro)
-        {
-            //login
-            var nombre = HttpContext.Session.GetString("nombreUsuario");
-            if (nombre == null)
+            VMResumenIntroduccion viewModel = new VMResumenIntroduccion();
+            try
             {
-                return RedirectToAction("Index", "Login");
-            }
-            ViewData["UsuarioLogueado"] = nombre;
-            //fin login
-            VMResumenIntroduccion viewModelResumen = new VMResumenIntroduccion();
 
-
-
-            if (tipoFiltro == "todas")
-            {
-                try{
-                    viewModelResumen.ListaTramites = (await _difuntosBusiness.EmitirListadoTramites())
+                viewModel.ListaTramites = (await _difuntosBusiness.EmitirListadoTramites())
                     .Select(t => new TramiteViewModel
                     {
                         IdTramite = t.IdTramite,
@@ -643,12 +626,55 @@ namespace CemSys.Controllers
                         panteonesDifuntos = t.IdPanteonesDifuntosNavigation
                     })
                     .ToList();
-                }
-                catch (Exception ex)
-                {
-                    ViewData["MensajeError"] = ex.Message;
-                }
+
+
+
             }
+            catch (Exception ex)
+            {
+                ViewData["MensajeError"] = ex.Message;
+            }
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> IndexIntroduccion(string tipoFiltro, DateOnly? desde, DateOnly? hasta)
+        {
+            //login
+            var nombre = HttpContext.Session.GetString("nombreUsuario");
+            if (nombre == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            ViewData["UsuarioLogueado"] = nombre;
+            //fin login
+            VMResumenIntroduccion viewModelResumen = new VMResumenIntroduccion();
+
+
+            try
+            {
+  
+                viewModelResumen.ListaTramites = (await _difuntosBusiness.EmitirListadoTramites())
+                    .Select(t => new TramiteViewModel
+                    {
+                        IdTramite = t.IdTramite,
+                        idNichoDifuntoFK = t.IdNichosDifuntosFk,
+                        idFosaDifuntoFK = t.IdFosasDifuntosFk,
+                        idPanteonDifuntoFK = t.IdPanteonesDifuntos,
+
+                        nichosDifuntos = t.IdNichosDifuntosFkNavigation,
+                        fosasDifuntos = t.IdFosasDifuntosFkNavigation,
+                        panteonesDifuntos = t.IdPanteonesDifuntosNavigation
+                    })
+                    .ToList();
+
+                
+
+            }catch (Exception ex)
+            {
+                ViewData["MensajeError"] = ex.Message;
+            }
+            
             return View(viewModelResumen);
         }
 

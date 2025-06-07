@@ -18,9 +18,11 @@
                     <label for="tipoFiltroTodas">Todas</label>
                 </div>
                 <div>
-                    <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesdeFiltroDesde" />
+                    <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesde" />
+
                     <label for="FiltroDesde">Desde</label>
                     <input type="date" name="desde" value="" />
+
                     <label for="FiltroHasta">Hasta</label>
                     <input type="date" name="hasta" value="" id="FiltroHasta" />
                 </div>
@@ -29,7 +31,7 @@
 
         <!-- Botón Buscar -->
         <div class="text-center mt-3">
-            <button type="submit" class="btn-filtrar">Buscar</button>
+            <button type="submit" class="btn-filtrar" id="btnBuscar">Buscar</button>
         </div>
 
         <!-- Botón Generar reporte -->
@@ -59,47 +61,62 @@
             <tbody>
                 @foreach (var tramite in Model.ListaTramites)
                 {
-                    <tr>
+                    string dni = "";
+
+                    string nombreCompleto = "";
+                    string seccion = "";
+                    string ubicacion = "";
+                    string fechaIngreso = "";
+                    string fechaIso = "";
+
+                    @* Inicializar variables *@
+                    
+                    var difunto = tramite.DifuntoRelacionado;
+
+                    if (difunto is NichosDifunto nicho)
+                    {
+                        dni = nicho.Difunto.Dni;
+                        nombreCompleto = $"{nicho.Difunto.Apellido.ToUpper()} {nicho.Difunto.Nombre.ToUpper()}";
+                        seccion = nicho.Nicho.SeccionNavigation.Nombre;
+                        ubicacion = $"Nicho {nicho.Nicho.NroNicho} Fila {nicho.Nicho.NroFila}";
+                        fechaIngreso = nicho.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
+                        fechaIso = nicho.FechaIngreso?.ToString("yyyy-MM-dd");
+                    }
+                    else if (difunto is FosasDifunto fosa)
+                    {
+                        dni = fosa.Difunto.Dni;
+                        nombreCompleto = $"{fosa.Difunto.Apellido.ToUpper()} {fosa.Difunto.Nombre.ToUpper()}";
+                        seccion = fosa.Fosa.SeccionNavigation.Nombre;
+                        ubicacion = $"Fosa {fosa.Fosa.NroFosa}";
+                        fechaIngreso = fosa.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
+                        fechaIso = fosa.FechaIngreso?.ToString("yyyy-MM-dd");
+                    }
+                    else if (difunto is PanteonDifunto panteon)
+                    {
+                        dni = panteon.Difunto.Dni;
+                        nombreCompleto = $"{panteon.Difunto.Apellido.ToUpper()} {panteon.Difunto.Nombre.ToUpper()}";
+                        seccion = panteon.Panteon.IdSeccionPanteonNavigation.Nombre;
+                        ubicacion = $"Lote {panteon.Panteon.NroLote}";
+                        fechaIngreso = panteon.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
+                        fechaIso = panteon.FechaIngreso?.ToString("yyyy-MM-dd");
+
+                    }
+                    
+
+                    <tr data-fecha="@fechaIso">
                         <td>@tramite.IdTramite</td>
-                        @* Inicializar variables *@
-                        @{
-                            string dni = "";
-                            string nombreCompleto = "";
-                            string seccion = "";
-                            string ubicacion = "";
-                            string fechaIngreso = "";
-
-                            var difunto = tramite.DifuntoRelacionado;
-
-                            if (difunto is NichosDifunto nicho)
-                            {
-                                dni = nicho.Difunto.Dni;
-                                nombreCompleto = $"{nicho.Difunto.Apellido.ToUpper()} {nicho.Difunto.Nombre.ToUpper()}";
-                                seccion = nicho.Nicho.SeccionNavigation.Nombre;
-                                ubicacion = $"Nicho {nicho.Nicho.NroNicho} Fila {nicho.Nicho.NroFila}";
-                                fechaIngreso = nicho.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
-                            }
-                            else if (difunto is FosasDifunto fosa)
-                            {
-                                dni = fosa.Difunto.Dni;
-                                nombreCompleto = $"{fosa.Difunto.Apellido.ToUpper()} {fosa.Difunto.Nombre.ToUpper()}";
-                                seccion = fosa.Fosa.SeccionNavigation.Nombre;
-                                ubicacion = $"Fosa {fosa.Fosa.NroFosa}";
-                                fechaIngreso = fosa.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
-                            }
-                            else if (difunto is PanteonDifunto panteon)
-                            {
-                                dni = panteon.Difunto.Dni;
-                                nombreCompleto = $"{panteon.Difunto.Apellido.ToUpper()} {panteon.Difunto.Nombre.ToUpper()}";
-                                seccion = panteon.Panteon.IdSeccionPanteonNavigation.Nombre;
-                                ubicacion = $"Lote {panteon.Panteon.NroLote}";
-                                fechaIngreso = panteon.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
-                            }
-                        }
+                       
                         <td>@fechaIngreso hs</td>
-                        <td>@dni</td>
+                        @if (dni != "nn")
+                        {
+                            <td>@dni</td>
+                        }
+                        else
+                        {
+                            <td>--------</td>
+                        }
                         <td>@nombreCompleto</td>
-                        <td>@seccion</td>
+                        <td>@seccion.ToUpper()</td>
                         <td>@ubicacion</td>
 
                         <td>
@@ -118,12 +135,55 @@
 </div>
 
 <script>
-    //buscador
-    const inputDesde = document.getElementById('filtroDesde');
-    const inputHasta = document.getElementById('filtroHasta');
-    const inputTodas = document.getElementById('tipoFiltroTodas');
+    document.addEventListener("DOMContentLoaded", function () {
+        const btnBuscar = document.getElementById("btnBuscar");
+        const radioTodas = document.getElementById("tipoFiltroTodas");
+        const radioDesde = document.getElementById("FiltroDesde");
+        const inputDesde = document.querySelector("input[name='desde']");
+        const inputHasta = document.querySelector("input[name='hasta']");
+        const filas = document.querySelectorAll("tbody tr");
+
+        btnBuscar.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            if (radioTodas.checked) {
+                // Mostrar todas
+                filas.forEach(fila => fila.style.display = "");
+                inputDesde.value = "";
+                inputHasta.value = "";
+            } else if (radioDesde.checked) {
+                const desdeValue = inputDesde.value;
+                const hastaValue = inputHasta.value;
+
+                const fechaDesde = desdeValue ? new Date(desdeValue) : null;
+                const fechaHasta = hastaValue ? new Date(hastaValue) : null;
+
+                filas.forEach(fila => {
+                    const dataFecha = fila.dataset.fecha;
+                    if (!dataFecha) {
+                        fila.style.display = "none";
+                        return;
+                    }
+
+                    const fechaFila = new Date(dataFecha);
+                    let mostrar = true;
+
+                    if (fechaDesde && fechaFila < fechaDesde) {
+                        mostrar = false;
+                    }
+                    if (fechaHasta && fechaFila > fechaHasta) {
+                        mostrar = false;
+                    }
+
+                    fila.style.display = mostrar ? "" : "none";
+                    console.log("Fecha Fila:", dataFecha);
+
+                });
+            }
+        });
+    });
+</script>
+
+
 
     
-
-
-</script>

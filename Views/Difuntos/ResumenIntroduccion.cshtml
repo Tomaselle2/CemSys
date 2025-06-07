@@ -2,6 +2,21 @@
 @model VMResumenIntroduccion
 <div class="main-content">
     <h1>Resumen de la operación</h1>
+    @* Notificaciones de registrar *@
+    @if (!string.IsNullOrEmpty(TempData["RegistrarMensaje"] as string))
+    {
+        <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1055;">
+            <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="notificacion">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @TempData["RegistrarMensaje"]
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+    }
     @{
         string nroTramite = "";
         string dni = "";
@@ -21,6 +36,7 @@
         string seccion = "";
         string ubicacion = "";
         string fechaIngreso = "";
+        string datosAdicionales = "";
     }
     
     @foreach (var tramite in Model.ListaTramites)
@@ -49,6 +65,7 @@
             estadoDifunto = nicho.Difunto.EstadoNavigation.Estado;
             empresa = nicho.Empresa.ToLower();
             usuario = nicho.UsuarioNavigation.Nombre.ToLower();
+            datosAdicionales = nicho.Difunto.Descripcion;
 
                     
         }
@@ -65,11 +82,13 @@
             actaDefuncion = fosa.Difunto.ActaDefuncionNavigation.NroActa.ToString();
             tomo = fosa.Difunto.ActaDefuncionNavigation.Tomo.ToString();
             folio = fosa.Difunto.ActaDefuncionNavigation.Folio.ToString();
-            serie = fosa.Difunto.ActaDefuncionNavigation.Serie;
+            serie = fosa.Difunto.ActaDefuncionNavigation.Serie.ToUpper();
             age = fosa.Difunto.ActaDefuncionNavigation.Age.ToString();
             estadoDifunto = fosa.Difunto.EstadoNavigation.Estado;
             empresa = fosa.Empresa.ToString();
-            usuario = fosa.UsuarioNavigation.Nombre.ToLower();
+            usuario = fosa.UsuarioNavigation.Nombre.ToUpper(); 
+            datosAdicionales = fosa.Difunto.Descripcion;
+
         }
         else if (difunto is PanteonDifunto panteon)
         {
@@ -89,18 +108,21 @@
             estadoDifunto = panteon.Difunto.EstadoNavigation.Estado;
             empresa = panteon.Empresa.ToLower();
             usuario = panteon.UsuarioNavigation.Nombre.ToLower();
+            datosAdicionales = panteon.Difunto.Descripcion;
+
         }
     }
 
     <h2>Tramite @nroTramite</h2>
     <p>Ingreso @fechaIngreso</p>
-    <p>Empresa: @empresa.ToLower()</p>
+    <p>Empresa: @empresa.ToUpper()</p>
 
     <p>DNI: @dni</p>
-    <p>Apellido y nombre: @nombreCompleto.ToLower()</p>
+    <p>Apellido y nombre: @nombreCompleto.ToUpper()</p>
     <p>Fecha nacimiento @fechaNacimiento</p>
     <p>Fecha defunción: @fechaDefuncion</p>
     <p>Estado difunto: @estadoDifunto</p>
+    <p>Datos adicionales: @datosAdicionales</p>
 
     <p>Acta: @actaDefuncion</p>
     <p>Tomo: @tomo</p>
@@ -108,8 +130,12 @@
     <p>Serie: @serie</p>
     <p>Año: @age</p>
 
-    <p>Empleado responsable: @usuario.ToLower()</p>
-    <p>Sección: @seccion.ToLower()</p>
+    <p>Empleado responsable: @usuario.ToUpper()</p>
+    <p>Sección: @seccion.ToUpper()</p>
     <p>Parcela: @ubicacion</p>
+
+    <a asp-action="IndexIntroduccion" asp-controller="Difuntos" class="btn-volver"><i class="btn"></i>Volver</a>
+    <a asp-action="" asp-controller="" class="btn-volver"><i class="btn"></i>Descargar operación</a>
+
 </div>
 
