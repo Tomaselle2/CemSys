@@ -30,7 +30,7 @@ namespace CemSys.Data
         {
             try
             {
-                List<FosasDifunto> lista = await _context.FosasDifuntos.Include(d => d.Difunto).ThenInclude(e => e.EstadoNavigation).Include(n => n.Fosa).ThenInclude(s => s.SeccionNavigation).OrderBy(secc => secc.Fosa.Seccion).ThenBy(fosa => fosa.Fosa.NroFosa).ToListAsync();
+                List<FosasDifunto> lista = await _context.FosasDifuntos.Include(d => d.Difunto).ThenInclude(e => e.EstadoNavigation).Include(d => d.Difunto).ThenInclude(a=>a.ActaDefuncionNavigation).Include(n => n.Fosa).ThenInclude(s => s.SeccionNavigation).OrderBy(secc => secc.Fosa.Seccion).ThenBy(fosa => fosa.Fosa.NroFosa).ToListAsync();
                 return lista;
             }
             catch (Exception) { throw; }
@@ -41,7 +41,7 @@ namespace CemSys.Data
         {
             try
             {
-                List<NichosDifunto> lista = await _context.NichosDifuntos.Include(d => d.Difunto).ThenInclude(e => e.EstadoNavigation).Include(n => n.Nicho).ThenInclude(s => s.SeccionNavigation).OrderBy(secc => secc.Nicho.Seccion).ThenBy(ni => ni.Nicho.NroNicho).ToListAsync();
+                List<NichosDifunto> lista = await _context.NichosDifuntos.Include(d => d.Difunto).ThenInclude(e => e.EstadoNavigation).Include(d => d.Difunto).ThenInclude(a => a.ActaDefuncionNavigation).Include(n => n.Nicho).ThenInclude(s => s.SeccionNavigation).OrderBy(secc => secc.Nicho.Seccion).ThenBy(ni => ni.Nicho.NroNicho).ToListAsync();
                 return lista;
             }
             catch (Exception) { throw; }
@@ -51,7 +51,7 @@ namespace CemSys.Data
         {
             try
             {
-                List<PanteonDifunto> lista = await _context.PanteonDifuntos.Include(d => d.Difunto).ThenInclude(e => e.EstadoNavigation).Include(n => n.Panteon).ThenInclude(s => s.IdSeccionPanteonNavigation).OrderBy(secc => secc.Panteon.IdSeccionPanteon).ThenBy(lote => lote.Panteon.NroLote).ToListAsync();
+                List<PanteonDifunto> lista = await _context.PanteonDifuntos.Include(d => d.Difunto).ThenInclude(e => e.EstadoNavigation).Include(d => d.Difunto).ThenInclude(a => a.ActaDefuncionNavigation).Include(n => n.Panteon).ThenInclude(s => s.IdSeccionPanteonNavigation).OrderBy(secc => secc.Panteon.IdSeccionPanteon).ThenBy(lote => lote.Panteon.NroLote).ToListAsync();
                 return lista;
             }
             catch (Exception) { throw; }

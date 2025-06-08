@@ -3,6 +3,8 @@
 
 <div class="main-content">
     <h1>Difuntos</h1>
+    <a asp-action="ExportarExcel" class="btn-exportar btn btn-success ms-2">Exportar todos los difuntos a Excel</a>
+
     <!-- Contenedor horizontal centrado -->
     <form asp-action="Filtrar" method="get" class="filtro-formulario">
         <div class="container-difunto-titular d-flex justify-content-center flex-wrap gap-4">
@@ -53,9 +55,9 @@
         <div class="text-center mt-3">
             <button type="submit" class="btn-filtrar">Buscar</button>
         </div>
+
+
     </form>
-
-
         
 <!-- Tabla de introducciones -->
 

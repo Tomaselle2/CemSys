@@ -1,11 +1,17 @@
-﻿using CemSys.Interface.Difuntos;
+﻿using CemSys.Business;
+using CemSys.Interface.Difuntos;
 using CemSys.Models;
 using CemSys.Models.ViewModel;
+using ClosedXML.Excel;
 using HeyRed.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Rotativa.AspNetCore;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
+using System.IO;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace CemSys.Controllers
 {
@@ -13,12 +19,10 @@ namespace CemSys.Controllers
     {
         VMDifuntos viewModel = new VMDifuntos();
         private readonly IDifuntosBusiness _difuntosBusiness;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public DifuntosController(IDifuntosBusiness difuntosBusiness, IWebHostEnvironment webHostEnvironment)
         {
             _difuntosBusiness = difuntosBusiness;
-            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index( VM_Introduccion_Listado viewModelListadoFiltrado)
@@ -781,6 +785,134 @@ namespace CemSys.Controllers
         }
 
 
+
+        public async Task<IActionResult> ExportarExcel()
+        {
+            var modelo = new VM_Introduccion_Listado
+            {
+                ListaNichosDifuntos = await _difuntosBusiness.EmitirListadoNichosDifuntos(),
+                ListaFosasDifuntos = await _difuntosBusiness.EmitirListadoFosasDifuntos(),
+                ListaPanteonDifuntos = await _difuntosBusiness.EmitirListadoPanteonDifuntos()
+            };
+
+            using var workbook = new XLWorkbook();
+            var hoja = workbook.Worksheets.Add("Difuntos");
+
+            // Cabecera
+            hoja.Cell(1, 1).Value = "DNI";
+            hoja.Cell(1, 2).Value = "Apellido y Nombre";
+            hoja.Cell(1, 3).Value = "Estado";
+            hoja.Cell(1, 4).Value = "Tipo";
+            hoja.Cell(1, 5).Value = "Sección";
+            hoja.Cell(1, 6).Value = "Parcela";
+            hoja.Cell(1, 7).Value = "Fecha Defunción";
+            hoja.Cell(1, 8).Value = "Fecha Nacimiento";
+            hoja.Cell(1, 9).Value = "Acta";
+            hoja.Cell(1, 10).Value = "Tomo";
+            hoja.Cell(1, 11).Value = "Folio";
+            hoja.Cell(1, 12).Value = "Serie";
+            hoja.Cell(1, 13).Value = "Año";
+            hoja.Cell(1, 14).Value = "Datos adicional";
+
+            // Formato al encabezado
+            var encabezado = hoja.Range("A1:N1");
+            encabezado.Style.Fill.BackgroundColor = XLColor.LightBlue;
+            encabezado.Style.Font.Bold = true;
+            encabezado.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+
+
+            int fila = 2;
+
+            void AgregarFila(string dni, string nombreCompleto, string estado, string tipo, string seccion, string parcela, string fechaDefuncion, string fechaNacimiento,
+                string acta, string tomo, string folio, string serie, string age, string datosAdicionales)
+            {
+                hoja.Cell(fila, 1).Value = dni;
+                hoja.Cell(fila, 2).Value = nombreCompleto;
+                hoja.Cell(fila, 3).Value = estado;
+                hoja.Cell(fila, 4).Value = tipo;
+                hoja.Cell(fila, 5).Value = seccion;
+                hoja.Cell(fila, 6).Value = parcela;
+                hoja.Cell(fila, 7).Value = fechaDefuncion;
+                hoja.Cell(fila, 8).Value = fechaNacimiento;
+                hoja.Cell(fila, 9).Value = acta;
+                hoja.Cell(fila, 10).Value = tomo;
+                hoja.Cell(fila, 11).Value = folio;
+                hoja.Cell(fila, 12).Value = serie;
+                hoja.Cell(fila, 13).Value = age;
+                hoja.Cell(fila, 14).Value = datosAdicionales;
+                fila++;
+
+                
+            }
+
+            foreach (var item in modelo.ListaNichosDifuntos)
+            {
+                var dni = item.Difunto.Dni != "nn" ? item.Difunto.Dni : "--------";
+                var nombre = item.Difunto.Nombre != null ? $"{item.Difunto.Apellido.ToUpper()} {item.Difunto.Nombre.ToUpper()}" : $"{item.Difunto.Apellido.ToUpper()} N.N";
+                var fechaNacimiento = (item.Difunto.FechaNacimiento.HasValue && item.Difunto.FechaNacimiento.Value != DateOnly.MinValue)
+                ? item.Difunto.FechaNacimiento.Value.ToString("dd/MM/yyyy")
+                : "---";
+                var acta = item.Difunto.ActaDefuncionNavigation.NroActa != 0 ? item.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "---";
+                var tomo = item.Difunto.ActaDefuncionNavigation.Tomo != 0 ? item.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "---";
+                var folio = item.Difunto.ActaDefuncionNavigation.Folio != 0 ? item.Difunto.ActaDefuncionNavigation.Folio.ToString() : "---";
+                var serie = !string.IsNullOrEmpty(item.Difunto.ActaDefuncionNavigation.Serie) ? item.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "---";
+                var age = item.Difunto.ActaDefuncionNavigation.Age != 0 ? item.Difunto.ActaDefuncionNavigation.Age.ToString() : "---";
+                var datosAdicionales = !string.IsNullOrEmpty(item.Difunto.Descripcion) ? item.Difunto.Descripcion : "---";
+                AgregarFila(dni, nombre, item.Difunto.EstadoNavigation.Estado, "Nicho", item.Nicho.SeccionNavigation.Nombre.ToUpper(), $"Nicho {item.Nicho.NroNicho} fila {item.Nicho.NroFila}",
+                    item.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy"), fechaNacimiento, acta, tomo, folio, serie, age, datosAdicionales);
+            }
+
+            foreach (var item in modelo.ListaFosasDifuntos)
+            {
+                var dni = item.Difunto.Dni != "nn" ? item.Difunto.Dni : "--------";
+                var nombre = item.Difunto.Nombre != null ? $"{item.Difunto.Apellido.ToUpper()} {item.Difunto.Nombre.ToUpper()}" : $"{item.Difunto.Apellido.ToUpper()} N.N";
+                var fechaNacimiento = (item.Difunto.FechaNacimiento.HasValue && item.Difunto.FechaNacimiento.Value != DateOnly.MinValue)
+                 ? item.Difunto.FechaNacimiento.Value.ToString("dd/MM/yyyy")
+                 : "---";
+                var acta = item.Difunto.ActaDefuncionNavigation.NroActa != 0 ? item.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "---";
+                var tomo = item.Difunto.ActaDefuncionNavigation.Tomo != 0 ? item.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "---";
+                var folio = item.Difunto.ActaDefuncionNavigation.Folio != 0 ? item.Difunto.ActaDefuncionNavigation.Folio.ToString() : "---";
+                var serie = !string.IsNullOrEmpty(item.Difunto.ActaDefuncionNavigation.Serie) ? item.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "---";
+                var age = item.Difunto.ActaDefuncionNavigation.Age != 0 ? item.Difunto.ActaDefuncionNavigation.Age.ToString() : "---";
+                var datosAdicionales = !string.IsNullOrEmpty(item.Difunto.Descripcion) ? item.Difunto.Descripcion : "---";
+                AgregarFila(dni, nombre, item.Difunto.EstadoNavigation.Estado, "Fosa", item.Fosa.SeccionNavigation.Nombre.ToUpper(), $"Fosa {item.Fosa.NroFosa}",
+                    item.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy"), fechaNacimiento, acta, tomo, folio, serie, age, datosAdicionales);
+            }
+
+            foreach (var item in modelo.ListaPanteonDifuntos)
+            {
+                var dni = item.Difunto.Dni != "nn" ? item.Difunto.Dni : "--------";
+                var nombre = item.Difunto.Nombre != null ? $"{item.Difunto.Apellido.ToUpper()} {item.Difunto.Nombre.ToUpper()}" : $"{item.Difunto.Apellido.ToUpper()} N.N";
+                var fechaNacimiento = (item.Difunto.FechaNacimiento.HasValue && item.Difunto.FechaNacimiento.Value != DateOnly.MinValue)
+                ? item.Difunto.FechaNacimiento.Value.ToString("dd/MM/yyyy")
+                : "---";
+                var acta = item.Difunto.ActaDefuncionNavigation.NroActa != 0 ? item.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "---";
+                var tomo = item.Difunto.ActaDefuncionNavigation.Tomo != 0 ? item.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "---";
+                var folio = item.Difunto.ActaDefuncionNavigation.Folio != 0 ? item.Difunto.ActaDefuncionNavigation.Folio.ToString() : "---";
+                var serie = !string.IsNullOrEmpty(item.Difunto.ActaDefuncionNavigation.Serie) ? item.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "---";
+                var age = item.Difunto.ActaDefuncionNavigation.Age != 0 ? item.Difunto.ActaDefuncionNavigation.Age.ToString() : "---";
+                var datosAdicionales = !string.IsNullOrEmpty(item.Difunto.Descripcion) ? item.Difunto.Descripcion : "---";
+                AgregarFila(dni, nombre, item.Difunto.EstadoNavigation.Estado, "Panteón", item.Panteon.IdSeccionPanteonNavigation.Nombre.ToUpper(), $"Lote {item.Panteon.NroLote}",
+                    item.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy"), fechaNacimiento, acta, tomo, folio, serie, age, datosAdicionales);
+            }
+
+            // Ajusta el ancho de las columnas
+            hoja.Columns().AdjustToContents();
+
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            stream.Position = 0;
+
+
+            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ListadoDifuntos.xlsx");
+
+        }
+
+
+
+
+
     }
-    
+
 }
