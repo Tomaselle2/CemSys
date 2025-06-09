@@ -786,14 +786,17 @@ namespace CemSys.Controllers
 
 
 
-        public async Task<IActionResult> ExportarExcel()
+        public async Task<IActionResult> ExportarExcel(string? nombreDifunto, string? apellidoDifunto, string? tipoParcela, int? seccionElegida, string? dniDifunto)
         {
-            var modelo = new VM_Introduccion_Listado
-            {
-                ListaNichosDifuntos = await _difuntosBusiness.EmitirListadoNichosDifuntos(),
-                ListaFosasDifuntos = await _difuntosBusiness.EmitirListadoFosasDifuntos(),
-                ListaPanteonDifuntos = await _difuntosBusiness.EmitirListadoPanteonDifuntos()
-            };
+        
+            VM_Introduccion_Listado modelo = await Filtrador(nombreDifunto, apellidoDifunto, tipoParcela, seccionElegida, dniDifunto);
+
+            //var modelo = new VM_Introduccion_Listado
+            //{
+            //    ListaNichosDifuntos = await _difuntosBusiness.EmitirListadoNichosDifuntos(),
+            //    ListaFosasDifuntos = await _difuntosBusiness.EmitirListadoFosasDifuntos(),
+            //    ListaPanteonDifuntos = await _difuntosBusiness.EmitirListadoPanteonDifuntos()
+            //};
 
             using var workbook = new XLWorkbook();
             var hoja = workbook.Worksheets.Add("Difuntos");

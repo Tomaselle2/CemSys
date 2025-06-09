@@ -3,7 +3,16 @@
 
 <div class="main-content">
     <h1>Difuntos</h1>
-    <a asp-action="ExportarExcel" class="btn-exportar btn btn-success ms-2">Exportar todos los difuntos a Excel</a>
+    <form asp-action="ExportarExcel" method="get" class="btn-exportar btn btn-success ms-2" id="formExportar">
+        <input type="submit" name="name" value="Exportar resultados a Excel" />
+
+        <!-- Hidden inputs para copiar datos -->
+        <input type="hidden" name="dniDifunto" />
+        <input type="hidden" name="nombreDifunto" />
+        <input type="hidden" name="apellidoDifunto" />
+        <input type="hidden" name="tipoParcela" />
+        <input type="hidden" name="seccionElegida" />
+    </form>
 
     <!-- Contenedor horizontal centrado -->
     <form asp-action="Filtrar" method="get" class="filtro-formulario">
@@ -225,6 +234,19 @@ else
 }
 
 </div>
+
+<script>
+    document.getElementById("formExportar").addEventListener("submit", function (e) {
+        const formFiltrar = document.querySelector(".filtro-formulario");
+
+        // Copiamos cada valor a los campos ocultos
+        this.querySelector('input[name="dniDifunto"]').value = formFiltrar.querySelector('#dniDifunto').value;
+        this.querySelector('input[name="nombreDifunto"]').value = formFiltrar.querySelector('#nombreDifunto').value;
+        this.querySelector('input[name="apellidoDifunto"]').value = formFiltrar.querySelector('#apellidoDifunto').value;
+        this.querySelector('input[name="tipoParcela"]').value = formFiltrar.querySelector('input[name="tipoParcela"]:checked').value;
+        this.querySelector('input[name="seccionElegida"]').value = formFiltrar.querySelector('#seccion').value;
+    });
+</script>
 
 <script>
 
