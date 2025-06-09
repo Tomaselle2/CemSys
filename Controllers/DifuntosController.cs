@@ -631,6 +631,8 @@ namespace CemSys.Controllers
 
             // Agregá el valor directamente a su ViewData actual
             pdf.ViewData["BaseUrl"] = $"{Request.Scheme}://{Request.Host}";
+            pdf.ViewData["UsuarioLogueado"] = HttpContext.Session.GetString("nombreUsuario");
+
 
             return pdf;
         }
@@ -651,6 +653,7 @@ namespace CemSys.Controllers
             pdf.ViewData["BaseUrl"] = $"{Request.Scheme}://{Request.Host}";
             pdf.ViewData["FechaDesde"] = fechaDesde;
             pdf.ViewData["FechaHasta"] = fechaHasta;
+            pdf.ViewData["UsuarioLogueado"] = HttpContext.Session.GetString("nombreUsuario");
 
 
             return pdf;
@@ -776,7 +779,7 @@ namespace CemSys.Controllers
             {
                 ListaTramites = tramitesFiltrados,
                 fechaDesde = desdeFecha,
-                fechaHasta = hastaFecha
+                fechaHasta = hastaFecha,
             };
 
 

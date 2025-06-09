@@ -5,6 +5,10 @@
     var baseUrl = ViewData["BaseUrl"] as string;
     var imageUrlCemsys = $"{baseUrl}/fotos/cems.png";
     var imageUrlLogoMuni = $"{baseUrl}/fotos/logoMuni.png";
+    var usuarioNavegando = ViewData["UsuarioLogueado"] as string;
+    var fechaHoyGeneraciondereporte = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+
+
 }
 <style>
     html{
@@ -138,5 +142,8 @@
     <p>Empleado responsable: @usuario.ToUpper()</p>
     <p>Sección: @seccion.ToUpper()</p>
     <p>Parcela: @ubicacion</p>
+
+    <p>Fecha de generación del reporte: @fechaHoyGeneraciondereporte</p>
+    <p>Usuario: @usuarioNavegando</p>
 
 </div>

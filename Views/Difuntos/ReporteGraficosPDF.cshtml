@@ -6,7 +6,8 @@
     var imageUrlLogoMuni = $"{baseUrl}/fotos/logoMuni.png";
     var fechaDesde = ViewData["FechaDesde"] as string;
     var fechaHasta = ViewData["FechaHasta"] as string;
-
+    var fechaHoyGeneraciondereporte = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+    var usuarioNavegando = ViewData["UsuarioLogueado"] as string;
 }
 
 <style>
@@ -24,6 +25,8 @@
 <div>
     <img src="@imageUrlLogoMuni" alt="Logo Muni" height="70" />
 </div>
+<p>Fecha de generación del reporte: @fechaHoyGeneraciondereporte</p>
+<p>Usuario: @usuarioNavegando</p>
 <p>Fecha desde: @fechaDesde.Replace('-', '/')</p>
 <p>Fecha hasta: @fechaHasta.Replace('-', '/')</p>
 <img src="@imagenReporte" alt="Gráfico" style="width: 600px;" />
