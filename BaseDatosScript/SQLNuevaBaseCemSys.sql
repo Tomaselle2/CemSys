@@ -279,7 +279,7 @@ INSERT INTO TipoNumeracionParcela(tipoNumeracion) VALUES ('Nueva (nichos repetid
 INSERT INTO EstadoDifunto(estado) VALUES ('Cuerpo completo'), ('Reducido'), ('Cremado');
 INSERT INTO cuotas(cuota) VALUES (1), (2), (3), (4), (5), (6);
 INSERT INTO CantidadAniosConcesion(cantidad) VALUES (1), (5), (10), (15), (25);
-insert into Usuarios(correo, nombre, clave, tipoUsuario) values('tomaselle2@gmail.com', 'Tomas Carreras', '12345', 2);
+insert into Usuarios(correo, nombre, clave, tipoUsuario) values('agusmo@gmail.com', 'Agustina Molina', '12345', 2);
 
 GO
 

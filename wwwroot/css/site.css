@@ -139,6 +139,23 @@ body {
 }
 
 
+/*BOTON GENERAR REPORTE*/
+
+.btn-generar {
+    background-color: #084d48;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .btn-generar:hover {
+        background-color: #012b28;
+    }
+
+
 /*NUEVA SECCIÓN*/
 
 .nueva-seccion {
@@ -154,19 +171,19 @@ body {
 
 
 /* ---------------------------------- CONFIGURACIÓN DE CEMSYS ---------------------------- */
-        .configuracion-cemsys {
+.configuracion-cemsys {
     text-align: center;
     padding: 15px 0;
     font-weight: 600;
     font-size: 1.25rem;
     margin-bottom: 20px;
-    color: #008592;
+    color: #0d524c;
     user-select: none;
 }
 
 .btn-configuracion-cemsys {
     width: 100%;
-    background-color: #008592;
+    background-color: #228f86;
     color: #ffffff;
     border: none;
     text-align: center;
@@ -176,7 +193,7 @@ body {
 }
 
     .btn-configuracion-cemsys:hover {
-        background-color: #006f75;
+        background-color: #0d524c;
         color: #ffffff;
     }
 
@@ -471,7 +488,7 @@ td:last-child {
     gap: 20px; /* Espacio entre los bloques */
     margin: 0 auto 30px auto; /* Centrado con margen inferior */
     padding: 10px;
-    max-width: 900px; /* Suficiente espacio para ambos */
+    max-width: 900px; 
     box-sizing: border-box;
 }
 

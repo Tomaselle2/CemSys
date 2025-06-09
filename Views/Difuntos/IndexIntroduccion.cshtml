@@ -6,35 +6,39 @@
 
     <!-- Botón Agregar -->
     <form asp-action="Registrar" method="get" class="mb-4 text-center">
-        <input class="btn-agregar-guardar" type="submit" value="+ Introducir difunto" />
+        <button type="submit" class="btn-agregar-guardar">
+            <i class="bi bi-person-up me-2"></i> Introducir difunto
+        </button>
     </form>
 
-    <!--buscador-->
+
+    <!-- Buscador centrado -->
     <form asp-action="IndexIntroduccion" method="post">
-        <div class="bloque-filtrado">
-            <fieldset >
-                <legend>Buscador</legend>
-                <div>
-                    <input type="radio" name="tipoFiltro" value="todas" id="tipoFiltroTodas" checked/>
-                    <label for="tipoFiltroTodas">Todas</label>
-                </div>
-                <div>
-                    <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesde" />
+        <div class="d-flex justify-content-center">
+            <div class="bloque-filtrado">
+                <fieldset>
+                    <legend>Buscador</legend>
+                    <div>
+                        <input type="radio" name="tipoFiltro" value="todas" id="tipoFiltroTodas" checked />
+                        <label for="tipoFiltroTodas">Todas</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesde" />
 
-                    <label for="FiltroDesde">Desde</label>
-                    <input type="date" name="desdeFecha" value="" />
+                        <label for="FiltroDesde">Desde</label>
+                        <input type="date" name="desdeFecha" value="" />
 
-                    <label for="FiltroHasta">Hasta</label>
-                    <input type="date" name="hastaFecha" value="" id="FiltroHasta" />
-                </div>
-            </fieldset>
+                        <label for="FiltroHasta">Hasta</label>
+                        <input type="date" name="hastaFecha" value="" id="FiltroHasta" />
+                    </div>
+                </fieldset>
+            </div>
         </div>
 
         <!-- Botón Buscar -->
         <div class="text-center mt-3">
-            <button type="submit" class="btn-filtrar" id="btnBuscar">Buscar</button>
+            <button type="submit" class="btn-generar" id="btnBuscar">Buscar</button>
         </div>
-
     </form>
 
     <!-- Botón Generar reporte -->
@@ -46,6 +50,7 @@
             <button type="submit" class="btn-filtrar">Generar reporte</button>
         </div>
     </form>
+
 
 
     <!-- Tabla de Introducciones -->

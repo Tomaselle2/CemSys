@@ -3,19 +3,24 @@
 
 <div class="main-content">
     <h1>Difuntos</h1>
-    <form asp-action="ExportarExcel" method="get" class="btn-exportar btn btn-success ms-2" id="formExportar">
-        <input type="submit" name="name" value="Exportar resultados a Excel" />
 
+    <!-- Botón Exportar a Excel -->
+    <form asp-action="ExportarExcel" method="get" class="d-inline" id="formExportar">
         <!-- Hidden inputs para copiar datos -->
         <input type="hidden" name="dniDifunto" />
         <input type="hidden" name="nombreDifunto" />
         <input type="hidden" name="apellidoDifunto" />
         <input type="hidden" name="tipoParcela" />
         <input type="hidden" name="seccionElegida" />
+
+        <!-- Botón con ícono -->
+        <button type="submit" class="btn-exportar btn btn-success ms-2">
+            <i class="bi bi-file-earmark-spreadsheet me-2"></i> Exportar resultados a Excel
+        </button>
     </form>
 
-    <!-- Contenedor horizontal centrado -->
-    <form asp-action="Filtrar" method="get" class="filtro-formulario">
+    <!-- Formulario de filtrado -->
+    <form asp-action="Filtrar" method="get" class="filtro-formulario mt-4">
         <div class="container-difunto-titular d-flex justify-content-center flex-wrap gap-4">
 
             <!-- Bloque Difunto -->
@@ -60,14 +65,13 @@
 
         </div>
 
-        <!-- Botón -->
+        <!-- Botón Buscar -->
         <div class="text-center mt-3">
             <button type="submit" class="btn-filtrar">Buscar</button>
         </div>
-
-
     </form>
-        
+</div>
+
 <!-- Tabla de introducciones -->
 
 @if (Model.ListaNichosDifuntos.Count == 0 && Model.ListaFosasDifuntos.Count == 0 && Model.ListaPanteonDifuntos.Count == 0)
