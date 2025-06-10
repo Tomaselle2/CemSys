@@ -37,7 +37,7 @@
 
         <!-- Botón Buscar -->
         <div class="text-center mt-3">
-            <button type="submit" class="btn-generar" id="btnBuscar">Buscar</button>
+            <button type="submit" class="btn-filtrar" id="btnBuscar">Buscar</button>
         </div>
     </form>
 
@@ -46,10 +46,12 @@
         <input type="hidden" name="idsTramites" id="idsTramites" />
         <input type="hidden" name="desdeFecha" id="desdeFechaHidden" />
         <input type="hidden" name="hastaFecha" id="hastaFechaHidden" />
-        <div class="text-center mt-3">
-            <button type="submit" class="btn-filtrar">Generar reporte</button>
+
+        <div class="text-center mt-5">
+            <button type="submit" class="btn-generar">Generar reporte</button>
         </div>
     </form>
+
 
 
 
@@ -59,7 +61,7 @@
     }
     else
     {
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Operación</th>
@@ -134,9 +136,12 @@
 
                         <td>
                             <form asp-action="ResumenIntroduccion" method="get">
-                                    <input type="hidden" name="idTramite" value="@tramite.IdTramite" />
-                                    <input type="submit" class="btn btn-primary" name="" value="Ver" />
+                                <input type="hidden" name="idTramite" value="@tramite.IdTramite" />
+                                <button type="submit" class="btn btn-primary" title="Ver detalle">
+                                    <i class="bi bi-eye"></i>
+                                </button>
                             </form>
+
                         </td>
                     </tr>
                 }

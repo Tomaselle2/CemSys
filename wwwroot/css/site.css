@@ -156,6 +156,24 @@ body {
     }
 
 
+/*BOTON PDF*/
+
+.btn-pdf {
+    background-color: #e53935;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .btn-pdf:hover {
+        background-color: #b71c1c;
+    }
+
+
+
 /*NUEVA SECCIÓN*/
 
 .nueva-seccion {
@@ -237,6 +255,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Montserrat', sans-serif;
+
 }
 
 thead {

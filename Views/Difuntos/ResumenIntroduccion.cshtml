@@ -1,17 +1,31 @@
 ﻿@using CemSys.Models.ViewModel
 @model VMResumenIntroduccion
-<div class="main-content">
-    <div>
-        <img src="~/fotos/cems.png" alt="Imagen logo cemsys" height="100">
-    </div>
-    <h1>Resumen de la operación</h1>
+
+<div class="mb-4">
+    <a asp-action="IndexIntroduccion" asp-controller="Difuntos" class="btn-volver" title="Volver">
+        <i class="bi bi-box-arrow-left"></i>
+    </a>
+</div>
+
+
+
+<h1 class="titulo-principal text-center mb-4">Resumen de la operación</h1>
+
+<div class="contenedor-resumen">
+
+    <form asp-action="ResumenIntroduccionEnPDF" asp-controller="Difuntos" method="get" class="formulario-resumen">
+        @* Contenido del formulario *@
+
+        <input type="hidden" name="idTramite" value="@Model.ListaTramites.FirstOrDefault()?.IdTramite.ToString()" />
+    </form>
+
+    @* Contenido del resumen *@
     @{
         string nroTramite = "";
         string dni = "";
         string nombreCompleto = "";
         string fechaDefuncion = "";
         string fechaNacimiento = "";
-
         string actaDefuncion = "";
         string tomo = "";
         string folio = "";
@@ -20,18 +34,14 @@
         string estadoDifunto = "";
         string empresa = "";
         string usuario = "";
-
         string seccion = "";
         string ubicacion = "";
         string fechaIngreso = "";
         string datosAdicionales = "";
     }
-    
+
     @foreach (var tramite in Model.ListaTramites)
     {
-    @* Inicializar variables *@
-
-
         nroTramite = tramite.IdTramite.ToString();
         var difunto = tramite.DifuntoRelacionado;
 
@@ -42,20 +52,17 @@
             seccion = nicho.Nicho.SeccionNavigation.Nombre.ToLower();
             ubicacion = $"Nicho {nicho.Nicho.NroNicho} Fila {nicho.Nicho.NroFila}";
             fechaIngreso = nicho.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
-
             fechaDefuncion = nicho.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
             fechaNacimiento = nicho.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
             actaDefuncion = (nicho.Difunto.ActaDefuncionNavigation.NroActa != 0) ? nicho.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "";
             tomo = (nicho.Difunto.ActaDefuncionNavigation.Tomo != 0) ? nicho.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "";
             folio = (nicho.Difunto.ActaDefuncionNavigation.Folio != 0) ? nicho.Difunto.ActaDefuncionNavigation.Folio.ToString() : "";
-            serie = (nicho.Difunto.ActaDefuncionNavigation.Serie != null) ? nicho.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "";
+            serie = nicho.Difunto.ActaDefuncionNavigation.Serie?.ToUpper() ?? "";
             age = (nicho.Difunto.ActaDefuncionNavigation.Age != 0) ? nicho.Difunto.ActaDefuncionNavigation.Age.ToString() : "";
             estadoDifunto = nicho.Difunto.EstadoNavigation.Estado;
             empresa = nicho.Empresa.ToLower();
             usuario = nicho.UsuarioNavigation.Nombre.ToLower();
             datosAdicionales = nicho.Difunto.Descripcion;
-
-                    
         }
         else if (difunto is FosasDifunto fosa)
         {
@@ -64,19 +71,17 @@
             seccion = fosa.Fosa.SeccionNavigation.Nombre.ToLower();
             ubicacion = $"Fosa {fosa.Fosa.NroFosa}";
             fechaIngreso = fosa.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
-
             fechaDefuncion = fosa.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
             fechaNacimiento = fosa.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
             actaDefuncion = (fosa.Difunto.ActaDefuncionNavigation.NroActa != 0) ? fosa.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "";
             tomo = (fosa.Difunto.ActaDefuncionNavigation.Tomo != 0) ? fosa.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "";
             folio = (fosa.Difunto.ActaDefuncionNavigation.Folio != 0) ? fosa.Difunto.ActaDefuncionNavigation.Folio.ToString() : "";
-            serie = (fosa.Difunto.ActaDefuncionNavigation.Serie != null) ? fosa.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "";
+            serie = fosa.Difunto.ActaDefuncionNavigation.Serie?.ToUpper() ?? "";
             age = (fosa.Difunto.ActaDefuncionNavigation.Age != 0) ? fosa.Difunto.ActaDefuncionNavigation.Age.ToString() : "";
             estadoDifunto = fosa.Difunto.EstadoNavigation.Estado;
-            empresa = fosa.Empresa.ToString();
-            usuario = fosa.UsuarioNavigation.Nombre.ToUpper(); 
+            empresa = fosa.Empresa.ToLower();
+            usuario = fosa.UsuarioNavigation.Nombre.ToLower();
             datosAdicionales = fosa.Difunto.Descripcion;
-
         }
         else if (difunto is PanteonDifunto panteon)
         {
@@ -85,49 +90,67 @@
             seccion = panteon.Panteon.IdSeccionPanteonNavigation.Nombre.ToLower();
             ubicacion = $"Lote {panteon.Panteon.NroLote}";
             fechaIngreso = panteon.FechaIngreso?.ToString("dd/MM/yyyy HH:mm");
-
             fechaDefuncion = panteon.Difunto.FechaDefuncion?.ToString("dd/MM/yyyy");
             fechaNacimiento = panteon.Difunto.FechaNacimiento?.ToString("dd/MM/yyyy");
             actaDefuncion = (panteon.Difunto.ActaDefuncionNavigation.NroActa != 0) ? panteon.Difunto.ActaDefuncionNavigation.NroActa.ToString() : "";
             tomo = (panteon.Difunto.ActaDefuncionNavigation.Tomo != 0) ? panteon.Difunto.ActaDefuncionNavigation.Tomo.ToString() : "";
             folio = (panteon.Difunto.ActaDefuncionNavigation.Folio != 0) ? panteon.Difunto.ActaDefuncionNavigation.Folio.ToString() : "";
-            serie = (panteon.Difunto.ActaDefuncionNavigation.Serie != null) ? panteon.Difunto.ActaDefuncionNavigation.Serie.ToUpper() : "";
+            serie = panteon.Difunto.ActaDefuncionNavigation.Serie?.ToUpper() ?? "";
             age = (panteon.Difunto.ActaDefuncionNavigation.Age != 0) ? panteon.Difunto.ActaDefuncionNavigation.Age.ToString() : "";
             estadoDifunto = panteon.Difunto.EstadoNavigation.Estado;
             empresa = panteon.Empresa.ToLower();
             usuario = panteon.UsuarioNavigation.Nombre.ToLower();
             datosAdicionales = panteon.Difunto.Descripcion;
-
         }
     }
 
-    <h2>Tramite @nroTramite</h2>
-    <p>Ingreso @fechaIngreso</p>
-    <p>Empresa: @empresa.ToUpper()</p>
+    <h2>Trámite @nroTramite</h2>
+    <p><strong>Ingreso:</strong> @fechaIngreso</p>
+    <p><strong>Empresa:</strong> @empresa.ToUpper()</p>
 
-    <p>DNI: @dni</p>
-    <p>Apellido y nombre: @nombreCompleto.ToUpper()</p>
-    <p>Fecha nacimiento @fechaNacimiento</p>
-    <p>Fecha defunción: @fechaDefuncion</p>
-    <p>Estado difunto: @estadoDifunto</p>
-    <p>Datos adicionales: @datosAdicionales</p>
+    <p><strong>DNI:</strong> @dni</p>
+    <p><strong>Apellido y nombre:</strong> @nombreCompleto</p>
+    <p><strong>Fecha nacimiento:</strong> @fechaNacimiento</p>
+    <p><strong>Fecha defunción:</strong> @fechaDefuncion</p>
+    <p><strong>Estado del difunto:</strong> @estadoDifunto</p>
+    <p><strong>Datos adicionales:</strong> @datosAdicionales</p>
 
-    <p>Acta: @actaDefuncion</p>
-    <p>Tomo: @tomo</p>
-    <p>Folio: @folio</p>
-    <p>Serie: @serie</p>
-    <p>Año: @age</p>
+    <p><strong>Acta:</strong> @actaDefuncion</p>
+    <p><strong>Tomo:</strong> @tomo</p>
+    <p><strong>Folio:</strong> @folio</p>
+    <p><strong>Serie:</strong> @serie</p>
+    <p><strong>Año:</strong> @age</p>
 
-    <p>Empleado responsable: @usuario.ToUpper()</p>
-    <p>Sección: @seccion.ToUpper()</p>
-    <p>Parcela: @ubicacion</p>
-
-    <a asp-action="IndexIntroduccion" asp-controller="Difuntos" class="btn-volver"><i class="btn"></i>Volver</a>
-
-    <form asp-action="ResumenIntroduccionEnPDF" asp-controller="Difuntos" method="get">
-        <input type="hidden" name="idTramite" value="@nroTramite" />
-        <button type="submit" class="btn-volver"><i class="btn"></i>Descargar PDF</button>
-    </form>
+    <p><strong>Empleado responsable:</strong> @usuario.ToUpper()</p>
+    <p><strong>Sección:</strong> @seccion.ToUpper()</p>
+    <p><strong>Parcela:</strong> @ubicacion</p>
 
 </div>
 
+<div class="boton-pdf-container text-center mt-4">
+    <form asp-action="ResumenIntroduccionEnPDF" asp-controller="Difuntos" method="get">
+        <input type="hidden" name="idTramite" value="@Model.ListaTramites.FirstOrDefault()?.IdTramite.ToString()" />
+        <button type="submit" class="btn-pdf">
+            <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+        </button>
+    </form>
+</div>
+
+<style>
+    .contenedor-resumen {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border: 2px solid #338b85; /* borde verde */
+    }
+
+    .titulo-principal {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+</style>
