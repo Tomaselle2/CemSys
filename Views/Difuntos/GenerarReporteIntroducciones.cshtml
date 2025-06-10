@@ -1,12 +1,41 @@
 ﻿@using CemSys.Models.ViewModel
 @model VMResumenIntroduccion
 
+<style>
+
+    .main-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .grafico-seccion {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .titulo-grafico {
+        color: #0a3330;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 30px;
+        margin-bottom: 15px;
+    }
+
+    .grafico-container {
+        display: inline-block; 
+    }
+
+</style>
+
+
 <div class="main-content">
-    <div>
-        <img src="~/fotos/cems.png" alt="Imagen logo cemsys" height="100">
-    </div>
+    <a asp-action="IndexIntroduccion" asp-controller="Difuntos" class="btn-volver">
+        <i class="bi bi-box-arrow-left"></i> 
+    </a>
     <h1>Reportes de las introducciones</h1>
-    <a asp-action="IndexIntroduccion" asp-controller="Difuntos" class="btn-volver"><i class="btn"></i>Volver</a>
+</div>
 
     @{
         var agrupados = Model.ListaTramites
@@ -59,60 +88,71 @@
         string fechaHasta = (Model.fechaHasta != null) ? Model.fechaHasta?.ToString("dd-MM-yyyy") : "";
     }
 
-    <!--Gráficos-->
-    <!--Barra por mes-->
-    <div style="max-width: 800px; margin: auto;">
-        <canvas id="graficoPorMes" width="800" height="400"></canvas>
-        <div style="text-align: center; margin-top: 15px;">
-            <form id="formPdfBarraMes" method="post" asp-action="ReporteGraficosPDF">
-                <input type="hidden" id="imagenBase64BarraMes" name="imagenBase64" />
-                <input type="hidden" name="fechaDesde" value="@fechaDesde" />
-                <input type="hidden" name="fechaHasta" value="@fechaHasta" />
-                <button type="submit" class="btn btn-primary">Exportar PDF</button>
-            </form>
+    <!-- Gráfico de barras por mes -->
+    <div class="grafico-seccion">
+        <h2 class="titulo-grafico">Cantidad de introducciones por mes</h2>
+        <div class="grafico-container">
+            <canvas id="graficoPorMes" width="800" height="400"></canvas>
         </div>
+        <form id="formPdfBarraMes" method="post" asp-action="ReporteGraficosPDF">
+            <input type="hidden" id="imagenBase64BarraMes" name="imagenBase64" />
+            <input type="hidden" name="fechaDesde" value="@fechaDesde" />
+            <input type="hidden" name="fechaHasta" value="@fechaHasta" />
+            <button type="submit" class="btn-pdf">
+                <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+            </button>
+        </form>
     </div>
 
-    <!--torta por parcela-->
-    <div style="max-width: 700px; margin: auto; margin-top: 40px;">
-        <canvas id="graficoTortaParcela" style="margin-bottom: 40px; width: 300px; height: 300px" width="300" height="300"></canvas>
-        <div style="text-align: center; margin-top: 15px;">
-            <form id="formPdfTortaParcela" method="post" asp-action="ReporteGraficosPDF">
-                <input type="hidden" id="imagenBase64TortaParcela" name="imagenBase64" />
-                <input type="hidden" name="fechaDesde" value="@fechaDesde" />
-                <input type="hidden" name="fechaHasta" value="@fechaHasta" />
-                <button type="submit" class="btn btn-primary">Exportar PDF</button>
-            </form>
+    <!-- Gráfico torta por parcela -->
+    <div class="grafico-seccion">
+        <h2 class="titulo-grafico">Distribución por tipo de parcela</h2>
+        <div class="grafico-container">
+            <canvas id="graficoTortaParcela" width="300" height="300"></canvas>
         </div>
+        <form id="formPdfTortaParcela" method="post" asp-action="ReporteGraficosPDF">
+            <input type="hidden" id="imagenBase64TortaParcela" name="imagenBase64" />
+            <input type="hidden" name="fechaDesde" value="@fechaDesde" />
+            <input type="hidden" name="fechaHasta" value="@fechaHasta" />
+            <button type="submit" class="btn-pdf">
+                <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+            </button>
+        </form>
     </div>
 
-    <!-- barra por parcela-->
-    <div style="max-width: 700px; margin: auto; margin-top: 40px;">
-        <canvas id="graficoBarraParcela" width="800" height="400"></canvas>
-        <div style="text-align: center; margin-top: 15px;">
-            <form id="formPdfBarraParcela" method="post" asp-action="ReporteGraficosPDF">
-                <input type="hidden" id="imagenBase64BarraParcela" name="imagenBase64" />
-                <input type="hidden" name="fechaDesde" value="@fechaDesde" />
-                <input type="hidden" name="fechaHasta" value="@fechaHasta" />
-                <button type="submit" class="btn btn-primary">Exportar PDF</button>
-            </form>
+    <!-- Gráfico barra por parcela -->
+    <div class="grafico-seccion">
+        <h2 class="titulo-grafico">Cantidad por tipo de parcela</h2>
+        <div class="grafico-container">
+            <canvas id="graficoBarraParcela" width="800" height="400"></canvas>
         </div>
+        <form id="formPdfBarraParcela" method="post" asp-action="ReporteGraficosPDF">
+            <input type="hidden" id="imagenBase64BarraParcela" name="imagenBase64" />
+            <input type="hidden" name="fechaDesde" value="@fechaDesde" />
+            <input type="hidden" name="fechaHasta" value="@fechaHasta" />
+            <button type="submit" class="btn-pdf">
+                <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+            </button>
+        </form>
     </div>
 
-    <!-- barra horizontales por empleado-->
-    <div style="max-width: 700px; margin: auto; margin-top: 40px;">
-        <canvas id="graficoEmpleados" width="800" height="400"></canvas>
-        <div style="text-align: center; margin-top: 15px;">
-            <form id="formPdfEmpleados" method="post" asp-action="ReporteGraficosPDF">
-                <input type="hidden" id="imagenBase64Empleados" name="imagenBase64" />
-                <input type="hidden" name="fechaDesde" value="@fechaDesde" />
-                <input type="hidden" name="fechaHasta" value="@fechaHasta" />
-                <button type="submit" class="btn btn-primary">Exportar PDF</button>
-            </form>
+    <!-- Gráfico horizontal por empleado -->
+    <div class="grafico-seccion">
+        <h2 class="titulo-grafico">Cantidad por empleado</h2>
+        <div class="grafico-container">
+            <canvas id="graficoEmpleados" width="800" height="400"></canvas>
         </div>
+        <form id="formPdfEmpleados" method="post" asp-action="ReporteGraficosPDF">
+            <input type="hidden" id="imagenBase64Empleados" name="imagenBase64" />
+            <input type="hidden" name="fechaDesde" value="@fechaDesde" />
+            <input type="hidden" name="fechaHasta" value="@fechaHasta" />
+            <button type="submit" class="btn-pdf">
+                <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+            </button>
+        </form>
     </div>
 
-</div>
+
 
 @{
     var listaLimpia = Model.ListaTramites.Select(t => new

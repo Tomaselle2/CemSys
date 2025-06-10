@@ -7,37 +7,130 @@
     <!-- Botón Agregar -->
     <form asp-action="Registrar" method="get" class="mb-4 text-center">
         <button type="submit" class="btn-agregar-guardar">
-            <i class="bi bi-person-up me-2"></i> Introducir difunto
+            <i class="bi bi-person-plus"></i> Introducir difunto
         </button>
     </form>
 
+    <!-- Estilos en línea -->
+  
+        <style >
+        .buscador-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
 
-    <!-- Buscador centrado -->
+        .bloque-filtrado {
+            background-color: #5DC1B9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            color: #000;
+            box-shadow: 1px 2px 5px 1px #7c7c7c;
+            width: 700px; /* Aumentado el ancho */
+        }
+
+        fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        legend {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .filtros-linea {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filtro-radio,
+        .filtro-fechas {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="date"] {
+            padding: 4px 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn-filtrar {
+            background-color: #0a3330;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+            .btn-filtrar:hover {
+                background-color: #062624;
+            }
+
+        .btn-generar {
+            background-color: #338b85;
+            color: #fff;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+            .btn-generar:hover {
+                background-color: #276e69;
+            }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        .mt-5 {
+            margin-top: 3rem;
+        }
+    </style>
+
+
+    <!-- Buscador centrado y horizontal -->
     <form asp-action="IndexIntroduccion" method="post">
-        <div class="d-flex justify-content-center">
+        <div class="buscador-container">
             <div class="bloque-filtrado">
                 <fieldset>
                     <legend>Buscador</legend>
-                    <div>
-                        <input type="radio" name="tipoFiltro" value="todas" id="tipoFiltroTodas" checked />
-                        <label for="tipoFiltroTodas">Todas</label>
+                    <div class="filtros-linea">
+                        <div class="filtro-radio">
+                            <input type="radio" name="tipoFiltro" value="todas" id="tipoFiltroTodas" checked />
+                            <label for="tipoFiltroTodas">Todas</label>
+                        </div>
+                        <div class="filtro-fechas">
+                            <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesde" />
+                            <label for="FiltroDesde">Desde</label>
+                            <input type="date" name="desdeFecha" />
+
+                            <label for="FiltroHasta">Hasta</label>
+                            <input type="date" name="hastaFecha" id="FiltroHasta" />
+                        </div>
                     </div>
-                    <div>
-                        <input type="radio" name="tipoFiltro" value="desde" id="FiltroDesde" />
 
-                        <label for="FiltroDesde">Desde</label>
-                        <input type="date" name="desdeFecha" value="" />
-
-                        <label for="FiltroHasta">Hasta</label>
-                        <input type="date" name="hastaFecha" value="" id="FiltroHasta" />
+                    <!-- Botón Buscar dentro del bloque -->
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn-filtrar" id="btnBuscar">Buscar</button>
                     </div>
                 </fieldset>
             </div>
-        </div>
-
-        <!-- Botón Buscar -->
-        <div class="text-center mt-3">
-            <button type="submit" class="btn-filtrar" id="btnBuscar">Buscar</button>
         </div>
     </form>
 
@@ -51,9 +144,7 @@
             <button type="submit" class="btn-generar">Generar reporte</button>
         </div>
     </form>
-
-
-
+</div>
 
     <!-- Tabla de Introducciones -->
     @if (Model.ListaTramites.Count == 0)
