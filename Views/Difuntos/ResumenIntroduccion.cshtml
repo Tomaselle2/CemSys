@@ -1,11 +1,6 @@
 ﻿@using CemSys.Models.ViewModel
 @model VMResumenIntroduccion
 
-<div class="mb-4">
-    <a asp-action="IndexIntroduccion" asp-controller="Difuntos" class="btn-volver" title="Volver">
-        <i class="bi bi-box-arrow-left"></i>
-    </a>
-</div>
 
 
 
@@ -129,12 +124,21 @@
 
 <div class="boton-pdf-container text-center mt-4">
     <form asp-action="ResumenIntroduccionEnPDF" asp-controller="Difuntos" method="get">
-        <input type="hidden" name="idTramite" value="@Model.ListaTramites.FirstOrDefault()?.IdTramite.ToString()" />
+        <input type="hidden" name="idTramite" value="@nroTramite" />
         <button type="submit" class="btn-pdf">
             <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
         </button>
     </form>
+    
 </div>
+<div class="boton-pdf-container text-center mt-4">
+    <form asp-action="IndexIntroduccion" method="get">
+        <input type="submit" name="name" value="Volver" class="btn btn-volver" />
+    </form>
+</div>
+
+
+
 
 <style>
     .contenedor-resumen {

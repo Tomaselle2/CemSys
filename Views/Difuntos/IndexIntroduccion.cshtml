@@ -108,7 +108,7 @@
     <form asp-action="IndexIntroduccion" method="post">
         <div class="buscador-container">
             <div class="bloque-filtrado">
-                <fieldset>
+                <fieldset class="p-2">
                     <legend>Buscador</legend>
                     <div class="filtros-linea">
                         <div class="filtro-radio">
@@ -135,7 +135,7 @@
     </form>
 
     <!-- Botón Generar reporte -->
-    <form id="formGenerarReporte" asp-action="GenerarReporteIntroducciones" method="post">
+    <form id="formGenerarReporte" asp-action="GenerarReporteIntroducciones" method="post" class="mb-3">
         <input type="hidden" name="idsTramites" id="idsTramites" />
         <input type="hidden" name="desdeFecha" id="desdeFechaHidden" />
         <input type="hidden" name="hastaFecha" id="hastaFechaHidden" />
@@ -144,7 +144,7 @@
             <button type="submit" class="btn-generar">Generar reporte</button>
         </div>
     </form>
-</div>
+
 
     <!-- Tabla de Introducciones -->
     @if (Model.ListaTramites.Count == 0)
@@ -240,7 +240,6 @@
         </table>
 
     }
-
 </div>
 
 <script>
