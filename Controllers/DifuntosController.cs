@@ -699,7 +699,7 @@ namespace CemSys.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> IndexIntroduccion(string tipoFiltro, DateOnly? desde, DateOnly? hasta)
+        public async Task<IActionResult> IndexIntroduccion(string tipoFiltro, DateOnly? desdeFecha, DateOnly? hastaFecha)
         {
             //login
             var nombre = HttpContext.Session.GetString("nombreUsuario");

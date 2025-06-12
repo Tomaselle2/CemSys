@@ -16,7 +16,7 @@
 
     @* Contenido del resumen *@
     @{
-        string nroTramite = "";
+        int nroTramite = 0;
         string dni = "";
         string nombreCompleto = "";
         string fechaDefuncion = "";
@@ -37,12 +37,12 @@
 
     @foreach (var tramite in Model.ListaTramites)
     {
-        nroTramite = tramite.IdTramite.ToString();
+        nroTramite = tramite.IdTramite;
         var difunto = tramite.DifuntoRelacionado;
 
         if (difunto is NichosDifunto nicho)
         {
-            dni = nicho.Difunto.Dni;
+            dni = (nicho.Difunto.Dni != "nn") ? nicho.Difunto.Dni : "--------";
             nombreCompleto = $"{nicho.Difunto.Apellido.ToUpper()} {nicho.Difunto.Nombre.ToUpper()}";
             seccion = nicho.Nicho.SeccionNavigation.Nombre.ToLower();
             ubicacion = $"Nicho {nicho.Nicho.NroNicho} Fila {nicho.Nicho.NroFila}";
@@ -61,7 +61,7 @@
         }
         else if (difunto is FosasDifunto fosa)
         {
-            dni = fosa.Difunto.Dni;
+            dni = (fosa.Difunto.Dni != "nn") ? fosa.Difunto.Dni : "--------";
             nombreCompleto = $"{fosa.Difunto.Apellido.ToUpper()} {fosa.Difunto.Nombre.ToUpper()}";
             seccion = fosa.Fosa.SeccionNavigation.Nombre.ToLower();
             ubicacion = $"Fosa {fosa.Fosa.NroFosa}";
@@ -80,7 +80,7 @@
         }
         else if (difunto is PanteonDifunto panteon)
         {
-            dni = panteon.Difunto.Dni;
+            dni = (panteon.Difunto.Dni != "nn") ? panteon.Difunto.Dni : "--------";
             nombreCompleto = $"{panteon.Difunto.Apellido.ToUpper()} {panteon.Difunto.Nombre.ToUpper()}";
             seccion = panteon.Panteon.IdSeccionPanteonNavigation.Nombre.ToLower();
             ubicacion = $"Lote {panteon.Panteon.NroLote}";

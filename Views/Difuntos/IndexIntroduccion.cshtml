@@ -105,7 +105,7 @@
 
 
     <!-- Buscador centrado y horizontal -->
-    <form asp-action="IndexIntroduccion" method="post">
+    <form asp-action="IndexIntroduccion" method="get">
         <div class="buscador-container">
             <div class="bloque-filtrado">
                 <fieldset class="p-2">
@@ -249,60 +249,31 @@
         const radioDesde = document.getElementById("FiltroDesde");
         const inputDesde = document.querySelector("input[name='desdeFecha']");
         const inputHasta = document.querySelector("input[name='hastaFecha']");
-
-        const inputHiddenDesde = document.getElementById("desdeFechaHidden");
-        const inputHiddenHasta = document.getElementById("hastaFechaHidden");
-
         const filas = document.querySelectorAll("tbody tr");
 
         const formReporte = document.getElementById("formGenerarReporte");
         const hiddenInputIds = document.getElementById("idsTramites");
+        const hiddenDesde = document.getElementById("desdeFechaHidden");
+        const hiddenHasta = document.getElementById("hastaFechaHidden");
 
-        // Función para obtener fecha mínima y máxima de las filas visibles
-        function actualizarFechasHidden() {
-            const fechas = Array.from(filas)
-                .filter(fila => fila.style.display !== "none")
-                .map(fila => fila.dataset.fecha)
-                .filter(fecha => fecha)
-                .map(fecha => new Date(fecha));
-
-            if (fechas.length > 0) {
-                const minFecha = new Date(Math.min(...fechas));
-                const maxFecha = new Date(Math.max(...fechas));
-                const formato = fecha => fecha.toISOString().split("T")[0];
-                inputDesde.value = formato(minFecha);
-                inputHasta.value = formato(maxFecha);
-                inputHiddenDesde.value = inputDesde.value;
-                inputHiddenHasta.value = inputHasta.value;
-            } else {
+        // Función para aplicar filtro en base a fechas
+        function filtrarPorFechas() {
+            if (radioTodas.checked) {
+                filas.forEach(fila => fila.style.display = "");
                 inputDesde.value = "";
                 inputHasta.value = "";
-                inputHiddenDesde.value = "";
-                inputHiddenHasta.value = "";
-            }
-        }
 
-        // Al cargar la página, actualizar fechas hidden según todas las filas visibles
-        actualizarFechasHidden();
-
-        btnBuscar.addEventListener("click", function (e) {
-            e.preventDefault();
-
-            if (radioTodas.checked) {
-                // Mostrar todas las filas
-                filas.forEach(fila => fila.style.display = "");
-
-                // Actualizar fechas min y max
-                actualizarFechasHidden();
-
-                formReporte.submit();
-
+                hiddenDesde.value = "";
+                hiddenHasta.value = "";
             } else if (radioDesde.checked) {
                 const desdeValue = inputDesde.value;
                 const hastaValue = inputHasta.value;
 
                 const fechaDesde = desdeValue ? new Date(desdeValue) : null;
                 const fechaHasta = hastaValue ? new Date(hastaValue) : null;
+
+                hiddenDesde.value = desdeValue;
+                hiddenHasta.value = hastaValue;
 
                 filas.forEach(fila => {
                     const dataFecha = fila.dataset.fecha;
@@ -314,22 +285,26 @@
                     const fechaFila = new Date(dataFecha);
                     let mostrar = true;
 
-                    if (fechaDesde && fechaFila < fechaDesde) mostrar = false;
-                    if (fechaHasta && fechaFila > fechaHasta) mostrar = false;
+                    if (fechaDesde && fechaFila < fechaDesde) {
+                        mostrar = false;
+                    }
+                    if (fechaHasta && fechaFila > fechaHasta) {
+                        mostrar = false;
+                    }
 
                     fila.style.display = mostrar ? "" : "none";
                 });
-
-                // Actualizar fechas hidden según filas filtradas
-                actualizarFechasHidden();
-
-                formReporte.submit();
             }
+        }
+
+        // Evento click del botón buscar
+        btnBuscar.addEventListener("click", function (e) {
+            e.preventDefault();
+            filtrarPorFechas();
         });
 
-        formReporte.addEventListener("submit", function (e) {
-            e.preventDefault();
-
+        // Evento submit del botón de generar reporte
+        formReporte.addEventListener("submit", function () {
             const ids = [];
             filas.forEach(fila => {
                 if (fila.style.display !== "none") {
@@ -339,19 +314,10 @@
             });
 
             hiddenInputIds.value = ids.join(',');
-
-            // Actualizar fechas hidden para asegurar estén sincronizadas
-            inputHiddenDesde.value = inputDesde.value;
-            inputHiddenHasta.value = inputHasta.value;
-
-            formReporte.submit();
-
-            console.log("ids:", hiddenInputIds.value);
-            console.log("desde:", inputHiddenDesde.value);
-            console.log("hasta:", inputHiddenHasta.value);
         });
     });
 </script>
+
 
 
 
