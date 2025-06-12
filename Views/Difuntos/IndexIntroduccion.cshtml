@@ -304,17 +304,38 @@
         });
 
         // Evento submit del botón de generar reporte
+        // Evento submit del botón de generar reporte
         formReporte.addEventListener("submit", function () {
             const ids = [];
+            let minFecha = null;
+            let maxFecha = null;
+
             filas.forEach(fila => {
                 if (fila.style.display !== "none") {
                     const id = fila.querySelector("td:first-child").textContent.trim();
                     ids.push(id);
+
+                    const dataFecha = fila.dataset.fecha;
+                    if (dataFecha) {
+                        const fecha = new Date(dataFecha);
+
+                        if (!minFecha || fecha < minFecha) {
+                            minFecha = fecha;
+                        }
+
+                        if (!maxFecha || fecha > maxFecha) {
+                            maxFecha = fecha;
+                        }
+                    }
                 }
             });
 
             hiddenInputIds.value = ids.join(',');
-        });
+
+            // Si el usuario no ingresó fechas, usar las fechas mínima y máxima de la tabla visible
+            hiddenDesde.value = inputDesde.value || (minFecha ? minFecha.toISOString().split('T')[0] : "");
+            hiddenHasta.value = inputHasta.value || (maxFecha ? maxFecha.toISOString().split('T')[0] : "");
+        })
     });
 </script>
 
